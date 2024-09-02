@@ -7,6 +7,10 @@ arlo = robot.Robot()
 
 print("Running ...")
 
+# Measurements
+wheelToWheelDistance = 40
+leftWheelDiameter = 15
+rightWheelDiameter = 15
 
 # send a go_diff command to drive forward
 leftSpeed = 64
