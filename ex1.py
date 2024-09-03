@@ -1,24 +1,46 @@
 from time import sleep
 
 import robot
-
+import numpy as np
 # Create a robot object and initialize
 arlo = robot.Robot()
 
 print("Running ...")
 
 # Measurements
+tickPrRevolution = 144
 wheelToWheelDistance = 40
-leftWheelDiameter = 15
-rightWheelDiameter = 15
+wheelDiameter = 15
 
-# send a go_diff command to drive forward
-leftSpeed = 64
-rightSpeed = 64
-print(arlo.go_diff(leftSpeed, rightSpeed, 1, 1))
+# Other variables
+speed = 64
+overshoot = 0
+cmPrTick = (wheelDiameter * np.pi) / tickPrRevolution
+driveStraight = (100 / cmPrTick) - overshoot
+rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 
-# Wait a bit while robot moves forward
-sleep(3)
+# start driving pattern
+for i in range(0, 4):
+    
+    arlo.reset_encoder_counts
 
-# send a stop command
-print(arlo.stop())
+    # send a go_diff command to drive forward
+    print(arlo.go_diff(speed, speed, 1, 1))
+
+    while(abs(arlo.read_left_wheel_encoder) < driveStraight):
+        sleep(0.1)
+
+    # send a stop command
+    print(arlo.stop())
+
+    arlo.reset_encoder_counts
+    
+    # send a go_diff command to drive forward
+    print(arlo.go_diff(speed, speed, 1, -1))
+
+    while(abs(arlo.read_left_wheel_encoder) < rotate):
+        sleep(0.1)
+
+    # send a stop command
+    print(arlo.stop())
+    
