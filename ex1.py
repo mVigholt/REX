@@ -8,7 +8,7 @@ arlo = robot.Robot()
 print("Running ...")
 
 # Measurements
-tickPrRevolution = 144
+tickPrRevolution = 36
 wheelToWheelDistance = 40
 wheelDiameter = 15
 
