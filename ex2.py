@@ -8,13 +8,13 @@ arlo = robot.Robot()
 print("Running ...")
 
 speed = 60
-k=4
+k=2
 time = 0
 for i in range(0, 2*k):
   if i == 0:
     time = 6.45
   else:
-    time = 6.1
+    time = 6.2
   
   if not (i % 2):
     arlo.go_diff(speed*2-3, speed, 1, 1)
