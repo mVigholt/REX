@@ -44,7 +44,7 @@ for i in range(0, 4):
     while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < rotate):
         sleep(0.1)
     print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
-    print("rotate: " + rotate)
+    print("rotate: " + str(rotate))
 
     print(count)
     # send a stop command
