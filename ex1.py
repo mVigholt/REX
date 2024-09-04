@@ -23,6 +23,7 @@ rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 for i in range(0, 4):
     
     count = int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")
+    print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
 
     # send a go_diff command to drive forward
     print(arlo.go_diff(speed, speed, 1, 1))
@@ -30,6 +31,7 @@ for i in range(0, 4):
     while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < driveStraight):
         #print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big"))
         sleep(0.1)
+    print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
 
     # send a stop command
     print(arlo.stop())
@@ -41,7 +43,10 @@ for i in range(0, 4):
 
     while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < rotate):
         sleep(0.1)
+    print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
+    print("rotate: " + rotate)
 
+    print(count)
     # send a stop command
     print(arlo.stop())
     
