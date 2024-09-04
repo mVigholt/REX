@@ -20,7 +20,7 @@ driveStraight = (100 / cmPrTick) - overshoot
 rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 
 print(arlo.go_diff(speed, speed, 1, 0))
-sleep(6.6)
+sleep(6.4)
 arlo.stop()
 
 
