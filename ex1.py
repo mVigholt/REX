@@ -8,6 +8,8 @@ arlo = robot.Robot()
 print("Running ...")
 
 # Measurements
+timeFor360Degrees = 6.42/2
+timeFor90Degrees = timeFor360Degrees/8
 tickPrRevolution = 36
 wheelToWheelDistance = 40
 wheelDiameter = 15
@@ -19,10 +21,19 @@ cmPrTick = (wheelDiameter * np.pi) / tickPrRevolution
 driveStraight = (100 / cmPrTick) - overshoot
 rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 
-print(arlo.go_diff(speed, speed, 1, 0))
-sleep(6.42)
-arlo.stop()
 
+for i in range(0,4):
+    print(arlo.go_diff(speed, speed, 1, 1))
+    sleep(2)
+    
+    arlo.stop()
+    sleep(0.5)
+
+    print(arlo.go_diff(speed, speed, 1, 0))
+    sleep(timeFor90Degrees)
+
+    arlo.stop()
+    sleep(0.5)
 
 
 
