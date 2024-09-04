@@ -24,7 +24,7 @@ rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 k = 5
 stopRotation = 0.08
 ccw90 = 0.8 
-cw90 = 0.795
+cw90 = 0.794
 
 
 for i in range(0,4*k):
@@ -32,13 +32,13 @@ for i in range(0,4*k):
     sleep(2)
 
     arlo.stop()
-    sleep(1)
+    sleep(0.1)
 
     print(arlo.go_diff(speed-3, speed, 1, 0))
     sleep(cw90)
 
     arlo.stop()
-    sleep(1)
+    sleep(0.1)
 
 
 
