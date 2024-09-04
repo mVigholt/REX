@@ -29,6 +29,7 @@ for i in range(0, 4):
     print(arlo.go_diff(speed, speed, 1, 1))
 
     while(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big") < driveStraight):
+        print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big"))
         sleep(0.5)
 
     # send a stop command
