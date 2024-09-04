@@ -26,18 +26,24 @@ stopRotation = 0.08
 ccw90 = 0.8 + stopRotation
 cw90 = 0.8 - stopRotation
 
-for i in range(0,4*k):
-    print(arlo.go_diff(speed, speed, 1, 1))
-    sleep(2)
+print(arlo.go_diff(speed-5, speed, 1, 1))
+sleep(5)
+
+arlo.stop()
+sleep(1)
+
+# for i in range(0,4*k):
+#     print(arlo.go_diff(speed-5, speed, 1, 1))
+#     sleep(2)
     
-    arlo.stop()
-    sleep(1)
+#     arlo.stop()
+#     sleep(1)
 
-    print(arlo.go_diff(speed, speed, 1, 0))
-    sleep(cw90)
+#     print(arlo.go_diff(speed-5, speed, 1, 0))
+#     sleep(cw90)
 
-    arlo.stop()
-    sleep(1)
+#     arlo.stop()
+#     sleep(1)
 
 
 
