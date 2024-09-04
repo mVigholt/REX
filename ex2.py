@@ -10,5 +10,5 @@ print("Running ...")
 speed = 64
 
 arlo.go_diff(speed*2-3, speed, 1, 1)
-sleep(4.5)
+sleep(4.7)
 arlo.stop()
