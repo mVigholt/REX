@@ -28,7 +28,7 @@ for i in range(0, 4):
     # send a go_diff command to drive forward
     print(arlo.go_diff(speed, speed, 1, 1))
 
-    while(np.frombuffer(str(arlo.read_left_wheel_encoder), dtype=np.uint32) < driveStraight):
+    while(int.from_bytes(arlo.read_left_wheel_encoder) < driveStraight):
         sleep(0.5)
 
     # send a stop command
@@ -40,7 +40,7 @@ for i in range(0, 4):
     # send a go_diff command to drive forward
     print(arlo.go_diff(speed, speed, 1, -1))
 
-    while(np.frombuffer(str(arlo.read_left_wheel_encoder), dtype=np.uint32) < rotate):
+    while(int.from_bytes(arlo.read_left_wheel_encoder) < rotate):
         sleep(0.5)
 
     # send a stop command
