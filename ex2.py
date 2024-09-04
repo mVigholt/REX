@@ -7,9 +7,9 @@ arlo = robot.Robot()
 
 print("Running ...")
 
-leftSensor = arlo.read_left_ping_sensor
-frontSensor = arlo.read_front_ping_sensor
-rightSensor = arlo.read_right_ping_sensor
+leftSensor = arlo.read_left_ping_sensor()
+frontSensor = arlo.read_front_ping_sensor()
+rightSensor = arlo.read_right_ping_sensor()
 
 print(leftSensor)
 print(frontSensor)
