@@ -21,27 +21,23 @@ cmPrTick = (wheelDiameter * np.pi) / tickPrRevolution
 driveStraight = (100 / cmPrTick) - overshoot
 rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 
-ccw90 = 0.8
-cw90 = 0.8
+k = 1
+stopRotation = 0.1
+ccw90 = 0.8 + stopRotation
+cw90 = 0.8 - stopRotation
 
-print(arlo.go_diff(speed, speed, 1, 0))
-sleep(cw90)
-
-arlo.stop()
-sleep(0.5)
-
-# for i in range(0,4):
-#     print(arlo.go_diff(speed, speed, 1, 1))
-#     sleep(2)
+for i in range(0,4*k):
+    print(arlo.go_diff(speed, speed, 1, 1))
+    sleep(2)
     
-#     arlo.stop()
-#     sleep(0.5)
+    arlo.stop()
+    sleep(1)
 
-#     print(arlo.go_diff(speed, speed, 1, 0))
-#     sleep(timeFor90Degrees*2)
+    print(arlo.go_diff(speed, speed, 1, 0))
+    sleep(cw90)
 
-#     arlo.stop()
-#     sleep(0.5)
+    arlo.stop()
+    sleep(1)
 
 
 
