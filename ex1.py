@@ -24,7 +24,7 @@ rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 k = 5
 stopRotation = 0.08
 ccw90 = 0.8 
-cw90 = 0.793
+cw90 = 0.795
 
 
 for i in range(0,4*k):
