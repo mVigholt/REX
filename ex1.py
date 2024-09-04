@@ -21,8 +21,8 @@ cmPrTick = (wheelDiameter * np.pi) / tickPrRevolution
 driveStraight = (100 / cmPrTick) - overshoot
 rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 
-k = 1
-stopRotation = 0.1
+k = 2
+stopRotation = 0.08
 ccw90 = 0.8 + stopRotation
 cw90 = 0.8 - stopRotation
 
