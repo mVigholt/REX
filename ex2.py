@@ -12,7 +12,7 @@ k=5
 time = 0
 for i in range(0, 2*k):
   if i == 0:
-    time = 6.45
+    time = 6.5
   else:
     time = 6.25
   
