@@ -30,7 +30,7 @@ for i in range(0,4):
     sleep(0.5)
 
     print(arlo.go_diff(speed, speed, 1, 0))
-    sleep(timeFor90Degrees)
+    sleep(timeFor90Degrees*2)
 
     arlo.stop()
     sleep(0.5)
