@@ -19,34 +19,80 @@ cmPrTick = (wheelDiameter * np.pi) / tickPrRevolution
 driveStraight = (100 / cmPrTick) - overshoot
 rotate = ((wheelToWheelDistance * np.pi) / (4 * cmPrTick)) - overshoot
 
+print(arlo.go_diff(speed, speed, 1, -1))
+sleep(1)
+arlo.stop()
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 # start driving pattern
-for i in range(0, 4):
+# for i in range(0, 4):
     
-    count = int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")
-    print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
+#     count = int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")
+#     print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
 
-    # send a go_diff command to drive forward
-    print(arlo.go_diff(speed, speed, 1, 1))
+#     # send a go_diff command to drive forward
+#     print(arlo.go_diff(speed, speed, 1, 1))
 
-    while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < driveStraight):
-        #print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big"))
-        sleep(0.1)
-    print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
+#     while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < driveStraight):
+#         #print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big"))
+#         sleep(0.1)
+#     print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
 
-    # send a stop command
-    print(arlo.stop())
+#     # send a stop command
+#     print(arlo.stop())
 
-    count = int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")
+#     count = int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")
     
-    # send a go_diff command to drive forward
-    print(arlo.go_diff(speed, speed, 1, -1))
+#     # send a go_diff command to drive forward
+#     print(arlo.go_diff(speed, speed, 1, -1))
 
-    while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < rotate):
-        sleep(0.1)
-    print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
-    print("rotate: " + str(rotate))
+#     while(abs(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count) < rotate):
+#         sleep(0.1)
+#     print(int.from_bytes(arlo.read_left_wheel_encoder(), byteorder="big")-count)
+#     print("rotate: " + str(rotate))
 
-    print(count)
-    # send a stop command
-    print(arlo.stop())
+#     print(count)
+#     # send a stop command
+#     print(arlo.stop())
     
