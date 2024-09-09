@@ -33,7 +33,7 @@ def Rotate(dir):
     arlo.go_diff(60-error, 60, 0, 1)
 
 def run():
-  DriveStraight()
+  # DriveStraight()
   data = GetSensorData()
   
   
