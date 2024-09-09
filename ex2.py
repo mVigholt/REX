@@ -24,34 +24,30 @@ def DriveStraight():
 # left: dir = 0
 # right: dir = 1
 def Rotate(dir):
-  if (dir != 0 & dir != 1):
+  if (int(dir) != 0 & int(dir) != 1):
     print("dir has to be 1 or 0")
     return
   
-  if (dir == 1):
+  if (int(dir) == 1):
     arlo.go_diff(60-error, 60, 1, 0)
   else:
     arlo.go_diff(60-error, 60, 0, 1)
 
 def run():
+  safetyDistance = 500
   starttime = t.time()
   
   while (t.time() - starttime < 20):
-    DriveStraight()
     data = GetSensorData()
-    while (data[1] > 500):
-      data = GetSensorData()
-      sleep(0.1)
-    
-    if (data[0] > data[2]):
-      arlo.stop()
-      Rotate(1)
+    if (data[1] > safetyDistance):
+      DriveStraight()
     else:
-      arlo.stop()
-      Rotate(0)
-    
-    while (data[1] <= 500):
-      data = GetSensorData()
-      sleep(0.1)
+      if (data[0] > data[2]):
+        arlo.stop()
+        Rotate(0)
+      else:
+        arlo.stop()
+        Rotate(1)
+    sleep(0.1)
 
 run()
