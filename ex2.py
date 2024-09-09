@@ -33,12 +33,20 @@ def Rotate(dir):
     arlo.go_diff(60-error, 60, 0, 1)
 
 def run():
-  # DriveStraight()
-  while (1 == 1):
+  DriveStraight()
+  data = GetSensorData()
+  while (data[1] > 0.5):
     data = GetSensorData()
-    print(data)
-    sleep(2)
+    sleep(0.1)
   
+  if (data[0] > data[2]):
+    Rotate(1)
+  else:
+    Rotate(0)
   
+  while (data[1] <= 0.5):
+    sleep(0.1)
+  
+  DriveStraight()
 
 run()
