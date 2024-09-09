@@ -58,6 +58,6 @@ def run():
   #         sleep()
   #   sleep(0.1)
   arlo.go_diff(30, 30, 1, 0)
-  sleep(0.5)
+  sleep(0.6)
   arlo.stop()
 run()
