@@ -44,8 +44,10 @@ def run():
       sleep(0.1)
     
     if (data[0] > data[2]):
+      arlo.stop()
       Rotate(1)
     else:
+      arlo.stop()
       Rotate(0)
     
     while (data[1] <= 500):
