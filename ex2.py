@@ -39,16 +39,20 @@ def run():
   safetyStraightDistance = 500
   safetySideDistance = 400
   starttime = t.time()
+  isRotating = False
   
   while (t.time() - starttime < 20):
     data = GetSensorData()
     if (data[1] > safetyStraightDistance and data[0] > safetySideDistance and data[2] > safetySideDistance):
+      isRotating = False
       DriveStraight()
     else:
-      if (data[0] > data[2]):
-        Rotate(0)
-      else:
-        Rotate(1)
+      if not isRotating:
+        isRotating = True
+        if (data[0] > data[2]):
+          Rotate(0)
+        else:
+          Rotate(1)
     sleep(0.1)
 
 run()
