@@ -35,7 +35,7 @@ def Rotate(dir):
 def run():
   DriveStraight()
   data = GetSensorData()
-  while (data[1] > 0.5):
+  while (data[1] > 500):
     data = GetSensorData()
     sleep(0.1)
   
@@ -44,7 +44,7 @@ def run():
   else:
     Rotate(0)
   
-  while (data[1] <= 0.5):
+  while (data[1] <= 500):
     sleep(0.1)
   
   DriveStraight()
