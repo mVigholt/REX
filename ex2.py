@@ -10,7 +10,7 @@ arlo = robot.Robot()
 print("Running ...")
 
 speed = 60
-error = 3
+error = 2
 
 def GetSensorData():
   leftSensor = arlo.read_left_ping_sensor()
