@@ -1,5 +1,6 @@
 from time import sleep
 
+import time as t
 import robot
 import threading
 import numpy as np
@@ -33,21 +34,24 @@ def Rotate(dir):
     arlo.go_diff(60-error, 60, 0, 1)
 
 def run():
-  DriveStraight()
-  data = GetSensorData()
-  while (data[1] > 500):
+  starttime = t.time()
+  
+  while (t.time - starttime < 20):
+    DriveStraight()
     data = GetSensorData()
-    sleep(0.1)
-  
-  if (data[0] > data[2]):
-    Rotate(1)
-  else:
-    Rotate(0)
-  
-  while (data[1] <= 500):
-    data = GetSensorData()
-    sleep(0.1)
-  
-  DriveStraight()
+    while (data[1] > 500):
+      data = GetSensorData()
+      sleep(0.1)
+    
+    if (data[0] > data[2]):
+      Rotate(1)
+    else:
+      Rotate(0)
+    
+    while (data[1] <= 500):
+      data = GetSensorData()
+      sleep(0.1)
+    
+    DriveStraight()
 
 run()
