@@ -30,18 +30,19 @@ def Rotate(dir):
     arlo.stop()
     return
   
-  if (int(dir) == 1):
-    arlo.go_diff(60-error, 60, 1, 0)
+  if (dir == 1):
+    arlo.go_diff(45-error, 45, 1, 0)
   else:
-    arlo.go_diff(60-error, 60, 0, 1)
+    arlo.go_diff(45-error, 45, 0, 1)
 
 def run():
-  safetyDistance = 500
+  safetyStraightDistance = 500
+  safetySideDistance = 400
   starttime = t.time()
   
   while (t.time() - starttime < 20):
     data = GetSensorData()
-    if (data[1] > safetyDistance and data[0] > safetyDistance and data[2] > safetyDistance):
+    if (data[1] > safetyStraightDistance and data[0] > safetySideDistance and data[2] > safetySideDistance):
       DriveStraight()
     else:
       if (data[0] > data[2]):
