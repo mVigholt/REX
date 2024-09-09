@@ -24,7 +24,7 @@ def DriveStraight():
 # left: dir = 0
 # right: dir = 1
 def Rotate(dir):
-  if (int(dir) != 0 & int(dir) != 1):
+  if (int(dir) != 0 or int(dir) != 1):
     print(dir)
     print("dir has to be 1 or 0")
     arlo.stop()
