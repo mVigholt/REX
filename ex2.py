@@ -51,7 +51,5 @@ def run():
     while (data[1] <= 500):
       data = GetSensorData()
       sleep(0.1)
-    
-    DriveStraight()
 
 run()
