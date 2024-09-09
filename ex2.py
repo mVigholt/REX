@@ -25,7 +25,9 @@ def DriveStraight():
 # right: dir = 1
 def Rotate(dir):
   if (int(dir) != 0 & int(dir) != 1):
+    print(dir)
     print("dir has to be 1 or 0")
+    arlo.stop()
     return
   
   if (int(dir) == 1):
@@ -43,10 +45,8 @@ def run():
       DriveStraight()
     else:
       if (data[0] > data[2]):
-        arlo.stop()
         Rotate(0)
       else:
-        arlo.stop()
         Rotate(1)
     sleep(0.1)
 
