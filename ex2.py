@@ -36,8 +36,8 @@ def Rotate(dir):
     arlo.go_diff(45-error, 45, 0, 1)
 
 def run():
-  safetyStraightDistance = 500
-  safetySideDistance = 400
+  safetyStraightDistance = 750
+  safetySideDistance = 600
   starttime = t.time()
   isRotating = False
   
