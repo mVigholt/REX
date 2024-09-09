@@ -37,21 +37,15 @@ def run():
   starttime = t.time()
   
   while (t.time() - starttime < 20):
-    DriveStraight()
     data = GetSensorData()
-    while (data[1] > 500):
-      data = GetSensorData()
-      sleep(0.1)
-    
-    if (data[0] > data[2]):
-      arlo.stop()
-      Rotate(1)
+    if (data[1] > 500):
+      DriveStraight()
     else:
-      arlo.stop()
-      Rotate(0)
-    
-    while (data[1] <= 500):
-      data = GetSensorData()
-      sleep(0.1)
-
+      if (data[0] > data[2]):
+        arlo.stop()
+        Rotate(1)
+      else:
+        arlo.stop()
+        Rotate(0)
+    sleep(0.1)
 run()
