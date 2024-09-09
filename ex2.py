@@ -35,6 +35,7 @@ def Rotate(dir):
 def run():
   # DriveStraight()
   data = GetSensorData()
+  print(data)
   
   
 
