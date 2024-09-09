@@ -57,7 +57,7 @@ def run():
   #       if data[1] <= safetyStraightDistance:
   #         sleep()
   #   sleep(0.1)
-  arlo.go_diff(30, 30, 1, 0)
-  sleep(0.6)
+  arlo.go_diff(45-error, 45, 1, 0)
+  sleep(0.7)
   arlo.stop()
 run()
