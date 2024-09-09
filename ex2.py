@@ -39,7 +39,7 @@ def run():
   
   while (t.time() - starttime < 20):
     data = GetSensorData()
-    if (data[1] > safetyDistance):
+    if (data > (safetyDistance, safetyDistance, safetyDistance)):
       DriveStraight()
     else:
       if (data[0] > data[2]):
