@@ -63,6 +63,8 @@ def GetSensorData():
 starttime = t.time()
 pic = 0
 
-while ((t.time() - starttime > pic) and (pic < 5)):
-  pic += 1
-  print(arlo.read_front_ping_sensor())
+while (pic < 5):
+  if (t.time() - starttime > pic):
+    pic += 1
+    print(arlo.read_front_ping_sensor())
+  sleep(0.1)
