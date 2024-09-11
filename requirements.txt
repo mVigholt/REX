@@ -1,3 +1,4 @@
 #Python==3.12.4
 serial==0.0.97
 numpy==2.1.0
+matplotlib==3.9.2
