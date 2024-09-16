@@ -47,7 +47,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
     
-    t.sleep(1)
+    cv2.imwrite("OttosView.png", frameReference)
+    exit(-1)
+    #t.sleep(1)
     
 
 # Finished successfully
