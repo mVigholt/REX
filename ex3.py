@@ -83,9 +83,9 @@ print("OpenCV version = " + cv2.__version__)
 # cam = cv2.VideoCapture(gstreamer_pipeline(), apiPreference=cv2.CAP_GSTREAMER)
 
 
-if not cam.isOpened(): # Error
-    print("Could not open camera")
-    exit(-1)
+# if not cam.isOpened(): # Error
+#     print("Could not open camera")
+#     exit(-1)
 
 # Open a window
 WIN_RF = "Example 1"
