@@ -133,7 +133,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # print(f"{memory_info.percent}")
         
     Rotate(1)
-    t.sleep(0.5)
+    t.sleep(0.2)
     
     
     # [0][0][0] = top left corner
