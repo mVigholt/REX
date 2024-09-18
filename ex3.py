@@ -16,7 +16,7 @@ except ImportError:
 # Create a robot object and initialize
 arlo = robot.Robot()
 
-rotateSpeed = 30
+rotateSpeed = 60
 speed = 60
 error = 2
 safetyStraightDistance = 500
@@ -86,9 +86,9 @@ def Rotate(dir):
     return
   
   if (dir == 1):
-    arlo.go_diff(rotateSpeed, rotateSpeed, 1, 0)
+    arlo.go_diff(rotateSpeed-error, rotateSpeed, 1, 0)
   else:
-    arlo.go_diff(rotateSpeed, rotateSpeed, 0, 1)
+    arlo.go_diff(rotateSpeed-error, rotateSpeed, 0, 1)
 
 print("OpenCV version = " + cv2.__version__)
 
@@ -104,8 +104,9 @@ aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    starttime = t.time()
     arlo.stop()
+    t.sleep(0.1)
+    starttime = t.time()
     
     # frameReference = cam.capture_array("main")
   
@@ -132,7 +133,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # print(f"{memory_info.percent}")
         
     Rotate(1)
-    #t.sleep(0.2)
+    t.sleep(0.1)
     
     
     # [0][0][0] = top left corner
