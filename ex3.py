@@ -43,7 +43,7 @@ safetySideDistance = 400
 
 ##-----------------------------------------------------------------------------------------
 
-def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=5):
+def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=2):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
     return (
         "libcamerasrc !"
@@ -110,8 +110,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # frameReference = cam.capture_array("main")
   
-    cam.read()
-    cam.read()  
+    # cam.read()
+    # cam.read()  
     retval, frameReference = cam.read() # Read frame
     
     if not retval: # Error
@@ -133,7 +133,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # print(f"{memory_info.percent}")
         
     Rotate(1)
-    t.sleep(0.1)
+    t.sleep(0.5)
     
     
     # [0][0][0] = top left corner
