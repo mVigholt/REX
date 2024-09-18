@@ -102,7 +102,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     arlo.stop()
     
     # retval, frameReference = cam.read() # Read frame
-    image = cam.capture_array("main")
+    frameReference = cam.capture_array("main")
     
     # if not retval: # Error
     #     print(" < < <  Game over!  > > > ")
