@@ -46,11 +46,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         print(" < < <  Game over!  > > > ")
         exit(-1)
     
-    
-    
-    image = cv2.imread('marker_image.jpg')
-    
-    corners, ids, rejectedImgPoints = cv2.aruco.detectMarker(image, aruco_dict, parameters=parameters)
+    corners, ids, rejectedImgPoints = cv2.aruco.detectMarker(frameReference, aruco_dict, parameters=parameters)
     
     if ids is not None:
         print(f"Detected Markers: {ids}")
