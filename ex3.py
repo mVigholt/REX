@@ -4,6 +4,7 @@
 import cv2 # Import the OpenCV library
 import time as t
 import robot
+import gc
 # import psutil
 
 # Create a robot object and initialize
@@ -100,7 +101,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     t.sleep(0.2)
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
-    
+    del frameReference
+    gc.collect()
     # if corners:
         # distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
         
