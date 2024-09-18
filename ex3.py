@@ -52,7 +52,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         print(f"Detected Markers: {ids}")
     
     # Draw markers on the frame if found
-    #cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
+    frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
