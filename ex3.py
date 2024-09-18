@@ -4,14 +4,6 @@
 import cv2 # Import the OpenCV library
 import time as t
 import robot
-# import psutil
-
-try:
-    import picamera2
-    print("Camera.py: Using picamera2 module")
-except ImportError:
-    print("Camera.py: picamera2 module not available")
-    exit(-1)
 
 # Create a robot object and initialize
 arlo = robot.Robot()
@@ -22,26 +14,6 @@ error = 2
 safetyStraightDistance = 500
 safetySideDistance = 400
 
-
-##---------------------------------------------------------------------------------------------------------------------------------------
-
-# # Open a camera device for capturing
-# imageSize = (1024, 720)
-# FPS = 30
-# cam = picamera2.Picamera2()
-# frame_duration_limit = int(1/FPS * 1000000) # Microseconds
-# # Change configuration to set resolution, framerate
-# picam2_config = cam.create_video_configuration({"size": imageSize, "format": 'RGB888'},
-#                                                             controls={"FrameDurationLimits": (frame_duration_limit, frame_duration_limit)},
-#                                                             queue=False)
-# cam.configure(picam2_config) # Not really necessary
-# cam.start(show_preview=False)
-
-# print(cam.camera_configuration()) # Print the camera configuration in use
-
-# t.sleep(1)  # wait for camera to setup
-
-##-----------------------------------------------------------------------------------------
 
 def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=2):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
@@ -105,12 +77,8 @@ Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     arlo.stop()
-    # t.sleep(0.1)
     starttime = t.time()
-    
-    # frameReference = cam.capture_array("main")
   
-    # cam.read()
     cam.read()  
     retval, frameReference = cam.read() # Read frame
     
@@ -128,30 +96,12 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     print(t.time() - starttime, "\n")
-    # memory_info = psutil.virtual_memory()
-    
-    # print(f"{memory_info.percent}")
         
     Rotate(1)
     t.sleep(0.3)
-    
-    
-    # [0][0][0] = top left corner
-    # [0][1][0] = bottom left corner
-    
-    # if corners:
-        # distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
-        
-    # cv2.aruco.estimatePoseSingleMarkers(corners, 145, )
-    
-    # print(distance)
-    # print(corners, '\n')
-    
-    # Stream frames
-    cv2.imshow(WIN_RF, frameReference)
 
-    # t.sleep(0.25)
-    
+    # Stream frames
+    cv2.imshow(WIN_RF, frameReference)    
 
 cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
