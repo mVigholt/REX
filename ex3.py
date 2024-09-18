@@ -87,7 +87,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     
     
-    if (corners[0]):
+    if (len(corners) > 0):
         arlo.stop()
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
