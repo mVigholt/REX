@@ -111,7 +111,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # frameReference = cam.capture_array("main")
   
     # cam.read()
-    # cam.read()  
+    cam.read()  
     retval, frameReference = cam.read() # Read frame
     
     if not retval: # Error
