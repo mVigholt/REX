@@ -90,7 +90,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # memory_info = psutil.virtual_memory()
     
     # print(f"{memory_info.percent}")
-        
+    print(len(corners))    
     if (len(corners) > 0):
         print("stop")
         arlo.stop()
