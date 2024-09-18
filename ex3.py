@@ -82,7 +82,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(frameReference, aruco_dict)
 
-    
+    print(rejectedImgPoints)
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
         
