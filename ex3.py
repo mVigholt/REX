@@ -58,7 +58,7 @@ def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=10):
         )
     )
 
-Open a camera device for capturing
+# Open a camera device for capturing
 cam = cv2.VideoCapture(gstreamer_pipeline(), apiPreference=cv2.CAP_GSTREAMER)
 
 if not cam.isOpened(): # Error
