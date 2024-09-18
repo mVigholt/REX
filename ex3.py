@@ -3,6 +3,17 @@
 
 import cv2 # Import the OpenCV library
 import time as t
+import robot
+
+# Create a robot object and initialize
+arlo = robot.Robot()
+
+rotateSpeed = 30
+speed = 60
+error = 2
+safetyStraightDistance = 500
+safetySideDistance = 400
+
 
 
 def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=30):
@@ -24,6 +35,22 @@ def calc_distance(real_size, pixel_size):
     f = 145
     return (f*real_size)/pixel_size
 
+def DriveStraight():
+  arlo.go_diff(60-error, 60, 1, 1)
+
+# left: dir = 0
+# right: dir = 1
+def Rotate(dir):
+  if dir != 0 and dir != 1:
+    print(dir)
+    print("dir has to be 1 or 0")
+    arlo.stop()
+    return
+  
+  if (dir == 1):
+    arlo.go_diff(rotateSpeed-error, rotateSpeed, 1, 0)
+  else:
+    arlo.go_diff(rotateSpeed-error, rotateSpeed, 0, 1)
 
 print("OpenCV version = " + cv2.__version__)
 # Open a camera device for capturing
@@ -43,6 +70,9 @@ cv2.moveWindow(WIN_RF, 100, 100)
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
 parameters = cv2.aruco.DetectorParameters_create()
 
+
+Rotate(1)
+
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     retval, frameReference = cam.read() # Read frame
     
@@ -59,11 +89,13 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
     
-    if corners:
-        distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
+    # if corners:
+        # distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
+        
+    # cv2.aruco.estimatePoseSingleMarkers(corners, 145, )
     
-    print(distance)
-    print(corners, '\n')
+    # print(distance)
+    # print(corners, '\n')
     
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
