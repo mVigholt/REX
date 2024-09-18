@@ -8,7 +8,7 @@ import robot
 # Create a robot object and initialize
 arlo = robot.Robot()
 
-rotateSpeed = 40
+rotateSpeed = 30
 speed = 60
 error = 2
 safetyStraightDistance = 500
@@ -48,9 +48,9 @@ def Rotate(dir):
     return
   
   if (dir == 1):
-    arlo.go_diff(rotateSpeed-error, rotateSpeed, 1, 0)
+    arlo.go_diff(rotateSpeed, rotateSpeed, 1, 0)
   else:
-    arlo.go_diff(rotateSpeed-error, rotateSpeed, 0, 1)
+    arlo.go_diff(rotateSpeed, rotateSpeed, 0, 1)
 
 print("OpenCV version = " + cv2.__version__)
 # Open a camera device for capturing
@@ -86,6 +86,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     
+    
+    if (corners[0]):
+        arlo.stop()
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
     
