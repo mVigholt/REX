@@ -71,8 +71,6 @@ aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
 Rotate(1)
 
-ctime = t.time()
-
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     retval, frameReference = cam.read() # Read frame
     
@@ -80,12 +78,13 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         print(" < < <  Game over!  > > > ")
         exit(-1)
     
-    corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(frameReference, aruco_dict)
+    corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
         
     if (len(corners) > 0):
+        arlo.stop()
         break
     
     # [0][0][0] = top left corner
