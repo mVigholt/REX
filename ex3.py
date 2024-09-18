@@ -74,40 +74,36 @@ Rotate(1)
 ctime = t.time()
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    # retval, frameReference = cam.read() # Read frame
+    retval, frameReference = cam.read() # Read frame
     
-    # if not retval: # Error
-    #     print(" < < <  Game over!  > > > ")
-    #     exit(-1)
+    if not retval: # Error
+        print(" < < <  Game over!  > > > ")
+        exit(-1)
     
-    # corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(frameReference, aruco_dict)
+    corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(frameReference, aruco_dict)
 
     
-    # # Draw markers on the frame if found
-    # frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
+    # Draw markers on the frame if found
+    frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
         
-    # if (len(corners) > 0):
-    #     break
+    if (len(corners) > 0):
+        arlo.stop()
     
-    # if (ctime - t.time() > 10):
-    #     cv2.imwrite("OttosView.png", frameReference)
+    # [0][0][0] = top left corner
+    # [0][1][0] = bottom left corner
     
-    # # [0][0][0] = top left corner
-    # # [0][1][0] = bottom left corner
-    
-    # # if corners:
-    #     # distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
+    # if corners:
+        # distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
         
-    # # cv2.aruco.estimatePoseSingleMarkers(corners, 145, )
+    # cv2.aruco.estimatePoseSingleMarkers(corners, 145, )
     
-    # # print(distance)
-    # # print(corners, '\n')
+    # print(distance)
+    # print(corners, '\n')
     
-    # # Show frames
+    # Stream frames
     # cv2.imshow(WIN_RF, frameReference)
 
     t.sleep(0.1)
-retval, frameReference = cam.read() # Read frame
-cv2.imwrite("OttosView.png", frameReference)
-exit(-1)
+
+# cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
