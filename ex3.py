@@ -105,7 +105,7 @@ Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     arlo.stop()
-    t.sleep(0.1)
+    # t.sleep(0.1)
     starttime = t.time()
     
     # frameReference = cam.capture_array("main")
