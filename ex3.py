@@ -85,9 +85,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
-    
-    if (ctime - t.time() > 2):
-        cv2.imwrite("OttosView.png", frameReference)
+        
+    if (len(corners) > 0):
+        break
     
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
@@ -104,6 +104,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     cv2.imshow(WIN_RF, frameReference)
 
     #t.sleep(1)
-    
+
+cv2.imwrite("OttosView.png", frameReference)
 exit(-1)
 # Finished successfully
