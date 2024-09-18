@@ -4,7 +4,7 @@
 import cv2 # Import the OpenCV library
 import time as t
 import robot
-import psutil
+# import psutil
 
 # Create a robot object and initialize
 arlo = robot.Robot()
@@ -71,6 +71,7 @@ cv2.moveWindow(WIN_RF, 100, 100)
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
 Rotate(1)
+
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     starttime = t.time()
     retval, frameReference = cam.read() # Read frame
@@ -83,12 +84,10 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
-    print(t.time() - starttime, "\n")
+    print(starttime - t.time(), "\n")
     # memory_info = psutil.virtual_memory()
     
     # print(f"{memory_info.percent}")
-    # cpu_usage = psutil.cpu_percent(interval=1)
-    # print(f"CPU Usage: {cpu_usage}%")
         
     if (len(corners) > 0):
         arlo.stop()
