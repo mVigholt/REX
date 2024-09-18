@@ -59,10 +59,10 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
     
-    print(corners.shape, '\n')
     print(corners[0], '\n')
     print(corners[0][0], '\n')
     print(corners[0][0][0], '\n')
+    print(len(corners), '\n')
     
     if corners:
         distance = calc_distance(145, corners[0][0][0] - corners[0][1][0])
