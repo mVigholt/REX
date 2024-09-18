@@ -87,8 +87,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # memory_info = psutil.virtual_memory()
     
     # print(f"{memory_info.percent}")
-    cpu_usage = psutil.cpu_percent(interval=1)
-    print(f"CPU Usage: {cpu_usage}%")
+    # cpu_usage = psutil.cpu_percent(interval=1)
+    # print(f"CPU Usage: {cpu_usage}%")
         
     if (len(corners) > 0):
         arlo.stop()
