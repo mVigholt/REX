@@ -104,5 +104,5 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
 
     t.sleep(0.1)
 
-# cv2.imwrite("OttosView.png", frameReference)
+cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
