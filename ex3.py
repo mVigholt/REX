@@ -105,7 +105,7 @@ Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     starttime = t.time()
-    # arlo.stop()
+    arlo.stop()
     
     # frameReference = cam.capture_array("main")
   
@@ -131,8 +131,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # print(f"{memory_info.percent}")
         
-    # Rotate(1)
-    # t.sleep(0.2)
+    Rotate(1)
+    #t.sleep(0.2)
     
     
     # [0][0][0] = top left corner
