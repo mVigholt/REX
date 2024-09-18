@@ -17,7 +17,7 @@ safetySideDistance = 400
 
 
 
-def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=10):
+def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=30):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
     return (
         "libcamerasrc !"
@@ -90,6 +90,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # print(f"{memory_info.percent}")
         
     if (len(corners) > 0):
+        print("stop")
         arlo.stop()
         break
     
