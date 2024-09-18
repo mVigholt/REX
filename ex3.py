@@ -4,7 +4,7 @@
 import cv2 # Import the OpenCV library
 import time as t
 import robot
-# import psutil
+import psutil
 
 # Create a robot object and initialize
 arlo = robot.Robot()
@@ -73,7 +73,6 @@ aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    starttime = t.time()
     retval, frameReference = cam.read() # Read frame
     
     if not retval: # Error
@@ -88,6 +87,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # memory_info = psutil.virtual_memory()
     
     # print(f"{memory_info.percent}")
+    cpu_usage = psutil.cpu_percent(interval=1)
+    print(f"CPU Usage: {cpu_usage}%")
+    starttime = t.time()
         
     if (len(corners) > 0):
         arlo.stop()
