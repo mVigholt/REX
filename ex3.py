@@ -67,11 +67,11 @@ cv2.namedWindow(WIN_RF)
 cv2.moveWindow(WIN_RF, 100, 100)
 
 # load dictionary and parameters
-aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
-parameters = cv2.aruco.DetectorParameters_create()
-
+aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
 Rotate(1)
+
+ctime = t.time()
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     retval, frameReference = cam.read() # Read frame
@@ -86,9 +86,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     
+    if (ctime - t.time() > 2):
+        cv2.imwrite("otto.jpg")
     
-    if (len(corners) > 0):
-        arlo.stop()
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
     
