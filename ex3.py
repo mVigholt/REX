@@ -35,8 +35,6 @@ WIN_RF = "Example 1"
 cv2.namedWindow(WIN_RF)
 cv2.moveWindow(WIN_RF, 100, 100)
 
-print("hello")
-
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     retval, frameReference = cam.read() # Read frame
     
@@ -47,10 +45,12 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
     
+    
+    image = cv2.imread('marker_image.jpg')
     aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
     parameters = cv2.aruco.DetectorParameters_create()
     
-    print(cv2.aruco.detectMarker(cv2.imread(WIN_RF, frameReference), aruco_dict, parameters=parameters))
+    print(cv2.aruco.detectMarker(image, aruco_dict, parameters=parameters))
     
     exit(-1)
     #t.sleep(1)
