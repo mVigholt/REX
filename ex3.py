@@ -20,9 +20,9 @@ def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=30):
         )
     )
     
-def calc_distance(x, Z):
+def calc_distance(real_size, pixel_size):
     f = 145
-    return (Z * x)/f
+    return (f*real_size)/pixel_size
 
 
 print("OpenCV version = " + cv2.__version__)
@@ -51,10 +51,14 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         exit(-1)
     
     corners, ids, rejectedImgPoints = cv2.aruco.detectMarkers(frameReference, aruco_dict)
+
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     
+    # [0][0][0] = top left corner
+    # [0][1][0] = bottom left corner
+    distance = calc_distance(145, corners[0][0][0] - corners[0][1][0])
     print(corners)
     
     # Show frames
