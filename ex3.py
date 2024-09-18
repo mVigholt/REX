@@ -22,7 +22,6 @@ def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=30):
 
 
 print("OpenCV version = " + cv2.__version__)
-
 # Open a camera device for capturing
 cam = cv2.VideoCapture(gstreamer_pipeline(), apiPreference=cv2.CAP_GSTREAMER)
 
@@ -44,10 +43,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         print(" < < <  Game over!  > > > ")
         exit(-1)
     
+    print(cv2.aruco.detectMarker(cv2.aruco.DICT_6X6_250))
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
-    
-    cv2.imwrite("OttosView.png", frameReference)
     exit(-1)
     #t.sleep(1)
     
