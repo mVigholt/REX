@@ -16,7 +16,7 @@ except ImportError:
 # Create a robot object and initialize
 arlo = robot.Robot()
 
-rotateSpeed = 60
+rotateSpeed = 40
 speed = 60
 error = 2
 safetyStraightDistance = 500
