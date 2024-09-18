@@ -1,11 +1,9 @@
-# This script shows how to open a camera in OpenCV and grab frames and show these.
-# Kim S. Pedersen, 2022
-
-import cv2 # Import the OpenCV library
+import cv2
 import time as t
 import robot
-# import psutil
+import threading
 
+# Try to import picamera2
 try:
     import picamera2
     print("Camera.py: Using picamera2 module")
@@ -17,31 +15,7 @@ except ImportError:
 arlo = robot.Robot()
 
 rotateSpeed = 30
-speed = 60
 error = 2
-safetyStraightDistance = 500
-safetySideDistance = 400
-
-
-##---------------------------------------------------------------------------------------------------------------------------------------
-
-# # Open a camera device for capturing
-# imageSize = (1024, 720)
-# FPS = 30
-# cam = picamera2.Picamera2()
-# frame_duration_limit = int(1/FPS * 1000000) # Microseconds
-# # Change configuration to set resolution, framerate
-# picam2_config = cam.create_video_configuration({"size": imageSize, "format": 'RGB888'},
-#                                                             controls={"FrameDurationLimits": (frame_duration_limit, frame_duration_limit)},
-#                                                             queue=False)
-# cam.configure(picam2_config) # Not really necessary
-# cam.start(show_preview=False)
-
-# print(cam.camera_configuration()) # Print the camera configuration in use
-
-# t.sleep(1)  # wait for camera to setup
-
-##-----------------------------------------------------------------------------------------
 
 def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=10):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
@@ -64,89 +38,73 @@ cam = cv2.VideoCapture(gstreamer_pipeline(), apiPreference=cv2.CAP_GSTREAMER)
 if not cam.isOpened(): # Error
     print("Could not open camera")
     exit(-1)
- 
- 
-##-----------------------------------------------------------------------------------------   
 
+# Global variable to store the frame
+frame = None
+frame_lock = threading.Lock()
+frame_skip = 2
+frame_count = 0
 
-def calc_distance(real_size, pixel_size):
-    f = 145
-    return (f*real_size)/pixel_size
+# Define a function to capture frames in a separate thread
+def capture_frames():
+    global frame
+    while True:
+        retval, temp_frame = cam.read()
+        if not retval:
+            continue
+        with frame_lock:
+            frame = temp_frame
 
-def DriveStraight():
-  arlo.go_diff(60-error, 60, 1, 1)
+# Start the thread to capture frames
+capture_thread = threading.Thread(target=capture_frames)
+capture_thread.daemon = True  # Daemonize the thread to exit when the main thread exits
+capture_thread.start()
 
-# left: dir = 0
-# right: dir = 1
+# Function to rotate the robot
 def Rotate(dir):
-  if dir != 0 and dir != 1:
-    print(dir)
-    print("dir has to be 1 or 0")
-    arlo.stop()
-    return
-  
-  if (dir == 1):
-    arlo.go_diff(rotateSpeed, rotateSpeed, 1, 0)
-  else:
-    arlo.go_diff(rotateSpeed, rotateSpeed, 0, 1)
+    if dir != 0 and dir != 1:
+        print("Invalid direction!")
+        arlo.stop()
+        return
+    if dir == 1:
+        arlo.go_diff(rotateSpeed, rotateSpeed, 1, 0)
+    else:
+        arlo.go_diff(rotateSpeed, rotateSpeed, 0, 1)
 
-print("OpenCV version = " + cv2.__version__)
+# Function to process frames (detect markers)
+def process_frame(input_frame):
+    gray_frame = cv2.cvtColor(input_frame, cv2.COLOR_BGR2GRAY)  # Convert to grayscale for faster processing
+    aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+    corners, ids, _ = cv2.aruco.detectMarkers(gray_frame, aruco_dict)
+    gray_frame = cv2.aruco.drawDetectedMarkers(gray_frame, corners, ids)
+    
+    if len(corners) > 0:
+        print("Box detected, stopping.")
+        arlo.stop()
+        return True
+    
+    return False
 
-
-# Open a window
-WIN_RF = "Example 1"
-cv2.namedWindow(WIN_RF)
-cv2.moveWindow(WIN_RF, 100, 100)
-
-# load dictionary and parameters
-aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
-
+# Initialize rotation and start the main loop
 Rotate(1)
 
-while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    starttime = t.time()
-    arlo.stop()
-    
-    # frameReference = cam.capture_array("main")
-    
-    retval, frameReference = cam.read() # Read frame
-    
-    if not retval: # Error
-        print(" < < <  Game over!  > > > ")
-        exit(-1)
-    
-    corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
-    
-    # Draw markers on the frame if found
-    frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
-    print(t.time() - starttime, "\n")
-    # memory_info = psutil.virtual_memory()
-    
-    # print(f"{memory_info.percent}")
-        
-    if (len(corners) > 0):
-        print("stop")
-        arlo.stop()
-        break
+while cv2.waitKey(4) == -1:
+    frame_count += 1
+    if frame_count % frame_skip != 0:
+        continue
+
+    with frame_lock:
+        if frame is not None:
+            start_time = t.time()
+
+            # Process the frame to detect markers
+            if process_frame(frame):
+                break  # Stop rotating if a box is detected
+
+            print(f"Processing time: {t.time() - start_time} seconds")
     
     Rotate(1)
-    t.sleep(0.2)
-    # [0][0][0] = top left corner
-    # [0][1][0] = bottom left corner
-    
-    # if corners:
-        # distance = calc_distance(145, corners[0][0][1][0] - corners[0][0][0][0])
-        
-    # cv2.aruco.estimatePoseSingleMarkers(corners, 145, )
-    
-    # print(distance)
-    # print(corners, '\n')
-    
-    # Stream frames
-    cv2.imshow(WIN_RF, frameReference)
+    t.sleep(0.2)  # Small delay to avoid overwhelming the processor
 
-    # t.sleep(0.25)
-    
-
-cv2.imwrite("OttosView.png", frameReference)
-# Finished successfully
+cv2.imwrite("OttosView.png", frame)
+cv2.destroyAllWindows()
