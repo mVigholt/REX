@@ -43,9 +43,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         print(" < < <  Game over!  > > > ")
         exit(-1)
     
-    print(cv2.aruco.detectMarker(cv2.aruco.DICT_6X6_250))
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
+    print(cv2.aruco.detectMarker(WIN_RF, cv2.aruco.DICT_6X6_250))
     exit(-1)
     #t.sleep(1)
     
