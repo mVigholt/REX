@@ -35,6 +35,7 @@ WIN_RF = "Example 1"
 cv2.namedWindow(WIN_RF)
 cv2.moveWindow(WIN_RF, 100, 100)
 
+print("hello")
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     retval, frameReference = cam.read() # Read frame
@@ -51,7 +52,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     print(cv2.aruco.detectMarker(cv2.imread(WIN_RF, frameReference), aruco_dict, parameters=parameters))
     
-    t.sleep(5)
     exit(-1)
     #t.sleep(1)
     
