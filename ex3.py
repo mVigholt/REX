@@ -31,9 +31,9 @@ if not cam.isOpened(): # Error
     exit(-1)
 
 # Open a window
-# WIN_RF = "Example 1"
-# cv2.namedWindow(WIN_RF)
-# cv2.moveWindow(WIN_RF, 100, 100)
+WIN_RF = "Example 1"
+cv2.namedWindow(WIN_RF)
+cv2.moveWindow(WIN_RF, 100, 100)
 
 # load dictionary and parameters
 aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
@@ -55,7 +55,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     
     # Show frames
-    # cv2.imshow(WIN_RF, frameReference)
+    cv2.imshow(WIN_RF, frameReference)
 
     #t.sleep(1)
     
