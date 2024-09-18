@@ -35,6 +35,10 @@ WIN_RF = "Example 1"
 cv2.namedWindow(WIN_RF)
 cv2.moveWindow(WIN_RF, 100, 100)
 
+# load dictionary and parameters
+aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
+parameters = cv2.aruco.DetectorParameters_create()
+
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     retval, frameReference = cam.read() # Read frame
     
@@ -42,18 +46,22 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         print(" < < <  Game over!  > > > ")
         exit(-1)
     
-    # Show frames
-    cv2.imshow(WIN_RF, frameReference)
     
     
     image = cv2.imread('marker_image.jpg')
-    aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
-    parameters = cv2.aruco.DetectorParameters_create()
     
-    print(cv2.aruco.detectMarker(image, aruco_dict, parameters=parameters))
+    corners, ids, rejectedImgPoints = cv2.aruco.detectMarker(image, aruco_dict, parameters=parameters)
     
-    exit(-1)
+    if ids is not None:
+        print(f"Detected Markers: {ids}")
+    
+    # Draw markers on the frame if found
+    cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
+    
+    # Show frames
+    cv2.imshow(WIN_RF, frameReference)
+
     #t.sleep(1)
     
-
+exit(-1)
 # Finished successfully
