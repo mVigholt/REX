@@ -108,24 +108,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     arlo.stop()
     
     # frameReference = cam.capture_array("main")
-    
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
-    retval, frameReference = cam.read() # Read frame
+  
     retval, frameReference = cam.read() # Read frame
     
     if not retval: # Error
@@ -134,6 +117,11 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
+    if (len(corners) > 0):
+        print("stop")
+        arlo.stop()
+        break
+    
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     print(t.time() - starttime, "\n")
@@ -141,11 +129,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # print(f"{memory_info.percent}")
         
-    if (len(corners) > 0):
-        print("stop")
-        arlo.stop()
-        break
-    
     Rotate(1)
     t.sleep(0.2)
     # [0][0][0] = top left corner
