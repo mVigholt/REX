@@ -45,7 +45,12 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # Show frames
     cv2.imshow(WIN_RF, frameReference)
-    print(cv2.aruco.detectMarker(WIN_RF, cv2.aruco.DICT_6X6_250))
+    
+    aruco_dict = cv2.aruco.Dictionary_get(cv2.aruco.DICT_6X6_250)
+    parameters = cv2.aruco.DetectorParameters_create()
+    
+    print(cv2.aruco.detectMarker(cv2.imread(WIN_RF, frameReference), aruco_dict, parameters=parameters))
+    
     exit(-1)
     #t.sleep(1)
     
