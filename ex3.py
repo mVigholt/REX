@@ -89,6 +89,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     if (len(corners) > 0):
         break
     
+    if (ctime - t.time() > 10):
+        cv2.imwrite("OttosView.png", frameReference)
+    
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
     
