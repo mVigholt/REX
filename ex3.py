@@ -81,7 +81,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
     # Draw markers on the frame if found
-    frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
+    # frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
         
     if (len(corners) > 0):
         arlo.stop()
