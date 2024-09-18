@@ -74,6 +74,8 @@ Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     starttime = t.time()
+    arlo.stop()
+    
     retval, frameReference = cam.read() # Read frame
     
     if not retval: # Error
@@ -84,7 +86,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
-    print(starttime - t.time(), "\n")
+    print(t.time() - starttime, "\n")
     # memory_info = psutil.virtual_memory()
     
     # print(f"{memory_info.percent}")
@@ -94,6 +96,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         arlo.stop()
         break
     
+    Rotate(1)
+    t.sleep(0.2)
     # [0][0][0] = top left corner
     # [0][1][0] = bottom left corner
     
