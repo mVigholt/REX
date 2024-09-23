@@ -88,7 +88,6 @@ isRotating = False
 isDriving = False
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    arlo.stop()
     starttime = t.time()
   
     cam.read()  
@@ -100,7 +99,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
-    print(tvecs)
+    
     if (len(corners) > 0):
       isRotating = False
       if abs(tvecs[0][0][0]) < 1000 and isDriving == False:
