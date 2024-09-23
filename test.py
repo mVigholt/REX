@@ -34,13 +34,11 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     otto.streamCam(frameReference, corners, ids)
     
     #TODO Check for specific marker
-    markFound = landMarks[i] in ids
+    markFound = landMarks[i] in ids[0]
     j = 0
-    print(ids)
     if markFound:
         j = ids.index(landMarks[i])
         Z, dir = otto.distAndDir(corners[0][0])
-        print(f"dist = {Z}")
         if Z < 500:
             otto.Stop()
             i += 1
@@ -58,7 +56,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         t.sleep(0.2)
     else:
         otto.Go()
-        t.sleep(0.1)
     
 #cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
