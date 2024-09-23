@@ -31,7 +31,8 @@ def openCam():
     return cam  
 
 openWindow = False
-def streamCam(frameReference, corners, ids, openWindow):
+def streamCam(frameReference, corners, ids):
+    global openWindow
     if not openWindow:
         # Open a window
         WIN_RF = "Example 1"

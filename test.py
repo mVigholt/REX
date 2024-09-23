@@ -11,13 +11,14 @@ searching = True
 dir = 1
 
 time = t.time()
-def lapTime(time):
+def lapTime():
+    global time
     last = time
     time = t.time()
     return time - last
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    print(lapTime(time), "\n")
+    print(f"lapTime() = {lapTime()}\n")
     if searching:
         otto.Stop()
     
@@ -28,13 +29,15 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         exit(-1)
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
-    otto.streamCam(frameReference, corners, ids, otto.openWindow)
+    otto.streamCam(frameReference, corners, ids)
     
     #TODO Check for specific marker
     markFound = (len(corners) > 0)
     print(ids)
     if markFound:
         Z, dir = otto.distAndDir(corners[0][0])
+        print(f"corners = {corners[0][0]}")
+        print(f"dist = {Z}")
         if Z < 1000:
             otto.Stop()
             exit(-1)
