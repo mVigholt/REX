@@ -104,13 +104,13 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     if (len(corners) > 0):
       isRotating = False
       arlo.stop()
-      if abs(tvecs[0]) < 30 and isDriving == False:
+      if abs(tvecs[0][0]) < 30 and isDriving == False:
         isDriving = True
         DriveStraight()
-      elif tvecs[0] >= 30 and isRotating == False:
+      elif tvecs[0][0] >= 30 and isRotating == False:
         isRotating = True
         isRotating(1)
-      elif tvecs[0] <= -30 and isRotating == False:
+      elif tvecs[0][0] <= -30 and isRotating == False:
         isRotating = True
         isRotating(0)
     else:
