@@ -107,7 +107,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
       if abs(tvecs[0][0][0]) < 1000 and isDriving == False:
         isDriving = True
         DriveStraight()
-        t.sleep(tvecs[0][0][2]/1000)
+        while ((tvecs[0][0][2] > 500 and tvecs[0][0][0] >= -1000 and tvecs[0][0][0] <= 1000) or tvecs != None):
+          t.sleep(0.1)
       elif tvecs[0][0][0] >= 1000 and isRotating == False:
         isRotating = True
         Rotate(1)
