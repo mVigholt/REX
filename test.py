@@ -2,6 +2,7 @@ import help as otto
 import cv2
 import time as t
 
+i = 0
 landMarks = [2,3,4]
 cam = otto.openCam()
 # load dictionary and parameters
@@ -21,6 +22,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     print(f"lapTime() = {lapTime()}\n")
     if searching:
         otto.Stop()
+        t.sleep(0.1)
     
     cam.read()  
     retval, frameReference = cam.read() # Read frame
@@ -32,15 +34,19 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     otto.streamCam(frameReference, corners, ids)
     
     #TODO Check for specific marker
-    markFound = (len(corners) > 0)
+    markFound = landMarks[i] in ids
+    j = 0
     print(ids)
     if markFound:
+        j = ids.index(landMarks[i])
         Z, dir = otto.distAndDir(corners[0][0])
-        print(f"corners = {corners[0][0]}")
         print(f"dist = {Z}")
-        if Z < 1000:
+        if Z < 500:
             otto.Stop()
-            exit(-1)
+            i += 1
+            searching = True
+            if i >= len(landMarks):
+                exit(-1)
         elif searching:
             searching = False
 
