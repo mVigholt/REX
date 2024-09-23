@@ -114,7 +114,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
           rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
           if tvecs is None:
             break
-        print(t.time - time)
+        print(t.time() - time)
       elif tvecs[0][0][0] >= 1000 and isRotating == False:
         isRotating = True
         Rotate(1)
