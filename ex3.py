@@ -107,7 +107,11 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
       if abs(tvecs[0][0][0]) < 1000 and isDriving == False:
         isDriving = True
         DriveStraight()
-        while ((tvecs[0][0][2] > 500 and tvecs[0][0][0] >= -1000 and tvecs[0][0][0] <= 1000) or tvecs != None):
+        while ((tvecs[0][0][2] > 500 and tvecs[0][0][0] >= -1000 and tvecs[0][0][0] <= 1000) or tvecs == None):
+          cam.read()  
+          retval, frameReference = cam.read() # Read frame
+          corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
+          rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
           t.sleep(0.1)
       elif tvecs[0][0][0] >= 1000 and isRotating == False:
         isRotating = True
