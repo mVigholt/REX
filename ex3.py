@@ -42,10 +42,11 @@ if not cam.isOpened(): # Error
  
  
 ##-----------------------------------------------------------------------------------------   
-f = 145
+X = 145
+f = 1138
 
-def calc_distance(real_size, pixel_size):
-    return (f*real_size)/pixel_size
+def calc_distance(x):
+    return (X*f)/x
 
 def DriveStraight():
   arlo.go_diff(60-error, 60, 1, 1)
@@ -99,7 +100,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
     if (len(corners) > 0):
-        print(cv2.aruco.estimatePoseSingleMarkers(corners, f, camera_matrix, distCoeffs))
+        print(cv2.aruco.estimatePoseSingleMarkers(corners, f, frameReference, camera_matrix, distCoeffs))
         print("stop")
         arlo.stop()
         break
