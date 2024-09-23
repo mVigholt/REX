@@ -99,22 +99,22 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
-    if (len(corners) > 0):
-        rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, f, camera_matrix, distCoeffs)
+    # if (len(corners) > 0):
+    rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, f, camera_matrix, distCoeffs)
         # for i in range(len(ids)):
         #   cv2.aruco.drawAxis(frameReference, camera_matrix, distCoeffs, rvecs[i], tvecs[i], f / 2)
-        print(rvecs, '\n')
-        print("-----------------------------------------\n")
-        print(tvecs)
-        print("stop")
-        arlo.stop()
-        break
+    print(rvecs, '\n')
+    print("-----------------------------------------\n")
+    print(tvecs)
+        # print("stop")
+        # arlo.stop()
+        # break
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     print(t.time() - starttime, "\n")
         
-    Rotate(1)
+    # Rotate(1)
     t.sleep(0.3)
 
     # Stream frames
