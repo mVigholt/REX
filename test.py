@@ -41,7 +41,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     j = 0
     if markFound:
         j = list(ids).index([landMarks[i]])
-        Z, dir = otto.distAndDir(corners[0][0])
+        Z, dir = otto.distAndDir(corners[j][0])
         if Z < 500:
             otto.Stop()
             i += 1

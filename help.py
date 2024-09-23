@@ -76,10 +76,10 @@ def Go():
   arlo.go_diff(speed-error, speed, 1, 1)
 
 def Left():
-    arlo.go_diff(rotateSpeed-1, rotateSpeed, 0, 1)
+    arlo.go_diff(rotateSpeed-1, rotateSpeed, 1, 0)
     
 def Right():
-    arlo.go_diff(rotateSpeed-1, rotateSpeed, 1, 0)
+    arlo.go_diff(rotateSpeed-1, rotateSpeed, 0, 1)
 
 def Turn(dir):
     if dir == 1:
