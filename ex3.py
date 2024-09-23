@@ -100,27 +100,21 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
-    print(tvecs[0])    
-    print("_______")
-    print(tvecs[0][0])    
-    print("_______")
-    print(tvecs[0][0][0])    
-    print("_______")
-    # if (len(corners) > 0):
-    #   isRotating = False
-    #   arlo.stop()
-    #   if abs(tvecs[0][0]) < 30 and isDriving == False:
-    #     isDriving = True
-    #     DriveStraight()
-    #   elif tvecs[0][0] >= 30 and isRotating == False:
-    #     isRotating = True
-    #     isRotating(1)
-    #   elif tvecs[0][0] <= -30 and isRotating == False:
-    #     isRotating = True
-    #     isRotating(0)
-    # else:
-    #   isRotating = True
-    #   Rotate(1)
+    if (len(corners) > 0):
+      isRotating = False
+      arlo.stop()
+      if abs(tvecs[0][0][0]) < 30 and isDriving == False:
+        isDriving = True
+        DriveStraight()
+      elif tvecs[0][0][0] >= 30 and isRotating == False:
+        isRotating = True
+        isRotating(1)
+      elif tvecs[0][0][0] <= -30 and isRotating == False:
+        isRotating = True
+        isRotating(0)
+    else:
+      isRotating = True
+      Rotate(1)
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
