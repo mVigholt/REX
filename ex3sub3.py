@@ -61,12 +61,10 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
     
-    if tvecs is not None:
-      for i in range(len(tvecs)):
-        if ids[i] in coordinates[i]:
-          continue
-        
-        coordinates.append((tvecs[0][i], ids[i]))
+    print(tvecs)
+    print("_________________-")
+    print(ids)
+    break
         
     
     print(coordinates)
