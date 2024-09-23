@@ -2,6 +2,7 @@ import cv2 # Import the OpenCV library
 import time as t
 import robot
 import numpy as np
+import itertools
 
 capture_width = 1024
 capture_height = 720
@@ -61,10 +62,14 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
     
-    print(tvecs)
-    print("_________________-")
-    print(ids)
-    break
+    ids_flattened = list(itertools.chain(*ids))
+    tvecs_flattened = list(itertools.chain(*tvecs))
+    
+    print(ids_flattened)
+    print("_____________")
+    print(tvecs_flattened)
+      
+      
         
     
     print(coordinates)
