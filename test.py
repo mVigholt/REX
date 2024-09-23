@@ -35,12 +35,12 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     print(ids)
     #TODO Check for specific marker
     markFound = False
-    if ids != None:
-        markFound = landMarks[i] in ids[0]
+    if ids is not None:
+        markFound = [landMarks[i]] in ids
         
     j = 0
     if markFound:
-        j = list(ids[0]).index(landMarks[i])
+        j = list(ids).index([landMarks[i]])
         Z, dir = otto.distAndDir(corners[0][0])
         if Z < 500:
             otto.Stop()
