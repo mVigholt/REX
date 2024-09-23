@@ -11,13 +11,13 @@ searching = True
 dir = 1
 
 time = t.time()
-def lapTime():
+def lapTime(time):
     last = time
     time = t.time()
     return time - last
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    print(lapTime(), "\n")
+    print(lapTime(time), "\n")
     if searching:
         otto.Stop()
     
