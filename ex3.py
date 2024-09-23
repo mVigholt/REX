@@ -4,6 +4,7 @@
 import cv2 # Import the OpenCV library
 import time as t
 import robot
+import numpy as np
 
 # Create a robot object and initialize
 arlo = robot.Robot()
@@ -13,9 +14,11 @@ speed = 60
 error = 2
 safetyStraightDistance = 500
 safetySideDistance = 400
+capture_width = 1024
+capture_height = 720
 
 
-def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=2):
+def gstreamer_pipeline(capture_width=capture_width, capture_height=capture_height, framerate=2):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
     return (
         "libcamerasrc !"
@@ -39,10 +42,9 @@ if not cam.isOpened(): # Error
  
  
 ##-----------------------------------------------------------------------------------------   
-
+f = 145
 
 def calc_distance(real_size, pixel_size):
-    f = 145
     return (f*real_size)/pixel_size
 
 def DriveStraight():
@@ -73,6 +75,14 @@ cv2.moveWindow(WIN_RF, 100, 100)
 # load dictionary and parameters
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
+# initialize camera transformation matrix
+camera_matrix = np.array([[f, 0, capture_width/2],
+                         [0, f, capture_height/2],
+                         [0, 0, 1]])
+
+# Assuming no lens distortion for now
+distCoeffs = np.zeros((5, 1))
+
 Rotate(1)
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
@@ -89,6 +99,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
     if (len(corners) > 0):
+        print(cv2.aruco.estimatePoseSingleMarkers(corners, f, frameReference, camera_matrix, distCoeffs))
         print("stop")
         arlo.stop()
         break
