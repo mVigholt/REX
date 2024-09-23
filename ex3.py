@@ -88,6 +88,7 @@ isRotating = False
 isDriving = False
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
+    arlo.stop()
     starttime = t.time()
   
     cam.read()  
@@ -105,15 +106,19 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
       if abs(tvecs[0][0][0]) < 1000 and isDriving == False:
         isDriving = True
         DriveStraight()
+        t.sleep(tvecs[0][0][2]/1000)
       elif tvecs[0][0][0] >= 1000 and isRotating == False:
         isRotating = True
         Rotate(1)
+        t.sleep(0.1)
       elif tvecs[0][0][0] <= -1000 and isRotating == False:
         isRotating = True
         Rotate(0)
+        t.sleep(0.1)
     else:
       isRotating = True
       Rotate(1)
+      t.sleep(0.3)
     
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
