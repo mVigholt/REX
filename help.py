@@ -4,7 +4,7 @@ import robot
 
 cw = 1024
 ch = 720
-fr = 5
+fr = 2
 def openCam():
     def gstreamer_pipeline(capture_width=cw, capture_height=ch, framerate=fr):
         """Utility function for setting parameters for the gstreamer camera pipeline"""
