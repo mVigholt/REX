@@ -108,10 +108,10 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         DriveStraight()
       elif tvecs[0][0][0] >= 30 and isRotating == False:
         isRotating = True
-        isRotating(1)
+        Rotate(1)
       elif tvecs[0][0][0] <= -30 and isRotating == False:
         isRotating = True
-        isRotating(0)
+        Rotate(0)
     else:
       isRotating = True
       Rotate(1)
