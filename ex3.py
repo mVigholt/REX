@@ -99,9 +99,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
     if (len(corners) > 0):
-        print(cv2.aruco.estimatePoseSingleMarkers(corners, f, frameReference, [[f, 0, capture_width/2],
-                         [0, f, capture_height/2],
-                         [0, 0, 1]], distCoeffs))
+        print(cv2.aruco.estimatePoseSingleMarkers(corners, f, frameReference, camera_matrix, distCoeffs))
         print("stop")
         arlo.stop()
         break
