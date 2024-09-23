@@ -49,7 +49,7 @@ def calc_distance(x):
     return (X*f)/x
 
 def DriveStraight():
-  arlo.go_diff(60-error, 60, 1, 1)
+  arlo.go_diff(45-error, 45, 1, 1)
 
 # left: dir = 0
 # right: dir = 1
@@ -107,13 +107,14 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
       if abs(tvecs[0][0][0]) < 1000 and isDriving == False:
         isDriving = True
         DriveStraight()
+        time = t.time()
         while (tvecs[0][0][2] > 500 and tvecs[0][0][0] >= -1000 and tvecs[0][0][0] <= 1000):
-          cam.read()  
           retval, frameReference = cam.read() # Read frame
           corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
           rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
           if tvecs is None:
             break
+        print(t.time - time)
       elif tvecs[0][0][0] >= 1000 and isRotating == False:
         isRotating = True
         Rotate(1)
