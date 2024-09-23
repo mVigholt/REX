@@ -62,8 +62,12 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
     
     if tvecs is not None:
-      for item in tvecs[0]:
-        coordinates.append((item, ids))        
+      for i in range(len(tvecs)):
+        if ids[i] in coordinates[i]:
+          continue
+        
+        coordinates.append((tvecs[0][i], ids[i]))
+        
     
     print(coordinates)
     
