@@ -31,7 +31,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     otto.streamCam(frameReference, corners, ids, otto.openWindow)
     
     #TODO Check for specific marker
-    markFound = (len(ids) > 0)
+    markFound = (len(corners) > 0)
+    print(ids)
     if markFound:
         Z, dir = otto.distAndDir(corners[0][0])
         if Z < 1000:
