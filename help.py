@@ -48,11 +48,10 @@ def streamCam(frameReference, corners, ids):
 def distAndDir(corners):
     X = 145
     f = 1138
-    #TODO find out which corner is which
-    ul = corners[0]
-    ur = corners[1]
-    ll = corners[2]
-    lr = corners[3]
+    ul = corners[0] 
+    ur = corners[1] 
+    ll = corners[3] 
+    lr = corners[2] 
     x =  (np.linalg.norm(ul - ll) + np.linalg.norm(ur - lr)) / 2
     Z = (f/x) * X
     

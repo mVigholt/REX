@@ -33,7 +33,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     #TODO Check for specific marker
     markFound = (len(ids) > 0)
     if markFound:
-        Z, dir = otto.distAndDir(corners[0])
+        Z, dir = otto.distAndDir(corners[0][0])
         if Z < 1000:
             otto.Stop()
             exit(-1)
