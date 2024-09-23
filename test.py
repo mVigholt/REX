@@ -32,9 +32,11 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     otto.streamCam(frameReference, corners, ids)
-    
+    print(ids)
     #TODO Check for specific marker
-    markFound = landMarks[i] in ids[0]
+    markFound = len(corners) > 0
+    if markFound:
+        markFound = landMarks[i] in ids[0]
     j = 0
     if markFound:
         j = ids.index(landMarks[i])
