@@ -126,9 +126,9 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
     
     # if (len(corners) > 0):
-    rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, f, camera_matrix, distCoeffs)
+    rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, f, cameraMatrix, distCoeffs)
         # for i in range(len(ids)):
-        #   cv2.aruco.drawAxis(frameReference, camera_matrix, distCoeffs, rvecs[i], tvecs[i], f / 2)
+        #   cv2.aruco.drawAxis(frameReference, cameraMatrix, distCoeffs, rvecs[i], tvecs[i], f / 2)
     print(rvecs, '\n')
     print("-----------------------------------------\n")
     print(tvecs)
