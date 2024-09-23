@@ -68,6 +68,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     print(ids_flattened)
     print("_____________")
     print(tvecs_flattened)
+    print(tvecs_flattened[0])
     break
       
       
