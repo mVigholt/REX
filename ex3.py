@@ -84,7 +84,8 @@ camera_matrix = np.array([[f, 0, capture_width/2],
 # Assuming no lens distortion for now
 distCoeffs = np.zeros((5, 1))
 
-Rotate(1)
+isRotating = False
+isDriving = False
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     arlo.stop()
@@ -98,19 +99,24 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         exit(-1)
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
+    rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
     
-    # if (len(corners) > 0):
-    rvecs, tvecs, objpoints = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
-        # for i in range(len(ids)):
-        #   cv2.aruco.drawAxis(frameReference, camera_matrix, distCoeffs, rvecs[i], tvecs[i], f / 2)
-    print(rvecs, '\n')
-    print("-----------------------------------------\n")
-    print(tvecs, '\n')
-    print("-----------------------------------------\n")
-    print(objpoints)
-        # print("stop")
-        # arlo.stop()
-        # break
+    if (len(corners) > 0):
+      isRotating = False
+      arlo.stop()
+      if abs(tvecs[0]) < 30 and isDriving == False:
+        isDriving = True
+        DriveStraight()
+      elif tvecs[0] >= 30 and isRotating == False:
+        isRotating = True
+        isRotating(1)
+      elif tvecs[0] <= -30 and isRotating == False:
+        isRotating = True
+        isRotating(0)
+    else:
+      isRotating = True
+      Rotate(1)
+    
     # Draw markers on the frame if found
     frameReference = cv2.aruco.drawDetectedMarkers(frameReference, corners, ids)
     print(t.time() - starttime, "\n")
