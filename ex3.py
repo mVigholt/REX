@@ -5,6 +5,7 @@ import cv2 # Import the OpenCV library
 import time as t
 import robot
 import numpy as np
+import glob
 
 # Create a robot object and initialize
 arlo = robot.Robot()
@@ -47,6 +48,37 @@ f = 1138
 
 def calc_distance(x):
     return (X*f)/x
+  
+def calibratecamera():
+    # 3D points in real world space (the position of the markers relative to the marker origin)
+  # This assumes the marker is on a flat plane (z = 0), and each marker is known to be 0.05 meters on each side.
+  objp = np.array([[0, 0, 0], [X, 0, 0], [X, X, 0], [0, X, 0]], dtype=np.float32)
+
+  # Arrays to store object points and image points from all images
+  objpoints = []  # 3D points in real world space
+  imgpoints = []  # 2D points in image plane
+
+  # Load the calibration images (images that contain ArUco markers at different positions/angles)
+  images = glob.glob('../images/REX/*.png')
+
+  for fname in images:
+      img = cv2.imread(fname)
+      gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
+      
+      # Detect ArUco markers
+      corners, ids, rejected = cv2.aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
+      
+      if len(corners) > 0:
+          # For each marker, store the object points and image points
+          for marker_corner in corners:
+              imgpoints.append(marker_corner)
+              objpoints.append(objp)
+
+  # Perform camera calibration
+  ret, cameraMatrix, distCoeffs, rvecs, tvecs = cv2.calibrateCamera(
+      objpoints, imgpoints, gray.shape[::-1], None, None)
+
+  return ret, cameraMatrix, distCoeffs, rvecs, tvecs
 
 def DriveStraight():
   arlo.go_diff(60-error, 60, 1, 1)
@@ -76,13 +108,7 @@ cv2.moveWindow(WIN_RF, 100, 100)
 # load dictionary and parameters
 aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
 
-# initialize camera transformation matrix
-camera_matrix = np.array([[f, 0, capture_width/2],
-                         [0, f, capture_height/2],
-                         [0, 0, 1]])
-
-# Assuming no lens distortion for now
-distCoeffs = np.zeros((5, 1))
+ret, cameraMatrix, distCoeffs, rvecs, tvecs = calibratecamera()
 
 Rotate(1)
 
