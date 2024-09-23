@@ -87,6 +87,9 @@ distCoeffs = np.zeros((5, 1))
 isRotating = False
 isDriving = False
 
+landMarkIDs = [1, 2, 3]
+activeLandmark = 0
+
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     arlo.stop()
     # starttime = t.time()
@@ -99,6 +102,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         exit(-1)
     
     corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
+    print(ids)
+    break
     rvecs, tvecs, _ = cv2.aruco.estimatePoseSingleMarkers(corners, X, camera_matrix, distCoeffs)
     
     if (len(corners) > 0):
