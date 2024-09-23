@@ -66,7 +66,7 @@ def calibratecamera():
       gray = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
       
       # Detect ArUco markers
-      corners, ids, rejected = cv2.aruco.detectMarkers(gray, aruco_dict, parameters=parameters)
+      corners, ids, rejected = cv2.aruco.detectMarkers(gray, aruco_dict)
       
       if len(corners) > 0:
           # For each marker, store the object points and image points
