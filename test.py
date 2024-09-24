@@ -3,33 +3,34 @@ import numpy as np
 import time as t
 import cv2
 
+cam = help.Cam
+lap = help.Timed_lap
+
 i = 0
 landMarks = [2,3,4]
-CAM = help.Cam
-LAP = help.Timed_lap
-
 searching = True
 dir = 1
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    print(f"lapTime() = {LAP.time()}\n")
+    print(f"lapTime() = {lap.time()}\n")
     if searching:
         help.Stop()
         t.sleep(0.1)
     
-    _, corners, ids = CAM.next_frame_with_detection(ret_corner=True, ret_id=True)
-    #help.streamCam(frameReference, corners, ids)
+    #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
+    ids, tvecs = cam.next_map()
+    cam.stream()
     print(f"looking for {landMarks[i]} with index {i}")
 
-    markFound = False
     if ids is not None:
-        markFound = [landMarks[i]] in ids
+        markFound = landMarks[i] in ids
+    else:
+        markFound = False
         
-    j = 0
     if markFound:
-        j = list(ids).index([landMarks[i]])
-        _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(corners, help.X, help.cam_matrix, np.zeros((5, 1)))
-        Z, dir = help.distAndDir(corners[j][0])
+        id_index = list(ids).index(landMarks[i])
+        Z = tvecs[id_index][2]
+        dir = 1 if tvecs[id_index][0] > 0 else 0
         if Z < 500:
             help.Stop()
             print("in pos")

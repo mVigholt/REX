@@ -66,9 +66,14 @@ class Cam (object):
         self.corners, self.ids, _ = cv2.aruco.detectMarkers(self.frameReference, self.aruco_dict)
         if ret_frame or ret_corner or ret_id:
             return (self.frameReference if ret_frame else None, 
-                    self.corners if ret_corner else None, 
-                    self.ids if ret_id else None
-            )
+                    self.flatten(self.corners) if ret_corner else None, 
+                    self.flatten(self.ids) if ret_id else None)
+    
+    def next_map(self):
+        self.next_frame_with_detection()
+        _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
+        #tvec = [with, height, debth] ???
+        return self.flatten(self.ids), self.flatten(tvecs)
             
     def __setup_stream(self):
         # Open a window
