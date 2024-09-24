@@ -1,37 +1,24 @@
-import help as otto
-import cv2
+import help
+import numpy as np
 import time as t
+import cv2
 
 i = 0
 landMarks = [2,3,4]
-cam = otto.openCam()
-# load dictionary and parameters
-aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+CAM = help.Cam
+LAP = help.Timed_lap
 
 searching = True
 dir = 1
 
-time = t.time()
-def lapTime():
-    global time
-    last = time
-    time = t.time()
-    return time - last
-
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-    print(f"lapTime() = {lapTime()}\n")
+    print(f"lapTime() = {LAP.time()}\n")
     if searching:
-        otto.Stop()
+        help.Stop()
         t.sleep(0.1)
     
-    cam.read()  
-    retval, frameReference = cam.read() # Read frame
-    if not retval: # Error
-        print(" < < <  Game over!  > > > ")
-        exit(-1)
-    
-    corners, ids, _ = cv2.aruco.detectMarkers(frameReference, aruco_dict)
-    #otto.streamCam(frameReference, corners, ids)
+    _, corners, ids = CAM.next_frame_with_detection(ret_corner=True, ret_id=True)
+    #help.streamCam(frameReference, corners, ids)
     print(f"looking for {landMarks[i]} with index {i}")
 
     markFound = False
@@ -41,9 +28,10 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     j = 0
     if markFound:
         j = list(ids).index([landMarks[i]])
-        Z, dir = otto.distAndDir(corners[j][0])
+        _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(corners, help.X, help.cam_matrix, np.zeros((5, 1)))
+        Z, dir = help.distAndDir(corners[j][0])
         if Z < 500:
-            otto.Stop()
+            help.Stop()
             print("in pos")
             i += 1
             searching = True
@@ -56,10 +44,10 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         searching = True
     
     if searching:
-        otto.Turn(dir)
+        help.Turn(dir)
         t.sleep(0.2)
     else:
-        otto.Go()
+        help.Go()
     
 #cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
