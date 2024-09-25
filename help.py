@@ -77,7 +77,7 @@ class Cam (object):
         #tvec = [with, height, debth] ???
         print(self.ids)
         print(tvecs)
-        return self.flatten(self.ids), self.flatten(tvecs)
+        return (self.flatten(self.ids), self.flatten(tvecs))
             
     def __setup_stream(self):
         # Open a window
