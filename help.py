@@ -12,7 +12,8 @@ X = 145
 f = 1138
 
 landmarkRadius = 330
-robotRadius = 330
+robotRadius = 450/2
+buffer = 100
 
 # initialize camera transformation matrix
 cam_matrix = np.array([[f, 0, CW/2],
