@@ -18,7 +18,7 @@ distCoeffs = np.zeros((5, 1))
 
 class Cam (object):
     def __init__(self):
-        def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=10):
+        def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
             """Utility function for setting parameters for the gstreamer camera pipeline"""
             return (
                 "libcamerasrc !"
