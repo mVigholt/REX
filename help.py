@@ -55,9 +55,7 @@ class Cam (object):
         #--------------------------------------------------------------------------------
     
     def flatten(self, matLike):
-        if (matLike is None):
-            return []
-        return list(itertools.chain(*matLike))     
+        return None if matLike is None else list(itertools.chain(*matLike))     
     
     def next_frame(self, ret_frame = False):
         retval, self.frameReference = self.cam.read()
@@ -79,11 +77,11 @@ class Cam (object):
         self.next_frame_with_detection()
         _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
-        if tvecs is not None:
-            flat_tvec = self.flatten(tvecs)
+        flat_tvec = self.flatten(tvecs)
+        if flat_tvec is not None:
             flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
             flat_tvec[:, 1] = flat_tvec[:, 1] + robotRadius
-        return self.flatten(self.ids), None if tvecs is None else flat_tvec
+        return self.flatten(self.ids), flat_tvec
             
     def __setup_stream(self):
         # Open a window
@@ -160,10 +158,10 @@ class robot:
 def collission(landMarks): # input er en liste af obj objekter
     hasCollided = False
     for i in range(len(landMarks)):
-        if (euclidean(0, 0, landMarks[i][0], landMarks[i][0])) <= robotRadius + landmarkRadius:
+        if euclidean([0,0], landMarks[i]) <= robotRadius + landmarkRadius:
             hasCollided = True
             break
     return hasCollided
 
-def euclidean(x_1, y_1, x_2, y_2):
-    return math.sqrt((x_1 - x_2)**2 + (x_2 - y_2)**2)
+def euclidean(a, b):
+    return math.dist(a,b) #sqrt((x_1 - x_2)**2 + (x_2 - y_2)**2)
