@@ -166,3 +166,9 @@ def collission(landMarks): # input er en liste af obj objekter
 
 def euclidean(a, b):
     return math.dist(a,b) #sqrt((x_1 - x_2)**2 + (x_2 - y_2)**2)
+
+def normalize(vector):
+    magnitude = math.sqrt(sum(x**2 for x in vector))
+    if magnitude == 0:
+        return vector  # or handle zero magnitude case as needed
+    return [x / magnitude for x in vector]
