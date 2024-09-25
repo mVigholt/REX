@@ -7,7 +7,7 @@ cam = help.Cam
 lap = help.Timed_lap
 
 i = 0
-landMarks = [2,3,4]
+landMarks = [8,1,6]
 searching = True
 dir = 1
 
