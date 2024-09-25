@@ -18,7 +18,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         t.sleep(0.1)
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
-    ids, tvecs = cam.next_map()
+    tvecs = cam.next_map()
+    break
     cam.stream()
     print(f"looking for {landMarks[i]} with index {i}")
 
