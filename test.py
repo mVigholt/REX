@@ -27,7 +27,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         
     if markFound:
         id_index = list(ids).index(landMarks[i])
-        Z = math.dist(tvecs[id_index][0], tvecs[id_index][2]) 
+        Z = math.dist([tvecs[id_index][0]], [tvecs[id_index][2]]) 
         dir = 1 if tvecs[id_index][0] > 0 else 0
         print(Z)
         if Z < 750:
