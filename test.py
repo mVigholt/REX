@@ -31,7 +31,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         id_index = list(ids).index(landMarks[i])
         Z = tvecs[id_index][2]
         dir = 1 if tvecs[id_index][0] > 0 else 0
-        if Z < 500:
+        if Z < 1000:
             help.Stop()
             print("in pos")
             i += 1
