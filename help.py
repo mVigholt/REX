@@ -157,10 +157,11 @@ class robot:
 #----------------------------------------------------------------
 def collission(landMarks): # input er en liste af obj objekter
     hasCollided = False
-    for i in range(len(landMarks)):
-        if euclidean([0,0], landMarks[i]) <= robotRadius + landmarkRadius:
-            hasCollided = True
-            break
+    if landMarks is not None:
+        for i in landMarks:
+            if euclidean([0,0], i) <= robotRadius + landmarkRadius:
+                hasCollided = True
+                break
     return hasCollided
 
 def euclidean(a, b):
