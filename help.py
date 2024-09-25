@@ -25,8 +25,8 @@ class Cam (object):
                 "videobox autocrop=true !" #TODO Prøv uden denne
                 "video/x-raw, width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
                 "videoconvert ! "
-                # "appsink"
-                "appsink drop=true sync=false" #NY - Fjerner måske buffer
+                "appsink"
+                #"appsink drop=true sync=false" #NY - Fjerner måske buffer
                 % (
                     capture_width,
                     capture_height,
