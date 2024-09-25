@@ -76,24 +76,13 @@ class Cam (object):
     
     def next_map(self):
         self.next_frame_with_detection()
-        rvec, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
-        
-        rotation_matrix, _ = cv2.Rodrigues(rvec)
-        
-        translation_in_local = np.array([70, 0, 120])  # Moving along X-axis of the marker's own coordinate system
-        
-        translation_in_camera = np.dot(rotation_matrix, translation_in_local)
-        
-        tvecs_updated = tvecs + translation_in_camera
-
+        _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
-        
-        flat_tvec = self.flatten(tvecs_updated)
-        
+        flat_tvec = self.flatten(tvecs)
         if flat_tvec is not None:
-            flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
-            
-        return self.flatten(self.ids), flat_tvec
+            np.delete(np.arange(flat_tvec), 1, 1)
+            flat_tvec[:, 1] = flat_tvec[:, 1] + 145
+        return self.flatten(self.ids), None if flat_tvec is None else np.delete(np.array(flat_tvec), 1, 1)
             
     def __setup_stream(self):
         # Open a window
