@@ -16,5 +16,5 @@ boxRadius = 35
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
   ids, tvecs = cam.next_map()
   
-  print([tvecs[0], tvecs[2]])
+  print(tvecs)
   
