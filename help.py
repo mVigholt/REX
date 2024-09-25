@@ -3,12 +3,16 @@ import cv2 # Import the OpenCV library
 import numpy as np
 import time as t
 import robot
+import math
 
 CW = 1024
 CH = 720
 
 X = 145
 f = 1138
+
+landmarkRadius = 330
+robotRadius = 330
 
 # initialize camera transformation matrix
 cam_matrix = np.array([[f, 0, CW/2],
@@ -72,10 +76,25 @@ class Cam (object):
     
     def next_map(self):
         self.next_frame_with_detection()
-        _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
+        rvec, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
+        
+        rotation_matrix, _ = cv2.Rodrigues(rvec)
+        
+        rotation_matrix_xz = rotation_matrix[[0, 2], :]
+        
+        translation_in_local = np.array([70, 0, 120])  # Moving along X-axis of the marker's own coordinate system
+        
+        translation_in_camera = np.dot(rotation_matrix_xz, translation_in_local)
+
         #tvec = [with, height, debth] ???
+        
         flat_tvec = self.flatten(tvecs)
-        return self.flatten(self.ids), None if flat_tvec is None else np.delete(np.array(flat_tvec), 1, 1)
+        
+        if flat_tvec is not None:
+            flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
+            flat_tvec = flat_tvec + translation_in_camera
+            
+        return self.flatten(self.ids), flat_tvec
             
     def __setup_stream(self):
         # Open a window
@@ -147,3 +166,15 @@ class robot:
     self.x = x
     self.y = y
     self.theta = theta
+
+#----------------------------------------------------------------
+def collission(landMarks): # input er en liste af obj objekter
+    hasCollided = False
+    for i in range(len(landMarks)):
+        if (euclidean(0, 0, landMarks[i][0], landMarks[i][0])) <= robotRadius + landmarkRadius:
+            hasCollided = True
+            break
+    return hasCollided
+
+def euclidean(x_1, y_1, x_2, y_2):
+    return math.sqrt((x_1 - x_2)**2 + (x_2 - y_2)**2)
