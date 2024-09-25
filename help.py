@@ -83,7 +83,7 @@ class Cam (object):
             flat_tvec = self.flatten(tvecs)
             flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
             flat_tvec[:, 1] = flat_tvec[:, 1] + robotRadius
-        return self.flatten(self.ids), flat_tvec
+        return self.flatten(self.ids), None if tvecs is None else flat_tvec
             
     def __setup_stream(self):
         # Open a window
