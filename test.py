@@ -3,8 +3,8 @@ import numpy as np
 import time as t
 import cv2
 
-cam = help.Cam
-lap = help.Timed_lap
+cam = help.Cam()
+lap = help.Timed_lap()
 
 i = 0
 landMarks = [8,1,6]
