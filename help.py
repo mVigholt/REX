@@ -116,7 +116,7 @@ def distAndDir(corners):
 ##------------------------------------------------------------------------------------------
 # Create a robot object and initialize
 arlo = robot.Robot()
-rotateSpeed = 40
+rotateSpeed = 31
 speed = 60
 error = 2
 safetyStraightDistance = 500
