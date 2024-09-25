@@ -15,7 +15,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     print(f"lapTime() = {lap.time()}\n")
     if searching:
         help.Stop()
-        t.sleep(0.1)
+        t.sleep(0.2)
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     ids, tvecs = cam.next_map()
