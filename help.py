@@ -80,19 +80,18 @@ class Cam (object):
         
         rotation_matrix, _ = cv2.Rodrigues(rvec)
         
-        rotation_matrix_xz = rotation_matrix[[0, 2], :]
-        
         translation_in_local = np.array([70, 0, 120])  # Moving along X-axis of the marker's own coordinate system
         
-        translation_in_camera = np.dot(rotation_matrix_xz, translation_in_local)
+        translation_in_camera = np.dot(rotation_matrix, translation_in_local)
+        
+        tvecs_updated = tvecs + translation_in_camera
 
         #tvec = [with, height, debth] ???
         
-        flat_tvec = self.flatten(tvecs)
+        flat_tvec = self.flatten(tvecs_updated)
         
         if flat_tvec is not None:
             flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
-            flat_tvec = flat_tvec + translation_in_camera
             
         return self.flatten(self.ids), flat_tvec
             
