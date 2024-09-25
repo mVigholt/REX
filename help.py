@@ -80,8 +80,8 @@ class Cam (object):
         #tvec = [with, height, debth] ???
         flat_tvec = self.flatten(tvecs)
         if flat_tvec is not None:
-            flat_tvec = np.delete(np.arange(flat_tvec), 1, 1)
-            flat_tvec[:, 1] = flat_tvec[:, 1] + 145
+            flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
+            flat_tvec[:, 1] = flat_tvec[:, 1] + robotRadius
         return self.flatten(self.ids), flat_tvec
             
     def __setup_stream(self):
