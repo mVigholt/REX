@@ -22,11 +22,10 @@ class Cam (object):
             """Utility function for setting parameters for the gstreamer camera pipeline"""
             return (
                 "libcamerasrc !"
-                "videobox autocrop=true !" #TODO Prøv uden denne
+                "videobox autocrop=true !"
                 "video/x-raw, width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
                 "videoconvert ! "
-                # "appsink"
-                "appsink drop=true sync=false" #NY - Fjerner måske buffer
+                "appsink drop=true sync=false" #Fjerner måske buffer
                 % (
                     capture_width,
                     capture_height,

@@ -1,5 +1,5 @@
 import help
-import numpy as np
+import math
 import time as t
 import cv2
 
@@ -10,7 +10,7 @@ i = 0
 landMarks = [8,1,6]
 searching = True
 dir = 1
-
+print(f"looking for {landMarks[i]} with index {i}")
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
     print(f"lapTime() = {lap.time()}\n")
     if searching:
@@ -20,7 +20,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     ids, tvecs = cam.next_map()
     cam.stream()
-    print(f"looking for {landMarks[i]} with index {i}")
 
     if ids is not None:
         markFound = landMarks[i] in ids
@@ -29,16 +28,14 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         
     if markFound:
         id_index = list(ids).index(landMarks[i])
-        Z = tvecs[id_index][2]
+        Z = math.dist(tvecs[id_index][0], tvecs[id_index][2]) 
         dir = 1 if tvecs[id_index][0] > 0 else 0
-        print(id_index)
-        print("_")
         print(Z)
-        if Z < 1000:
+        if Z < 750:
             help.Stop()
-            print("in pos")
             i += 1
             searching = True
+            print(f"looking for {landMarks[i]} with index {i}")
             if i >= len(landMarks):
                 exit(-1)
         elif searching:
