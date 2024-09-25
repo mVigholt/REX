@@ -39,7 +39,7 @@ class Cam (object):
             print("Could not open camera")
             exit(-1)
         print("OpenCV version = " + cv2.__version__)
-        self.cam.set(cv2.CAP_PROP_BUFFERSIZE, 0) #Fjerner måske buffer
+        self.cam.set(cv2.CAP_PROP_BUFFERSIZE, 1) #Fjerner måske buffer
         
         #--------------------------------------------------------------------------------
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
