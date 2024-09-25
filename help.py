@@ -122,7 +122,7 @@ error = 2
 safetyStraightDistance = 500
 safetySideDistance = 400
 
-def Go():
+def Forward():
   arlo.go_diff(speed-error, speed, 1, 1)
   
 def Right():

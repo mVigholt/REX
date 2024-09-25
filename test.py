@@ -19,7 +19,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     ids, tvecs = cam.next_map()
-    cam.stream()
 
     if ids is not None:
         markFound = landMarks[i] in ids
@@ -40,7 +39,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
                 exit(-1)
         elif searching:
             searching = False
-
     else:
         searching = True
     
@@ -48,7 +46,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
         help.Turn(dir)
         t.sleep(0.2)
     else:
-        help.Go()
+        help.Forward()
+    cam.stream()
     
 #cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
