@@ -14,13 +14,6 @@ ottoRadius = 25
 boxRadius = 35
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
-  
-  retval, frameReference = cam.read() # Read frame
-  
-  if not retval: # Error
-      print(" < < <  Game over!  > > > ")
-      exit(-1)
-  
   ids, tvecs = cam.next_map()
   
   print([tvecs[0], tvecs[2]])
