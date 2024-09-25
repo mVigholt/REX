@@ -50,7 +50,7 @@ class Cam (object):
         self.next_frame_with_detection()
         #--------------------------------------------------------------------------------
     
-    def flatten(matLike):
+    def flatten(self, matLike):
         if (matLike is None):
             return []
         return list(itertools.chain(*matLike))     
