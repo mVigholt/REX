@@ -4,7 +4,6 @@ import robot
 import numpy as np
 import itertools
 import help
-import rob
 
 # Open a camera device for capturing
 cam = help.openCam()
