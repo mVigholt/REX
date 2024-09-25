@@ -6,8 +6,7 @@ import itertools
 import help
 
 # Open a camera device for capturing
-cam = help.openCam()
-
+cam = help.Cam()
 
 X = 145
 f = 1138
