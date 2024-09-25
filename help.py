@@ -75,8 +75,6 @@ class Cam (object):
         self.next_frame_with_detection()
         _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
-        print(self.ids)
-        print(tvecs)
         return self.flatten(self.ids), self.flatten(tvecs)
             
     def __setup_stream(self):
