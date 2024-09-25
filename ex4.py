@@ -34,7 +34,7 @@ def getCoordinates(frameReference, aruco_dict, camera_matrix, X):
   ids_flattened = list(itertools.chain(*ids))
   tvecs_flattened = list(itertools.chain(*tvecs))
   
-  return ids_flattened, tvecs_flattened
+  return ids_flattened, [tvecs_flattened[0], tvecs_flattened[2]]
 
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
   
@@ -45,4 +45,6 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
       exit(-1)
   
   ids, tvecs = getCoordinates(frameReference, aruco_dict, camera_matrix, X)
+  
+  print(tvecs)
   
