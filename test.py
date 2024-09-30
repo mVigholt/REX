@@ -48,7 +48,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     #     t.sleep(0.2)
     # else:
     #     help.Forward()
-    cam.stream()
+    # cam.stream()
     
 #cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully

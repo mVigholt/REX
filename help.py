@@ -88,8 +88,11 @@ class Cam (object):
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
             test = []
             print(flat_rvecs)
+            print("start\n")
+            print(cv2.Rodrigues(rvecs))
+            print("stop\n")
             for rvec in flat_rvecs: 
-                test.append([math.cos(box_v-rvec[1])*box_c, math.sin(box_v-rvec[1])*box_c])
+                test.append([math.cos(box_v+rvec[2])*box_c, math.sin(box_v+rvec[2])*box_c])
             print(test)
         return self.flatten(self.ids), flat_tvecs
             
