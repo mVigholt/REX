@@ -3,7 +3,7 @@ Module for interfacing a 2D Map in the form of Grid Occupancy
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
+# import matplotlib.pyplot as plt
 import help
 
 class landmark_map(object):
@@ -25,9 +25,9 @@ class landmark_map(object):
         """
         return help.collission(pos)
     
-    def draw_map(self):
-        #note the x-y axes difference between imshow and plot
-        plt.imshow(self.grid.T, cmap="Greys", origin='lower', vmin=0, vmax=1, extent=self.extent, interpolation='none')
+    # def draw_map(self):
+    #     #note the x-y axes difference between imshow and plot
+    #     plt.imshow(self.grid.T, cmap="Greys", origin='lower', vmin=0, vmax=1, extent=self.extent, interpolation='none')
 
 # if __name__ == '__main__':
     # map = GridOccupancyMap()

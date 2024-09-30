@@ -7,8 +7,8 @@ https://github.com/AtsushiSakai/PythonRobotics/blob/master/PathPlanning/RRT/rrt.
 """
 
 import numpy as np
-import matplotlib.pyplot as plt
-from matplotlib.animation import FFMpegWriter
+# import matplotlib.pyplot as plt
+# from matplotlib.animation import FFMpegWriter
 import map as m
 
 class RRT:
@@ -142,29 +142,29 @@ class RRT:
             rnd = self.Node(self.end.pos)
         return rnd
 
-    def draw_graph(self, rnd=None):
-        # plt.clf()
-        # # for stopping simulation with the esc key.
-        # plt.gcf().canvas.mpl_connect(
-        #     'key_release_event',
-        #     lambda event: [exit(0) if event.key == 'escape' else None])
-        plt.clf()
-        if rnd is not None:
-            plt.plot(rnd.pos[0], rnd.pos[1], "^k")
+    # def draw_graph(self, rnd=None):
+    #     # plt.clf()
+    #     # # for stopping simulation with the esc key.
+    #     # plt.gcf().canvas.mpl_connect(
+    #     #     'key_release_event',
+    #     #     lambda event: [exit(0) if event.key == 'escape' else None])
+    #     plt.clf()
+    #     if rnd is not None:
+    #         plt.plot(rnd.pos[0], rnd.pos[1], "^k")
 
-        # draw the map
-        self.map.draw_map()
+    #     # draw the map
+    #     self.map.draw_map()
 
-        for node in self.node_list:
-            if node.parent:
-                path = np.array(node.path)
-                plt.plot(path[:, 0], path[:, 1], "-g")
+    #     for node in self.node_list:
+    #         if node.parent:
+    #             path = np.array(node.path)
+    #             plt.plot(path[:, 0], path[:, 1], "-g")
 
-        plt.plot(self.start.pos[0], self.start.pos[1], "xr")
-        plt.plot(self.end.pos[0], self.end.pos[1], "xr")
-        plt.axis(self.map.extent)
-        plt.grid(True)
-        plt.pause(0.01)
+    #     plt.plot(self.start.pos[0], self.start.pos[1], "xr")
+    #     plt.plot(self.end.pos[0], self.end.pos[1], "xr")
+    #     plt.axis(self.map.extent)
+    #     plt.grid(True)
+    #     plt.pause(0.01)
 
 
     @staticmethod
@@ -187,44 +187,44 @@ class RRT:
 
 import grid_occ, robot_models
 
-def main():
+# def main():
 
-    path_res = 0.05
-    map = m.landmark_map()
+#     path_res = 0.05
+#     map = m.landmark_map()
 
-    robot = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])   #
+#     robot = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])   #
 
-    rrt = RRT(
-        start=[0, 0],
-        goal=[0, 1.9],
-        robot_model=robot,
-        map=map,
-        expand_dis=0.2,
-        path_resolution=path_res,
-        )
+#     rrt = RRT(
+#         start=[0, 0],
+#         goal=[0, 1.9],
+#         robot_model=robot,
+#         map=map,
+#         expand_dis=0.2,
+#         path_resolution=path_res,
+#         )
     
-    show_animation = True
-    metadata = dict(title="RRT Test")
-    writer = FFMpegWriter(fps=15, metadata=metadata)
-    fig = plt.figure()
+#     show_animation = True
+#     metadata = dict(title="RRT Test")
+#     writer = FFMpegWriter(fps=15, metadata=metadata)
+#     fig = plt.figure()
     
-    with writer.saving(fig, "rrt_test.mp4", 100):
-        path = rrt.planning(animation=show_animation, writer=writer)
+#     with writer.saving(fig, "rrt_test.mp4", 100):
+#         path = rrt.planning(animation=show_animation, writer=writer)
 
-        if path is None:
-            print("Cannot find path")
-        else:
-            print("found path!!")
+#         if path is None:
+#             print("Cannot find path")
+#         else:
+#             print("found path!!")
 
-            # Draw final path
-            if show_animation:
-                rrt.draw_graph()
-                plt.plot([x for (x, y) in path], [y for (x, y) in path], '-r')
-                plt.grid(True)
-                plt.pause(0.01)  # Need for Mac
-                plt.show()
-                writer.grab_frame()
+#             # Draw final path
+#             if show_animation:
+#                 rrt.draw_graph()
+#                 plt.plot([x for (x, y) in path], [y for (x, y) in path], '-r')
+#                 plt.grid(True)
+#                 plt.pause(0.01)  # Need for Mac
+#                 plt.show()
+#                 writer.grab_frame()
 
 
-if __name__ == '__main__':
-    main()
+# if __name__ == '__main__':
+#     main()
