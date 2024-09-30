@@ -185,23 +185,23 @@ def normalize(vector):
         return vector  # or handle zero magnitude case as needed
     return [x / magnitude for x in vector]
 
-def __collission(dest, landMarks):
-    hasCollided = False
-    for i in landMarks:
-        if math.dist(dest, i) <= robotRadius + buffer + landmarkRadius:
-            hasCollided = True
-            print("Collission detected!!!")
-            break
-    return hasCollided
+# def __collission(dest, landMarks):
+#     hasCollided = False
+#     for i in landMarks:
+#         if math.dist(dest, i) <= robotRadius + buffer + landmarkRadius:
+#             hasCollided = True
+#             print("Collission detected!!!")
+#             break
+#     return hasCollided
 
-def collission(dest, landMarks):
-    hasCollided = False
-    if landMarks is not None:
-        dir = normalize(dest) * 100
-        interval = dir.copy()
-        while interval < dest:
-            hasCollided = __collission(interval, landMarks)
-            if hasCollided: break
-            interval += dir
-        hasCollided = __collission(dest, landMarks)
-    return hasCollided
+# def collission(dest, landMarks):
+#     hasCollided = False
+#     if landMarks is not None:
+#         dir = normalize(dest) * 100
+#         interval = dir.copy()
+#         while interval < dest:
+#             hasCollided = __collission(interval, landMarks)
+#             if hasCollided: break
+#             interval += dir
+#         hasCollided = __collission(dest, landMarks)
+#     return hasCollided
