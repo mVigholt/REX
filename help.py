@@ -81,19 +81,17 @@ class Cam (object):
         self.next_frame_with_detection()
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
-        flat_tvec = self.flatten(tvecs)
-        if flat_tvec is not None:
-            flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
-            flat_tvec[:, 1] = flat_tvec[:, 1] + robotRadius
+        flat_tvecs = self.flatten(tvecs)
+        flat_rvecs = self.flatten(rvecs)
+        if flat_tvecs is not None:
+            flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
+            flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
             test = []
-            flat_rvecs = self.flatten(rvecs)
-            print(flat_tvec)
             print(flat_rvecs)
             for rvec in flat_rvecs: 
-                print(math.cos(box_v+rvec[0])*box_c)
-                #test.append([math.cos(box_v+flat_rvecs[i])*box_c, math.sin(box_v+flat_rvecs[i])*box_c])
-            #print(test)
-        return self.flatten(self.ids), flat_tvec
+                test.append([math.cos(box_v+rvec[1])*box_c, math.sin(box_v+rvec[1])*box_c])
+            print(test)
+        return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):
         # Open a window
