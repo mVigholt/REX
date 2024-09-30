@@ -6,7 +6,6 @@ import itertools
 import help
 import rrt_mod as rt
 import robot_models
-import grid_occ
 import map as m
 
 # Open a camera device for capturing
