@@ -90,7 +90,7 @@ class Cam (object):
             print(flat_tvec)
             print(flat_rvecs)
             for i in flat_tvec: 
-                print(math.cos(box_v+flat_rvecs[i])*box_c)
+                print(math.cos(box_v+flat_rvecs[i][0])*box_c)
                 #test.append([math.cos(box_v+flat_rvecs[i])*box_c, math.sin(box_v+flat_rvecs[i])*box_c])
             #print(test)
         return self.flatten(self.ids), flat_tvec
