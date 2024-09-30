@@ -87,6 +87,7 @@ class Cam (object):
             flat_tvec[:, 1] = flat_tvec[:, 1] + robotRadius
             test = []
             flat_rvecs = self.flatten(rvecs)
+            print(flat_tvec)
             print(flat_rvecs)
             for i in flat_tvec: 
                 print(math.cos(box_v+flat_rvecs[i])*box_c)
