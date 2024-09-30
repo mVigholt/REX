@@ -155,11 +155,11 @@ class robot:
     self.theta = theta
 
 #----------------------------------------------------------------
-def collission(landMarks): # input er en liste af obj objekter
+def collission(landMarks, node): # input er en liste af obj objekter
     hasCollided = False
-    if landMarks is not None:
+    if landMarks is not None and node is not None:
         for i in landMarks:
-            if euclidean([0,0], i) <= robotRadius + landmarkRadius:
+            if euclidean([node.pos[0], node.pos[1]], i) <= robotRadius + landmarkRadius:
                 hasCollided = True
                 break
     return hasCollided
