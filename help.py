@@ -12,6 +12,10 @@ X = 145
 f = 1138
 
 landmarkRadius = 330
+box_x = 145/2
+box_z = 115
+box_c = math.dist(box_x,box_z)
+box_v = math.acos(box_x/box_c)
 robotRadius = 450/2
 buffer = 100
 
@@ -75,12 +79,17 @@ class Cam (object):
     
     def next_map(self):
         self.next_frame_with_detection()
-        _, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
+        rvec, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
         flat_tvec = self.flatten(tvecs)
+        print(rvec)
         if flat_tvec is not None:
             flat_tvec = np.delete(np.array(flat_tvec), 1, 1)
             flat_tvec[:, 1] = flat_tvec[:, 1] + robotRadius
+            test = []
+            for i in flat_tvec: 
+                test += [math.cos(box_v+rvec[0][i])*box_c, math.sin(box_v+rvec[0][i])*box_c]
+            print(test)
         return self.flatten(self.ids), flat_tvec
             
     def __setup_stream(self):
@@ -155,20 +164,29 @@ class robot:
     self.theta = theta
 
 #----------------------------------------------------------------
-def collission(landMarks): # input er en liste af obj objekter
-    hasCollided = False
-    if landMarks is not None:
-        for i in landMarks:
-            if euclidean([0,0], i) <= robotRadius + landmarkRadius:
-                hasCollided = True
-                break
-    return hasCollided
-
-def euclidean(a, b):
-    return math.dist(a,b) #sqrt((x_1 - x_2)**2 + (x_2 - y_2)**2)
-
 def normalize(vector):
     magnitude = math.sqrt(sum(x**2 for x in vector))
     if magnitude == 0:
         return vector  # or handle zero magnitude case as needed
     return [x / magnitude for x in vector]
+
+def __collission(dest, landMarks):
+    hasCollided = False
+    for i in landMarks:
+        if math.dist(dest, i) <= robotRadius + buffer + landmarkRadius:
+            hasCollided = True
+            print("Collission detected!!!")
+            break
+    return hasCollided
+
+def collission(dest, landMarks):
+    hasCollided = False
+    if landMarks is not None:
+        dir = normalize(dest) * 100
+        interval = dir.copy()
+        while interval < dest:
+            hasCollided = __collission(interval, landMarks)
+            if hasCollided: break
+            interval += dir
+        hasCollided = __collission(dest, landMarks)
+    return hasCollided
