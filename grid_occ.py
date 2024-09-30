@@ -57,10 +57,10 @@ class GridOccupancyMap(object):
 
 if __name__ == '__main__':
     map = GridOccupancyMap()
-    map.populate()
+    # map.populate()
 
-    plt.clf()
-    map.draw_map()
-    plt.show()
+    # plt.clf()
+    # map.draw_map()
+    # plt.show()
 
         

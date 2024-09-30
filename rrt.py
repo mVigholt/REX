@@ -72,7 +72,7 @@ class RRT:
             nearest_node = self.node_list[nearest_ind]
 
             new_node = self.steer(nearest_node, rnd_node, self.expand_dis)
-
+            
             if self.check_collision_free(new_node):
                 self.node_list.append(new_node)
 
@@ -120,6 +120,7 @@ class RRT:
 
         new_node.parent = from_node
 
+        print(f"from_node: {from_node.pos} | to_node: {to_node.pos} | new_node: {new_node.pos}")
         return new_node
 
     def generate_final_course(self, goal_ind):

@@ -7,9 +7,10 @@ https://github.com/AtsushiSakai/PythonRobotics/blob/master/PathPlanning/RRT/rrt.
 """
 
 import numpy as np
-# import matplotlib.pyplot as plt
-# from matplotlib.animation import FFMpegWriter
+import matplotlib.pyplot as plt
+from matplotlib.animation import FFMpegWriter
 import map as m
+import math
 
 class RRT:
     """
@@ -73,7 +74,7 @@ class RRT:
             nearest_node = self.node_list[nearest_ind]
 
             new_node = self.steer(nearest_node, rnd_node, self.expand_dis)
-
+            
             if self.check_collision_free(new_node):
                 self.node_list.append(new_node)
 
@@ -121,6 +122,7 @@ class RRT:
 
         new_node.parent = from_node
 
+        # print(f"from_node: {from_node.pos} | to_node: {to_node.pos} | new_node: {new_node.pos}")
         return new_node
 
     def generate_final_course(self, goal_ind):
@@ -142,29 +144,29 @@ class RRT:
             rnd = self.Node(self.end.pos)
         return rnd
 
-    # def draw_graph(self, rnd=None):
-    #     # plt.clf()
-    #     # # for stopping simulation with the esc key.
-    #     # plt.gcf().canvas.mpl_connect(
-    #     #     'key_release_event',
-    #     #     lambda event: [exit(0) if event.key == 'escape' else None])
-    #     plt.clf()
-    #     if rnd is not None:
-    #         plt.plot(rnd.pos[0], rnd.pos[1], "^k")
+    def draw_graph(self, rnd=None):
+        # plt.clf()
+        # # for stopping simulation with the esc key.
+        # plt.gcf().canvas.mpl_connect(
+        #     'key_release_event',
+        #     lambda event: [exit(0) if event.key == 'escape' else None])
+        plt.clf()
+        if rnd is not None:
+            plt.plot(rnd.pos[0], rnd.pos[1], "^k")
 
-    #     # draw the map
-    #     self.map.draw_map()
+        # draw the map
+        self.map.draw_map()
 
-    #     for node in self.node_list:
-    #         if node.parent:
-    #             path = np.array(node.path)
-    #             plt.plot(path[:, 0], path[:, 1], "-g")
+        for node in self.node_list:
+            if node.parent:
+                path = np.array(node.path)
+                plt.plot(path[:, 0], path[:, 1], "-g")
 
-    #     plt.plot(self.start.pos[0], self.start.pos[1], "xr")
-    #     plt.plot(self.end.pos[0], self.end.pos[1], "xr")
-    #     plt.axis(self.map.extent)
-    #     plt.grid(True)
-    #     plt.pause(0.01)
+        plt.plot(self.start.pos[0], self.start.pos[1], "xr")
+        plt.plot(self.end.pos[0], self.end.pos[1], "xr")
+        plt.axis(self.map.extent)
+        plt.grid(True)
+        plt.pause(0.01)
 
 
     @staticmethod

@@ -30,9 +30,10 @@ class PointMassModel(RobotModel):
         return path[1:]
 
     def inverse_dyn(self, x, x_goal, T):
+        if type(x_goal) == list:
+            print("type error")
         #for point mass, the path is just a straight line by taking full ctrl_range at each step
-        dir = (x_goal-x)/np.linalg.norm(x_goal-x)
-
+        dir = (np.array(x_goal)-x)/np.linalg.norm(x_goal-x)
         u = np.array([dir*self.ctrl_range[1] for _ in range(T)])
 
         return self.forward_dyn(x, u, T)

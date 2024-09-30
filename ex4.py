@@ -1,5 +1,7 @@
 import cv2 # Import the OpenCV library
 import time as t
+
+from matplotlib import pyplot as plt
 import robot
 import numpy as np
 import itertools
@@ -9,35 +11,79 @@ import robot_models
 import map as m
 
 # Open a camera device for capturing
-cam = help.Cam()
+# cam = help.Cam()
+
+def DrawPath(path):
+
+  # Extract x and y coordinates
+  x_coords = [node[0] for node in path]
+  y_coords = [node[1] for node in path]
+
+  # Define the center and radius of the circle
+  circle_center = [0, 1000]
+  circle_radius = 330
+
+  # Plot the path and connect them in order
+  plt.figure(figsize=(10, 8))
+  plt.plot(x_coords, y_coords, '-o', color='b', label='Path')
+
+  # Mark start and end points for clarity
+  plt.scatter(path[0][0], path[0][1], color='g', label='Start', s=100)
+  plt.scatter(path[-1][0], path[-1][1], color='r', label='End', s=100)
+
+  # Draw the circle representing an obstacle
+  circle = plt.Circle(circle_center, circle_radius, color='orange', fill=False, linestyle='--', linewidth=2, label='Obstacle')
+
+  # Add the circle to the plot
+  plt.gca().add_patch(circle)
+
+  # Set labels and legend
+  plt.xlabel('X Coordinate')
+  plt.ylabel('Y Coordinate')
+  plt.title('Nodes Path with Obstacle')
+  plt.grid(True)
+  plt.legend()
+  plt.axis('equal')
+
+  # Show plot
+  plt.show()
 
 X = 145
 f = 1138
 ottoRadius = 25
 boxRadius = 35
 
-while cv2.waitKey(4) == -1: # Wait for a key pressed event
-  ids, tvecs = cam.next_map()
-  path_res = 0.05
-  
-  map = m.landmark_map(high=(200, 1000), landMarks=tvecs)
-  
-  robot = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
-  
-  rrt = rt.RRT(
-    start=[0, 0],
-    goal=[0, 1000],
-    robot_model=robot,
-    map=tvecs,
-    expand_dis=0.2,
-    path_resolution=path_res,
-    )
-  
-  path = rrt.planning(animation=False)
+# while cv2.waitKey(4) == -1: # Wait for a key pressed event
+  # ids, tvecs = cam.next_map()
 
-  if path is None:
-      print("Cannot find path")
-  else:
-      print("found path!!")
-  # mangler alt rrt pisset
-  
+path_res = 50
+expand_dis = 200
+
+tvecs = [[0, 1000]]
+
+map = m.landmark_map(low=(-1000, 0), high=(1000, 2000), landMarks=tvecs)
+
+robot = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
+
+rrt = rt.RRT(
+  start=[0, 0],
+  goal=[0, 2000],
+  robot_model=robot,
+  map=map,
+  expand_dis=expand_dis,
+  path_resolution=path_res,
+  )
+
+path = rrt.planning(animation=False)
+
+if path is None:
+    print("Cannot find path")
+else:
+    print("found path!!")
+
+print(path)
+DrawPath(path=path)
+
+# TODO:
+# når type error bliver printet betyder det at robot_models.inverse_dyn har fået en liste som input i x_goal. Er det et problem? Aner det ikke
+# nogle gange er "goal" noden 2 gange i pathen

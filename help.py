@@ -132,7 +132,7 @@ def distAndDir(corners):
 
 ##------------------------------------------------------------------------------------------
 # Create a robot object and initialize
-arlo = robot.Robot()
+# arlo = robot.Robot()
 rotateSpeed = 31
 speed = 60
 error = 2
@@ -165,11 +165,13 @@ class robot:
     self.theta = theta
 
 #----------------------------------------------------------------
-def collission(landMarks, node): # input er en liste af obj objekter
+def collission(landMarks, pos): # input er en liste af obj objekter
     hasCollided = False
-    if landMarks is not None and node is not None:
+    if landMarks is not None and pos is not None:
         for i in landMarks:
-            if euclidean([node.pos[0], node.pos[1]], i) <= robotRadius + landmarkRadius:
+            # print(f"{euclidean([pos[0], pos[1]], i)} <= {robotRadius + landmarkRadius}")
+            # print(f"{pos} -> {i}")
+            if euclidean([pos[0], pos[1]], i) <= robotRadius + landmarkRadius:
                 hasCollided = True
                 break
     return hasCollided
