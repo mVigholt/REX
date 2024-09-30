@@ -15,7 +15,8 @@ landmarkRadius = 330
 box_x = 145/2
 box_z = 115
 box_c = math.dist([box_x],[box_z])
-box_v = math.acos(float(box_x/box_c))
+print(box_x/box_c)
+box_v = math.acos(box_x/box_c)
 robotRadius = 450/2
 buffer = 100
 
