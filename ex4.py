@@ -6,8 +6,6 @@ import itertools
 import help
 import rrt_mod as rt
 import robot_models
-import matplotlib.pyplot as plt
-from matplotlib.animation import FFMpegWriter
 import grid_occ
 import map as m
 
@@ -36,11 +34,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     path_resolution=path_res,
     )
   
-  show_animation = True
-  metadata = dict(title="RRT Test")
-  writer = FFMpegWriter(fps=15, metadata=metadata)
-  
-  path = rrt.planning(animation=show_animation, writer=writer)
+  path = rrt.planning(animation=False)
 
   if path is None:
       print("Cannot find path")
