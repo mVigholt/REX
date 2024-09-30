@@ -4,11 +4,12 @@ import robot
 import numpy as np
 import itertools
 import help
-import rrt as rt
+import rrt_mod as rt
 import robot_models
 import matplotlib.pyplot as plt
 from matplotlib.animation import FFMpegWriter
 import grid_occ
+import map as m
 
 # Open a camera device for capturing
 cam = help.Cam()
@@ -21,17 +22,29 @@ boxRadius = 35
 while cv2.waitKey(4) == -1: # Wait for a key pressed event
   ids, tvecs = cam.next_map()
   path_res = 0.05
-
+  
+  map = m.landmark_map(high=(200, 1000), landMarks=tvecs)
+  
   robot = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
   
   rrt = rt.RRT(
     start=[0, 0],
-    goal=[0, 100],
+    goal=[0, 1000],
     robot_model=robot,
     map=tvecs,
     expand_dis=0.2,
     path_resolution=path_res,
     )
   
+  show_animation = True
+  metadata = dict(title="RRT Test")
+  writer = FFMpegWriter(fps=15, metadata=metadata)
+  
+  path = rrt.planning(animation=show_animation, writer=writer)
+
+  if path is None:
+      print("Cannot find path")
+  else:
+      print("found path!!")
   # mangler alt rrt pisset
   
