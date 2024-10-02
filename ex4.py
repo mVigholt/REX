@@ -49,8 +49,8 @@ def DrawPath(path):
 # while cv2.waitKey(4) == -1: # Wait for a key pressed event
   # ids, tvecs = cam.next_map()
 
-path_res = 50
-expand_dis = 1000
+path_res = 200
+expand_dis = 2000
 
 tvecs = [[0, 1000]]
 
