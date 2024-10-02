@@ -13,6 +13,6 @@ while 1 == 1:
   
   i += 0.1
   input(f"you are testing i = {i}. Waiting for input")
-  arlo.Right()
+  arlo.Forward()
   sleep(i)
   arlo.Stop()
