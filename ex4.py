@@ -76,7 +76,7 @@ if path is None:
 else:
     print("found path!!")
 
-#print(path)
+print(path)
 #DrawPath(path=path)
 
 if path is not None:
@@ -85,7 +85,8 @@ if path is not None:
   for i in range(len(path)-1,0,-1):
       dxy = path[i-1] - path[i]
       theta = (math.pi/2) - math.atan2(dxy[0],dxy[1]) + theta
-      print(math.atan2(dxy[0],dxy[1]))
+      print(f"relativ :{math.atan2(dxy[0],dxy[1])}, actual: {theta}")
+      
       dist = math.dist([0,0],dxy)
       otto.Turn(theta)
       otto.Forward(dist)
