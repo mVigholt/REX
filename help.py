@@ -83,7 +83,7 @@ class Cam (object):
         def localCoordinates(rvec,v):
             t = math.dist([0,0,0],rvec)
             k = rvec/t
-            vec = v * math.cos(t) + np.linalg.cross(k, v) * math.sin(t) + np.matmul(k,np.matmul(k,v)) * (1 - math.cos(t))
+            vec = np.matmul(v, math.cos(t)) + np.matmul(np.linalg.cross(k, v),math.sin(t)) + np.matmul(np.matmul(k,np.matmul(k,v)),(1 - math.cos(t)))
             return vec
         if flat_tvecs is not None:
             for rvec in flat_rvecs: 
