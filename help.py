@@ -83,17 +83,16 @@ class Cam (object):
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
+        def localCoordinates(rvec,v):
+            t = math.dist([0,0,0],rvec)
+            k = rvec/t
+            vec = v * math.cos(t) + np.linalg.cross(k, v) * math.sin(t) + np.matmul(k,np.matmul(k,v)) * (1 - math.cos(t))
+            return vec
         if flat_tvecs is not None:
+            for rvec in flat_rvecs: 
+                flat_tvecs += localCoordinates(rvec, [145/2, 11,5, 0])
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
-            test = []
-            print(flat_rvecs)
-            print("start\n")
-            print(cv2.Rodrigues(rvecs))
-            print("stop\n")
-            for rvec in flat_rvecs: 
-                test.append([math.cos(box_v+rvec[2])*box_c, math.sin(box_v+rvec[2])*box_c])
-            print(test)
         return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):
@@ -135,7 +134,7 @@ def distAndDir(corners):
 
 ##------------------------------------------------------------------------------------------
 # Create a robot object and initialize
-# arlo = robot.Robot()
+arlo = robot.Robot()
 rotateSpeed = 31
 speed = 60
 error = 2
@@ -159,13 +158,6 @@ def Turn(dir):
 
 def Stop():
     arlo.stop()
-
-#----------------------------------------------------------------
-class robot:
-  def __init__(self, x = 0, y = 0, theta = 0):
-    self.x = x
-    self.y = y
-    self.theta = theta
 
 #----------------------------------------------------------------
 def collission(landMarks, pos): # input er en liste af obj objekter
