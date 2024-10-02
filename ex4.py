@@ -86,7 +86,7 @@ if path is not None:
       cur = path[i-1] - path[i]
       next = path[i-2] - path[i-1]
       theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
-      theta = theta * np.sign(np.cross(cur,next)[0])
+      theta = theta * np.sign(np.cross(cur,next))
       print(f"relativ: {theta}")
       dist = math.dist([0,0],next)
       otto.Turn(theta)
