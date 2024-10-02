@@ -87,7 +87,7 @@ class Cam (object):
             return vec
         if flat_tvecs is not None:
             for rvec in flat_rvecs: 
-                flat_tvecs += localCoordinates(rvec, [145/2, 11,5, 0])
+                flat_tvecs += localCoordinates(rvec, [145/2, 0, 11.5])
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         return self.flatten(self.ids), flat_tvecs
