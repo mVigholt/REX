@@ -90,6 +90,7 @@ class Cam (object):
         if flat_tvecs is not None:
             for rvec in flat_rvecs: 
                 v = localCoordinates(rvec, [145/2, 0, 115])
+                print(f"tvecs: {tvecs}")
                 print(v)
                 flat_tvecs += v
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
