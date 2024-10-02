@@ -82,6 +82,7 @@ print(path)
 if path is not None:
   cur = np.array([0,1])
   for i in range(len(path)-1,0,-1):
+      print(i)
       next = path[i-1] - path[i]
       theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
       theta = theta * np.sign(np.cross(cur,next))
