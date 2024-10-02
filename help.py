@@ -144,8 +144,15 @@ class Arlo (object):
     def degreeFunction(degrees):
         return (degrees - 0.23)/44.15
     
-    def Forward(self): 
+    def distanceFunction(distance):
+        return (distance + 0.17)/35.53
+    
+    def Forward(self, distance): 
         self.arlo.go_diff(speed-error, speed, 1, 1)
+        if distance is not None:
+            t.sleep(self.distanceFunction(distance))
+            self.Stop()
+        
   
     def Right(self, degrees = None):
         self.arlo.go_diff(rotateSpeed-1, rotateSpeed, 1, 0)
