@@ -94,6 +94,7 @@ class Cam (object):
                 print(f"rvecs: {rvecs}")
                 print(v)
                 flat_tvecs += v
+                print(flat_tvecs)
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         return self.flatten(self.ids), flat_tvecs
