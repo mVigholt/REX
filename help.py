@@ -11,7 +11,7 @@ CH = 720
 X = 145
 f = 1138
 
-landmarkRadius = 200
+landmarkRadius = 350
 robotRadius = 450/2
 robotBuffer = 50
 
@@ -88,10 +88,10 @@ class Cam (object):
             vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.dot(k,v) * k * (1 - math.cos(t))
             return vec
         if flat_tvecs is not None:
-            for rvec in flat_rvecs: 
-                v = localCoordinates(rvec, [145/2, 0, 115])
-                print(v)
-                flat_tvecs += v
+            # for rvec in flat_rvecs: 
+            #     v = localCoordinates(rvec, [145/2, 0, 115])
+            #     print(v)
+            #     flat_tvecs += v
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         return self.flatten(self.ids), flat_tvecs
