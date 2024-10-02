@@ -19,7 +19,7 @@ def DrawPath(path):
 
   # Define the center and radius of the circle
   circle_center = [0, 1000]
-  circle_radius = 330
+  circle_radius = 525
 
   # Plot the path and connect them in order
   plt.figure(figsize=(10, 8))

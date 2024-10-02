@@ -181,6 +181,7 @@ class RRT:
     def check_collision_free(self, node):
         if node is None:
             return False
+        print(node.path)
         for p in node.path:
             if self.map.in_collision(self.map.landMarks, np.array(p)):
                 return False

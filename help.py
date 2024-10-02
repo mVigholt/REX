@@ -13,7 +13,7 @@ f = 1138
 
 landmarkRadius = 200
 robotRadius = 450/2
-robotBuffer = 100
+robotBuffer = 50
 
 
 # initialize camera transformation matrix
