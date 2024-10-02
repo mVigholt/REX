@@ -84,7 +84,7 @@ class Cam (object):
             t = math.dist([0,0,0],rvec)
             k = np.array(rvec/t)
             v = np.array(v)
-            vec = v * math.cos(t) + np.linalg.cross(k, v) * math.sin(t) + np.matmul(k,np.matmul(k,v)) * (1 - math.cos(t))
+            vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.matmul(k,np.matmul(k,v)) * (1 - math.cos(t))
             return vec
         if flat_tvecs is not None:
             for rvec in flat_rvecs: 
