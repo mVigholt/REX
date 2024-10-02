@@ -80,14 +80,14 @@ print(path)
 #DrawPath(path=path)
 
 if path is not None:
-  path.append(np.array([0,-1]))
-  theta = 0
+  cur = np.array([0,1])
   for i in range(len(path)-1,0,-1):
-      cur = path[i-1] - path[i]
-      next = path[i-2] - path[i-1]
+      next = path[i-1] - path[i]
       theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
       theta = theta * np.sign(np.cross(cur,next))
-      print(f"relativ: {theta}")
       dist = math.dist([0,0],next)
+      print(f"vinkel: {theta}")
+      print(f"længde: {dist}")
       otto.Turn(theta)
       otto.Forward(dist)
+      cur = next
