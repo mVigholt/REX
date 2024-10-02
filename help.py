@@ -145,10 +145,10 @@ class Arlo (object):
     def __init__(self):
         self.arlo = robot.Robot()
         
-    def degreeFunction(radian):
+    def degreeFunction(self, radian):
         return (radian * 180 / math.pi - 0.23)/44.15
     
-    def distanceFunction(distance):
+    def distanceFunction(self, distance):
         return (distance + 1.7)/355.3
     
     def Forward(self, distance): 
