@@ -6,3 +6,5 @@ import numpy as np
 arlo = robot.Robot()
 
 arlo.go_diff(30, 31, 1, -1)
+sleep(0.1)
+arlo.stop()
