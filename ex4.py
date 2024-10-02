@@ -80,7 +80,7 @@ print(path)
 #DrawPath(path=path)
 
 if path is not None:
-  path.append([0,-1])
+  path.append(np.array([0,-1]))
   theta = 0
   for i in range(len(path)-1,0,-1):
       cur = path[i-1] - path[i]
