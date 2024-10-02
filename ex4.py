@@ -2,9 +2,7 @@ import cv2 # Import the OpenCV library
 import time as t
 
 from matplotlib import pyplot as plt
-import robot
 import numpy as np
-import itertools
 import help
 import rrt_mod as rt
 import robot_models
@@ -28,8 +26,8 @@ def DrawPath(path):
   plt.plot(x_coords, y_coords, '-o', color='b', label='Path')
 
   # Mark start and end points for clarity
-  plt.scatter(path[0][0], path[0][1], color='g', label='Start', s=100)
-  plt.scatter(path[-1][0], path[-1][1], color='r', label='End', s=100)
+  plt.scatter(path[-1][0], path[-1][1], color='r', label='Start', s=100)
+  plt.scatter(path[0][0], path[0][1], color='g', label='End', s=100)
 
   # Draw the circle representing an obstacle
   circle = plt.Circle(circle_center, circle_radius, color='orange', fill=False, linestyle='--', linewidth=2, label='Obstacle')
@@ -48,16 +46,11 @@ def DrawPath(path):
   # Show plot
   plt.show()
 
-X = 145
-f = 1138
-ottoRadius = 25
-boxRadius = 35
-
 # while cv2.waitKey(4) == -1: # Wait for a key pressed event
   # ids, tvecs = cam.next_map()
 
 path_res = 50
-expand_dis = 200
+expand_dis = 1000
 
 tvecs = [[0, 1000]]
 

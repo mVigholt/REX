@@ -11,13 +11,10 @@ CH = 720
 X = 145
 f = 1138
 
-landmarkRadius = 330
-box_x = 145/2
-box_z = 115
-box_c = math.dist([0,0],[box_x,box_z])
-box_v = math.acos(box_x/box_c)
+landmarkRadius = 200
 robotRadius = 450/2
-buffer = 100
+robotBuffer = 100
+
 
 # initialize camera transformation matrix
 cam_matrix = np.array([[f, 0, CW/2],
@@ -134,56 +131,49 @@ def distAndDir(corners):
 
 ##------------------------------------------------------------------------------------------
 # Create a robot object and initialize
-arlo = robot.Robot()
 rotateSpeed = 31
 speed = 60
 error = 2
 safetyStraightDistance = 500
 safetySideDistance = 400
 
-def Forward():
-  arlo.go_diff(speed-error, speed, 1, 1)
+class Arlo (object):
+    def __init__(self):
+        self.arlo = robot.Robot()
+    
+    def Forward(self): 
+        self.arlo.go_diff(speed-error, speed, 1, 1)
   
-def Right():
-    arlo.go_diff(rotateSpeed-1, rotateSpeed, 1, 0)
+    def Right(self):
+        self.arlo.go_diff(rotateSpeed-1, rotateSpeed, 1, 0)
 
-def Left():
-    arlo.go_diff(rotateSpeed-1, rotateSpeed, 0, 1)
+    def Left(self):
+        self.arlo.go_diff(rotateSpeed-1, rotateSpeed, 0, 1)
 
-def Turn(dir):
-    if dir == 1:
-        Right()
-    else:
-        Left()
+    def Turn(self, dir):
+        if dir == 1:
+            self.Right()
+        else:
+            self.Left()
 
-def Stop():
-    arlo.stop()
+    def Stop(self):
+        self.arlo.stop()
 
 #----------------------------------------------------------------
-def collission(landMarks, pos): # input er en liste af obj objekter
+def collission(landMarks, dest): # input er en liste af obj objekter
     hasCollided = False
-    if landMarks is not None and pos is not None:
+    if landMarks is not None and dest is not None:
         for i in landMarks:
-            # print(f"{euclidean([pos[0], pos[1]], i)} <= {robotRadius + landmarkRadius}")
-            # print(f"{pos} -> {i}")
-            if euclidean([pos[0], pos[1]], i) <= robotRadius + landmarkRadius:
+            if math.dist(dest, i) <= robotRadius + robotBuffer + landmarkRadius:
                 hasCollided = True
                 break
     return hasCollided
 
-def euclidean(a, b):
-    return math.dist(a,b) #sqrt((x_1 - x_2)**2 + (x_2 - y_2)**2)
-
-def normalize(vector):
-    magnitude = math.sqrt(sum(x**2 for x in vector))
-    if magnitude == 0:
-        return vector  # or handle zero magnitude case as needed
-    return [x / magnitude for x in vector]
 
 # def __collission(dest, landMarks):
 #     hasCollided = False
 #     for i in landMarks:
-#         if math.dist(dest, i) <= robotRadius + buffer + landmarkRadius:
+#         if math.dist(dest, i) <= robotRadius + robotBuffer + landmarkRadius:
 #             hasCollided = True
 #             print("Collission detected!!!")
 #             break
@@ -192,7 +182,7 @@ def normalize(vector):
 # def collission(dest, landMarks):
 #     hasCollided = False
 #     if landMarks is not None:
-#         dir = normalize(dest) * 100
+#         dir = np.linalg.norm(dest) * 100
 #         interval = dir.copy()
 #         while interval < dest:
 #             hasCollided = __collission(interval, landMarks)
