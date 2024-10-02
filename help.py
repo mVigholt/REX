@@ -166,11 +166,11 @@ class Arlo (object):
             t.sleep(self.degreeFunction(degrees))
             self.Stop()
 
-    def Turn(self, dir):
-        if dir == 1:
-            self.Right()
+    def Turn(self, angle):
+        if angle >= 0:
+            self.Right(abs(angle))
         else:
-            self.Left()
+            self.Left(abs(angle))
 
     def Stop(self):
         self.arlo.stop()

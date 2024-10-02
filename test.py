@@ -3,6 +3,7 @@ import math
 import time as t
 import cv2
 
+otto = help.Arlo()
 cam = help.Cam()
 lap = help.Timed_lap()
 
@@ -19,6 +20,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     ids, tvecs = cam.next_map()
+    print(tvecs)
     t.sleep(1)
 
     # if ids is not None:
@@ -53,3 +55,11 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
 #cv2.imwrite("OttosView.png", frameReference)
 # Finished successfully
 
+# path = []
+# theta = 0
+# for i in range(len(path),0,-1):
+#     dxy = path[i-1] - path[i]
+#     theta += (math.pi/2) - math.atan2(dxy[0],dxy[1]) + theta
+#     dist = math.dist([0,0],dxy)
+#     otto.Turn(theta)
+#     otto.Forward(dist)
