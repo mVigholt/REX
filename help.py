@@ -89,7 +89,7 @@ class Cam (object):
             return vec
         if flat_tvecs is not None:
             for rvec in flat_rvecs: 
-                v = localCoordinates(rvec, [145/2, 0, 115])
+                v = localCoordinates(rvec, [145/2, 0, -115])
                 print(f"tvecs: {tvecs}")
                 print(f"rvecs: {rvecs}")
                 print(v)
