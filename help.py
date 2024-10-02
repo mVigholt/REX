@@ -17,9 +17,9 @@ robotBuffer = 50
 
 
 # initialize camera transformation matrix
-cam_matrix = np.array([[f, 0, CW/2],
-                         [0, f, CH/2],
-                         [0, 0, 1]])
+cam_matrix = np.array([ [f, 0, CH/2],
+                        [0, f, CW/2],
+                        [0, 0, 1]])
 distCoeffs = np.zeros((5, 1))
 
 class Cam (object):
@@ -88,10 +88,10 @@ class Cam (object):
             vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.dot(k,v) * k * (1 - math.cos(t))
             return vec
         if flat_tvecs is not None:
-            # for rvec in flat_rvecs: 
-            #     v = localCoordinates(rvec, [145/2, 0, 115])
-            #     print(v)
-            #     flat_tvecs += v
+            for rvec in flat_rvecs: 
+                v = localCoordinates(rvec, [145/2, 0, 115])
+                print(v)
+                flat_tvecs += v
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         return self.flatten(self.ids), flat_tvecs
