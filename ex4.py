@@ -82,13 +82,12 @@ print(path)
 if path is not None:
   cur = np.array([0,1])
   for i in range(len(path)-1,0,-1):
-      print(i)
       next = path[i-1] - path[i]
       theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
       theta = theta * np.sign(np.cross(cur,next))
       dist = math.dist([0,0],next)
-      print(f"vinkel: {theta}")
-      print(f"længde: {dist}")
+      print(f"turn: {theta}")
+      print(f"move: {dist}")
       otto.Turn(theta)
       otto.Forward(dist)
       cur = next
