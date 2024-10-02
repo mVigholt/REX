@@ -85,7 +85,7 @@ if path is not None:
   for i in range(len(path)-1,0,-1):
       dxy = path[i-1] - path[i]
       theta = (math.pi/2) - math.atan2(dxy[0],dxy[1]) + theta
-      print(theta)
+      print(math.atan2(dxy[0],dxy[1]))
       dist = math.dist([0,0],dxy)
       otto.Turn(theta)
       otto.Forward(dist)
