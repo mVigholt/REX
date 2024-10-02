@@ -5,5 +5,4 @@ import numpy as np
 # Create a robot object and initialize
 arlo = robot.Robot()
 
-arlo.go_diff(60-3, 60, 1, 1)
-sleep(1)
+arlo.go_diff(30, 31, 1, -1)
