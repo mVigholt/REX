@@ -140,15 +140,24 @@ safetySideDistance = 400
 class Arlo (object):
     def __init__(self):
         self.arlo = robot.Robot()
+        
+    def degreeFunction(degrees):
+        return (degrees - 0.23)/44.15
     
     def Forward(self): 
         self.arlo.go_diff(speed-error, speed, 1, 1)
   
-    def Right(self):
+    def Right(self, degrees = None):
         self.arlo.go_diff(rotateSpeed-1, rotateSpeed, 1, 0)
+        if degrees is not None:
+            t.sleep(self.degreeFunction(degrees))
+            self.Stop()
 
-    def Left(self):
+    def Left(self, degrees = None):
         self.arlo.go_diff(rotateSpeed-1, rotateSpeed, 0, 1)
+        if degrees is not None:
+            t.sleep(self.degreeFunction(degrees))
+            self.Stop()
 
     def Turn(self, dir):
         if dir == 1:
