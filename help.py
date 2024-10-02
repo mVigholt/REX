@@ -171,9 +171,9 @@ class Arlo (object):
             self.Stop()
 
     def Turn(self, angle):
-        if angle >= 0:
+        if angle < 0: 
             self.Right(abs(angle))
-        else:
+        elif angle > 0:
             self.Left(abs(angle))
 
     def Stop(self):

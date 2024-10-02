@@ -80,13 +80,14 @@ print(path)
 #DrawPath(path=path)
 
 if path is not None:
-# path = []
+  path.append([0,-1])
   theta = 0
   for i in range(len(path)-1,0,-1):
-      dxy = path[i-1] - path[i]
-      theta = (math.pi/2) - math.atan2(dxy[0],dxy[1]) + theta
-      print(f"relativ :{math.atan2(dxy[0],dxy[1])}, actual: {theta}")
-      
-      dist = math.dist([0,0],dxy)
+      cur = path[i-1] - path[i]
+      next = path[i-2] - path[i-1]
+      theta = np.acos(np.dot(cur,next)/(math.dist([0.0],cur)* math.dist([0.0],next)))
+      theta = theta * np.sign(np.cross(cur,next)[0])
+      print(f"relativ: {theta}")
+      dist = math.dist([0,0],next)
       otto.Turn(theta)
       otto.Forward(dist)
