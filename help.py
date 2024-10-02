@@ -82,7 +82,8 @@ class Cam (object):
         flat_rvecs = self.flatten(rvecs)
         def localCoordinates(rvec,v):
             t = math.dist([0,0,0],rvec)
-            k = rvec/t
+            k = np.array(rvec/t)
+            v = np.array(v)
             vec = v * math.cos(t) + np.linalg.cross(k, v) * math.sin(t) + np.matmul(k,np.matmul(k,v)) * (1 - math.cos(t))
             return vec
         if flat_tvecs is not None:
