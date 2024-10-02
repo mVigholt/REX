@@ -82,7 +82,7 @@ else:
 if path is not None:
 # path = []
   theta = 0
-  for i in range(len(path),0,-1):
+  for i in range(len(path)-1,0,-1):
       dxy = path[i-1] - path[i]
       theta += (math.pi/2) - math.atan2(dxy[0],dxy[1]) + theta
       dist = math.dist([0,0],dxy)
