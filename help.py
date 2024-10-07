@@ -96,7 +96,8 @@ class Cam (object):
                 # print(f"rvecs: {rvecs}")
                 # print(v)
                 c = math.dist([0,0], [145/2, 115])
-                tvec += [math.cos(rvec[2])*c, math.sin(rvec[2])]
+                r = rvec[2]
+                tvec += [math.cos(r)*c, math.sin(r)*c]
                 #print(flat_tvecs)
         return self.flatten(self.ids), flat_tvecs
             
