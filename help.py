@@ -17,9 +17,9 @@ robotBuffer = 50
 
 
 # initialize camera transformation matrix
-cam_matrix = np.array([[f, 0, CW/2],
-                         [0, f, CH/2],
-                         [0, 0, 1]])
+cam_matrix = np.array([ [f, 0, CH/2],
+                        [0, f, CW/2],
+                        [0, 0, 1]])
 distCoeffs = np.zeros((5, 1))
 
 class Cam (object):
@@ -80,20 +80,25 @@ class Cam (object):
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
-        def localCoordinates(rvec,v):
-            t = math.dist([0,0,0],rvec)
-            k = np.array(rvec/t)
-            v = np.array(v)
-            #vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.matmul(k.T,np.matmul(k,v)) * (1 - math.cos(t))
-            vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.dot(k,v) * k * (1 - math.cos(t))
-            return vec
+        # def localCoordinates(rvec,v):
+        #     t = math.dist([0,0,0],rvec)
+        #     k = np.array(rvec/t)
+        #     v = np.array(v)
+        #     #vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.matmul(k.T,np.matmul(k,v)) * (1 - math.cos(t))
+        #     vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.dot(k,v) * k * (1 - math.cos(t))
+        #     return vec
         if flat_tvecs is not None:
-            # for rvec in flat_rvecs: 
-            #     v = localCoordinates(rvec, [145/2, 0, 115])
-            #     print(v)
-            #     flat_tvecs += v
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
+            for rvec, tvec in flat_rvecs, flat_tvecs: 
+                # v = localCoordinates(rvec, [145/2, 0, -115])
+                # print(f"tvecs: {tvecs}")
+                # print(f"rvecs: {rvecs}")
+                # print(v)
+                c = math.dist([0,0], [145/2, 115])
+                r = rvec[2]
+                tvec += [math.cos(r)*c, math.sin(r)*c]
+                #print(flat_tvecs)
         return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):
@@ -171,9 +176,9 @@ class Arlo (object):
             self.Stop()
 
     def Turn(self, angle):
-        if angle >= 0:
+        if angle < 0: 
             self.Right(abs(angle))
-        else:
+        elif angle > 0:
             self.Left(abs(angle))
 
     def Stop(self):
