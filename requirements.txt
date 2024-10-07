@@ -3,3 +3,4 @@ serial==0.0.97
 numpy==2.1.0
 matplotlib==3.9.2
 opencv_python==4.10.0.84
+picamera==1.12
