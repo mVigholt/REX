@@ -1,3 +1,4 @@
+import math
 import cv2
 import particle
 import camera
@@ -5,7 +6,14 @@ import numpy as np
 import time
 from timeit import default_timer as timer
 import sys
+import os
 
+# Define the path to the directory where the desired module is located
+directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.insert(0, directory_path)
+
+import help as h
 
 # Flags
 showGUI = True  # Whether or not to open GUI windows
@@ -16,7 +24,9 @@ def isRunningOnArlo():
     """Return True if we are running on Arlo, otherwise False.
       You can use this flag to switch the code from running on you laptop to Arlo - you need to do the programming here!
     """
-    return onRobot
+    # UNCOMMENT HVIS PÅ ARLO
+    # return onRobot
+    return False
 
 
 if isRunningOnArlo():
@@ -46,10 +56,10 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 2]
+landmarkIDs = [1, 10]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    2: (300.0, 0.0)  # Coordinates for landmark 2
+    10: (300.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -157,7 +167,9 @@ try:
     else:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
-
+    
+    lap = h.Timed_lap()
+    
     while True:
 
         # Move the robot according to user input (only for testing)
@@ -177,13 +189,18 @@ try:
                 angular_velocity += 0.2
             elif action == ord('d'): # Right
                 angular_velocity -= 0.2
-
-
-
         
         # Use motor controls to update particles
         # XXX: Make the robot drive
         # XXX: You do this
+        dt = lap.time()
+        for p in particles:
+            theta = p.getTheta()
+            deltaX = math.cos(theta) * velocity * dt
+            deltaY = math.sin(theta) * velocity * dt
+            deltaTheta = angular_velocity * dt
+            particle.move_particle(p, deltaX, deltaY, deltaTheta)
+            
 
 
         # Fetch next frame
@@ -196,6 +213,9 @@ try:
             for i in range(len(objectIDs)):
                 print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
+                
+                
+                
 
             # Compute particle weights
             # XXX: You do this
