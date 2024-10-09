@@ -9,7 +9,7 @@ import time
 from timeit import default_timer as timer
 import sys
 import os
-import path
+# import path
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -199,9 +199,9 @@ try:
         # Use motor controls to update particles
         # XXX: Make the robot drive
         
-        if pvar < 10:
-            if len(measurements > 0):
-                path.Generate(measurements, est_pose, [500, 0])
+        # if pvar < 10:
+        #     if len(measurements > 0):
+        #         path.Generate(measurements, est_pose, [500, 0])
             
         # Clear seen objects
         measurements.clear()
