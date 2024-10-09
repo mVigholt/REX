@@ -255,6 +255,7 @@ try:
                 w = 1
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
+                p.setWeight(w)
                 weights.append(w)
 
             # Resampling
