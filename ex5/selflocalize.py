@@ -199,8 +199,7 @@ try:
         # XXX: Make the robot drive
         
         if pvar < 10:
-            if len(measurements > 0):
-                path.Generate(measurements, est_pose, [50, 0])
+            path.Generate(measurements, est_pose, [50, 0])
             
         # Clear seen objects
         measurements.clear()
