@@ -235,14 +235,14 @@ try:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]       
                     
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 2 #grader
+                sigma = 0.2
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
                 ulv = np.array([landmarks[measurement[0]][0] - particle.getX(), 
                                 landmarks[measurement[0]][1] - particle.getY()]) / di
                 ouov = np.array([- math.sin(particle.getTheta()), math.cos(particle.getTheta())])
-                uv = np.sign(np.cross(ulv, ouov)) * math.acos(np.dot(ulv, uov))
+                uv = np.sign(np.dot(ulv, ouov)) * math.acos(np.dot(ulv, uov))
                 return  ((1 / (2*math.pi * (sigma**2))) * 
                             math.exp(
                                 -   ((measurement[2]- uv)**2) /
