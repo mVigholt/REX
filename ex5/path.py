@@ -1,5 +1,4 @@
 
-import robot_models
 import math as m
 import particle
 import numpy as np
@@ -11,10 +10,11 @@ directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 sys.path.insert(0, directory_path)
 
+import robot_models
 import rrt_mod as rt
 import help as h
 
-otto = help.Arlo()
+otto = h.Arlo()
 
 def Generate(landMarks, est_pos: particle.Particle, goal):
   path_res = 200
