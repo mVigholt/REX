@@ -169,13 +169,13 @@ try:
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
     
     lap = h.Timed_lap()
-    objectList = dict()
+    detectedLandmarks = dict()
     
     
     while True:
         
         # Clear seen objects
-        objectList.clear()
+        detectedLandmarks.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
@@ -218,9 +218,10 @@ try:
             for i in range(len(objectIDs)):
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                if objectIDs[i] not in objectList:
-                    objectList[objectIDs[i]] = (dists[i], angles[i])
-                print(objectList)
+                print(landmarks.keys())
+                if objectIDs[i] not in detectedLandmarks and objectIDs[i] in landmarks.keys():
+                    detectedLandmarks[objectIDs[i]] = (dists[i], angles[i])
+                print(detectedLandmarks)
                 
                 
                 
