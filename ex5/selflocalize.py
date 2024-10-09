@@ -14,7 +14,6 @@ import os
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 sys.path.insert(0, directory_path)
-
 import help as h
 
 # Flags
@@ -65,9 +64,8 @@ landmarks = {
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
-
-
-
+lap = h.Timed_lap()
+measurements = dict()
 
 def jet(x):
     """Colour map for drawing particles. This function determines the colour of 
@@ -169,11 +167,7 @@ try:
     else:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
-    
-    lap = h.Timed_lap()
-    
-    measurements = dict()
-    
+
     
     while True:
         
@@ -207,8 +201,7 @@ try:
             deltaX = math.cos(theta) * velocity * dt
             deltaY = math.sin(theta) * velocity * dt
             deltaTheta = angular_velocity * dt
-            particle.move_particle(p, deltaX, deltaY, deltaTheta)
-            
+            particle.move_particle(p, deltaX, deltaY, deltaTheta) 
 
 
         # Fetch next frame
@@ -224,13 +217,11 @@ try:
                 if objectIDs[i] not in measurements:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
                 elif objectIDs[i] in measurements and measurements[objectIDs[i]][1] > dists[i]:
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
-                
-                
-                
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]     
+            print(measurements.keys())    
                     
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 2 #2 grader
+                sigma = 1 #2 grader
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
@@ -266,8 +257,6 @@ try:
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 weights.append(w)
-            
-            print(len(weights))
 
             # Resampling
             # XXX: You do this
