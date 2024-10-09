@@ -17,6 +17,12 @@ import help as h
 otto = h.Arlo()
 
 def Generate(landMarks, est_pos: particle.Particle, goal):
+  
+  goal = 10 * goal
+  
+  for i in landMarks:
+    i = 10 * i
+  
   path_res = 200
   expand_dis = 2000
   

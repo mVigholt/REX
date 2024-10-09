@@ -61,7 +61,7 @@ CBLACK = (0, 0, 0)
 landmarkIDs = [1, 8]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    8: (300.0, 0.0)  # Coordinates for landmark 2
+    8: (100.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -201,7 +201,7 @@ try:
         
         if pvar < 10:
             if len(measurements > 0):
-                path.Generate(measurements, est_pose, [1500, 0])
+                path.Generate(measurements, est_pose, [500, 0])
             
         # Clear seen objects
         measurements.clear()
