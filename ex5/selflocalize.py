@@ -175,7 +175,7 @@ try:
         
         # varians of particles
         pvar = np.var(particle_dist)
-        print(pvar)
+        # print(pvar)
         particle_dist.clear()
         
         # Move the robot according to user input (only for testing)
@@ -226,6 +226,7 @@ try:
         if not isinstance(objectIDs, type(None)):
             # List detected objects
             for i in range(len(objectIDs)):
+                print("i: ", i, " angles: ", angles[i])
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
                 if objectIDs[i] not in measurements:
@@ -241,7 +242,7 @@ try:
                 ulv = np.array([landmarks[measurement[0]][0] - particle.getX(), 
                                 landmarks[measurement[0]][1] - particle.getY()]) / di
                 ouov = np.array([- math.sin(particle.getTheta()), math.cos(particle.getTheta())])
-                uv = np.sign(np.dot(ulv, ouov)) * math.acos(np.dot(ulv, uov))
+                uv = np.sign(np.cross(ulv, ouov)) * math.acos(np.dot(ulv, uov))
                 return  ((1 / (2*math.pi * (sigma**2))) * 
                             math.exp(
                                 -   ((measurement[2]- uv)**2) /
