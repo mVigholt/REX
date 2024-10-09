@@ -62,11 +62,27 @@ def estimate_pose(particles_list):
     return Particle(x, y, theta)
      
      
-def move_particle(particle, delta_x, delta_y, delta_theta):
-    """Move the particle by (delta_x, delta_y, delta_theta)"""
-    print("particle.py: move_particle not implemented. You should do this.") 
+def move_particle(particle: Particle, delta_x, delta_y, delta_theta):
+    particle.setX(particle.getX() + delta_x)
+    particle.setY(particle.getY() + delta_y)
+    particle.setTheta(particle.getTheta() + delta_theta)
+    add_uncertainty_single(particle, 0.1, 0.01)
 
 
+def add_uncertainty_single(particle, sigma, sigma_theta):
+    """Add some noise to each particle in the list. Sigma and sigma_theta is the noise
+    variances for position and angle noise."""
+    particle.x += rn.randn(0.0, sigma)
+    particle.y += rn.randn(0.0, sigma)
+    particle.theta = np.mod(particle.theta + rn.randn(0.0, sigma_theta), 2.0 * np.pi) 
+
+def add_uncertainty_von_mises_single(particle, sigma, theta_kappa):
+    """Add some noise to each particle in the list. Sigma and theta_kappa is the noise
+    variances for position and angle noise."""
+    particle.x += rn.randn(0.0, sigma)
+    particle.y += rn.randn(0.0, sigma)
+    particle.theta = np.mod(rn.rand_von_mises(particle.theta, theta_kappa), 2.0 * np.pi) - np.pi
+    
 def add_uncertainty(particles_list, sigma, sigma_theta):
     """Add some noise to each particle in the list. Sigma and sigma_theta is the noise
     variances for position and angle noise."""
