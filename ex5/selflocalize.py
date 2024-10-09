@@ -220,9 +220,8 @@ try:
             for i in range(len(objectIDs)):
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                print(landmarks.keys())
-                if objectIDs[i] not in measurements and objectIDs[i] in landmarks.keys():
-                    measurements[objectIDs[i]] = (dists[i], angles[i])
+                if not any(objectIDs[i] == kvt[0] for kvt in measurements):
+                    measurements.append([objectIDs[i], dists[i], angles[i]])
                 print(measurements)
                 
                 
@@ -232,10 +231,10 @@ try:
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([[math.cos(particle.getTheta())], [math.sin(particle.getTheta())]])
-                ulv = np.array([[landmarks[measurement[0]]-particle.getX()], 
-                                [landmarks[measurement[0]]-particle.getY()]]) / di
+                ulv = np.array([[landmarks[measurement[0]][0] - particle.getX()], 
+                                [landmarks[measurement[0]][1] - particle.getY()]]) / di
                 ouov = np.array([[- math.sin(particle.getTheta())], [math.cos(particle.getTheta())]])
-                uv = np.sign(np.dot(ulv,ouov)) * math.acos(np.dot(ulv,uov))
+                uv = np.sign(np.linalg.multi_dot([ulv, ouov])) * math.acos(ulv * uov)
                 return  ((1 / (2*math.pi * (sigma**2))) * 
                             math.exp(
                                 -   ((measurement[2]- uv)**2) /
@@ -254,9 +253,6 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                if not any(objectIDs[i] == kvt[0] for kvt in measurements):
-                    measurements.append((objectIDs[i], dists[i], angles[i]))
-                print(measurements)
 
             # Compute particle weights
             # XXX: You do this
@@ -264,6 +260,7 @@ try:
                 p: particle.Particle
                 w = 1
                 for m in measurements:
+                    print(m)
                     w *= angle_propability(p,m) * dist_propability(p,m)
                 p.setWeight(w)
 
