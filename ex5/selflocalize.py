@@ -9,7 +9,7 @@ import time
 from timeit import default_timer as timer
 import sys
 import os
-# import path
+import path
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -20,7 +20,6 @@ import help as h
 # Flags
 showGUI = True  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
-
 
 def isRunningOnArlo():
     """Return True if we are running on Arlo, otherwise False.
@@ -199,9 +198,9 @@ try:
         # Use motor controls to update particles
         # XXX: Make the robot drive
         
-        # if pvar < 10:
-        #     if len(measurements > 0):
-        #         path.Generate(measurements, est_pose, [500, 0])
+        if pvar < 10:
+            if len(measurements > 0):
+                path.Generate(measurements, est_pose, [50, 0])
             
         # Clear seen objects
         measurements.clear()
@@ -235,7 +234,7 @@ try:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]       
                     
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 0.2
+                sigma = 0.1
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
