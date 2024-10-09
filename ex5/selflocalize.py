@@ -56,10 +56,10 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 10]
+landmarkIDs = [1, 8]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    10: (300.0, 0.0)  # Coordinates for landmark 2
+    8: (300.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -230,11 +230,11 @@ try:
                 sigma = 2 #2 grader
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
-                uov = np.array([[math.cos(particle.getTheta())], [math.sin(particle.getTheta())]])
-                ulv = np.array([[landmarks[measurement[0]][0] - particle.getX()], 
-                                [landmarks[measurement[0]][1] - particle.getY()]]) / di
-                ouov = np.array([[- math.sin(particle.getTheta())], [math.cos(particle.getTheta())]])
-                uv = np.sign(np.linalg.multi_dot([ulv, ouov])) * math.acos(ulv * uov)
+                uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
+                ulv = np.array([landmarks[measurement[0]][0] - particle.getX(), 
+                                landmarks[measurement[0]][1] - particle.getY()]) / di
+                ouov = np.array([- math.sin(particle.getTheta()), math.cos(particle.getTheta())])
+                uv = np.sign(np.dot(ulv, ouov)) * math.acos(np.dot(ulv, uov))
                 return  ((1 / (2*math.pi * (sigma**2))) * 
                             math.exp(
                                 -   ((measurement[2]- uv)**2) /
