@@ -217,11 +217,10 @@ try:
                 if objectIDs[i] not in measurements:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
                 elif objectIDs[i] in measurements and measurements[objectIDs[i]][1] > dists[i]:
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]     
-            print(measurements.keys())    
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]       
                     
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 1 #2 grader
+                sigma = 2 #grader
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
@@ -237,7 +236,7 @@ try:
                         )
                 
             def dist_propability(particle: particle.Particle, measurement):
-                sigma = 5 # 5cm
+                sigma = 5 #cm
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 
@@ -253,7 +252,7 @@ try:
             weights = []
             for p in particles:
                 p: particle.Particle
-                w = 1/num_particles
+                w = 1
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 weights.append(w)

@@ -66,7 +66,7 @@ def move_particle(particle: Particle, delta_x, delta_y, delta_theta):
     particle.setX(particle.getX() + delta_x)
     particle.setY(particle.getY() + delta_y)
     particle.setTheta(particle.getTheta() + delta_theta)
-    add_uncertainty_single(particle, 5, 1)
+    add_uncertainty_single(particle, 2, 0.5)
 
 
 def add_uncertainty_single(particle, sigma, sigma_theta):
