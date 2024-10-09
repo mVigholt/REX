@@ -169,13 +169,13 @@ try:
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
     
     lap = h.Timed_lap()
-    detectedLandmarks = dict()
+    measurements = dict()
     
     
     while True:
         
         # Clear seen objects
-        detectedLandmarks.clear()
+        measurements.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
@@ -219,15 +219,48 @@ try:
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
                 print(landmarks.keys())
-                if objectIDs[i] not in detectedLandmarks and objectIDs[i] in landmarks.keys():
-                    detectedLandmarks[objectIDs[i]] = (dists[i], angles[i])
-                print(detectedLandmarks)
+                if objectIDs[i] not in measurements and objectIDs[i] in landmarks.keys():
+                    measurements[objectIDs[i]] = (dists[i], angles[i])
+                print(measurements)
                 
                 
+                    
+            def angle_propability(particle: particle.Particle, measurement):
+                sigma = 2 #2 grader
+                di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
+                               ((landmarks[measurement[0]][1] - particle.getY())**2))
+                uov = np.array([[math.cos(particle.getTheta())], [math.sin(particle.getTheta())]])
+                ulv = np.array([[landmarks[measurement[0]]-particle.getX()], 
+                                [landmarks[measurement[0]]-particle.getY()]]) / di
+                ouov = np.array([[- math.sin(particle.getTheta())], [math.cos(particle.getTheta())]])
+                uv = np.sign(np.dot(ulv,ouov)) * math.acos(np.dot(ulv,uov))
+                return  ((1 / (2*math.pi * (sigma**2))) * 
+                            math.exp(
+                                -   ((measurement[2]- uv)**2) /
+                                    (2 * math.pi * (sigma**2))
+                            )
+                        )
                 
+            def dist_propability(particle: particle.Particle, measurement):
+                sigma = 5 # 5cm
+                di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
+                               ((landmarks[measurement[0]][1] - particle.getY())**2))
+                
+                return  ((1 / (2*math.pi * (sigma**2))) * 
+                            math.exp(
+                                -   ((measurement[1]- di)**2) /
+                                    (2 * math.pi * (sigma**2))
+                            )
+                        )
 
             # Compute particle weights
             # XXX: You do this
+            for p in particles:
+                p: particle.Particle
+                w = 1
+                for m in measurements:
+                    w *= angle_propability(p,m) * dist_propability(p,m)
+                p.setWeight(w)
 
             # Resampling
             # XXX: You do this
