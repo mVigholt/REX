@@ -201,7 +201,8 @@ try:
         # XXX: Make the robot drive
         
         if pvar < 10:
-            otto.Turn(est_pose.getTheta())
+            print(est_pose.getTheta())
+            # otto.Turn(est_pose.getTheta())
             
         # Clear seen objects
         measurements.clear()
@@ -229,10 +230,10 @@ try:
                 print("i: ", i, " angles: ", angles[i])
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                if objectIDs[i] not in measurements:
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
-                elif objectIDs[i] in measurements and measurements[objectIDs[i]][1] > dists[i]:
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]       
+                if (objectIDs[i] in landmarks and 
+                    (objectIDs[i] not in measurements or 
+                    measurements[objectIDs[i]][1] > dists[i])):
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]     
                     
             def angle_propability(particle: particle.Particle, measurement):
                 sigma = 0.1
