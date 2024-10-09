@@ -9,6 +9,7 @@ import time
 from timeit import default_timer as timer
 import sys
 import os
+import path
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
@@ -64,6 +65,9 @@ landmarks = {
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
+# Particles.
+particle_dist = []
+pvar = 10000
 lap = h.Timed_lap()
 measurements = dict()
 
@@ -128,7 +132,6 @@ def initialize_particles(num_particles):
 
     return particles
 
-
 # Main program #
 try:
     if showGUI:
@@ -167,12 +170,13 @@ try:
     else:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
-
     
     while True:
         
-        # Clear seen objects
-        measurements.clear()
+        # varians of particles
+        pvar = np.var(particle_dist)
+        print(pvar)
+        particle_dist.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
@@ -194,6 +198,16 @@ try:
         
         # Use motor controls to update particles
         # XXX: Make the robot drive
+        
+        if pvar < 10:
+            if len(measurements > 0):
+                path.Generate(measurements, est_pose, [1500, 0])
+            
+        # Clear seen objects
+        measurements.clear()
+        
+            
+        
         # XXX: You do this
         dt = lap.time()
         for p in particles:
@@ -250,24 +264,31 @@ try:
             # Compute particle weights
             # XXX: You do this
             weights = []
+            
             for p in particles:
                 p: particle.Particle
                 w = 1
+                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)
                 weights.append(w)
 
+            
             # Resampling
             # XXX: You do this
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
+            
+            
+            
             # Draw detected objects
             cam.draw_aruco_objects(colour)
         else:
             # No observation - reset weights to uniform distribution
             for p in particles:
+                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 p.setWeight(1.0/num_particles)
 
     
