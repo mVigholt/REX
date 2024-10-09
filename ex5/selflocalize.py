@@ -1,4 +1,6 @@
+import copy
 import math
+import random
 import cv2
 import particle
 import camera
@@ -170,14 +172,13 @@ try:
     
     lap = h.Timed_lap()
     
-    # 0: ID | 1: dist | 2: angle
-    measurements = []
+    measurements = dict()
     
     
     while True:
         
         # Clear seen objects
-        measurements.clear()
+        # measurements.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
@@ -220,9 +221,11 @@ try:
             for i in range(len(objectIDs)):
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                if not any(objectIDs[i] == kvt[0] for kvt in measurements):
-                    measurements.append([objectIDs[i], dists[i], angles[i]])
-                print(measurements)
+                if objectIDs[i] not in measurements:
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
+                elif objectIDs[i] in measurements and measurements[objectIDs[i]][1] > dists[i]:
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
+                
                 
                 
                     
@@ -256,16 +259,20 @@ try:
 
             # Compute particle weights
             # XXX: You do this
+            weights = []
             for p in particles:
                 p: particle.Particle
-                w = 1
-                for m in measurements:
-                    print(m)
-                    w *= angle_propability(p,m) * dist_propability(p,m)
-                p.setWeight(w)
+                w = 1/num_particles
+                for key in measurements:
+                    w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
+                weights.append(w)
+            
+            print(len(weights))
 
             # Resampling
             # XXX: You do this
+            weighted_choice = random.choices(particles, weights, k = num_particles)
+            particles = [copy.deepcopy(p) for p in weighted_choice]
 
             # Draw detected objects
             cam.draw_aruco_objects(colour)
