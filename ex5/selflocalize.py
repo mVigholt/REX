@@ -172,7 +172,7 @@ try:
     while True:
         
         # Clear seen objects
-        # measurements.clear()
+        measurements.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
