@@ -169,13 +169,15 @@ try:
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
     
     lap = h.Timed_lap()
-    detectedLandmarks = dict()
+    
+    # 0: ID | 1: dist | 2: angle
+    measurements = []
     
     
     while True:
         
         # Clear seen objects
-        detectedLandmarks.clear()
+        measurements.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
@@ -218,13 +220,9 @@ try:
             for i in range(len(objectIDs)):
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                print(landmarks.keys())
-                if objectIDs[i] not in detectedLandmarks and objectIDs[i] in landmarks.keys():
-                    detectedLandmarks[objectIDs[i]] = (dists[i], angles[i])
-                print(detectedLandmarks)
-                
-                
-                
+                if not any(objectIDs[i] == kvt[0] for kvt in measurements):
+                    measurements.append((objectIDs[i], dists[i], angles[i]))
+                print(measurements)
 
             # Compute particle weights
             # XXX: You do this
