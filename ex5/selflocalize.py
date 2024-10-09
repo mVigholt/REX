@@ -64,6 +64,8 @@ landmarks = {
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
+otto = h.Arlo()
+
 # Particles.
 particle_dist = []
 pvar = 10000
@@ -199,7 +201,7 @@ try:
         # XXX: Make the robot drive
         
         if pvar < 10:
-            path.Generate(measurements, est_pose, [50, 0])
+            otto.Turn(est_pose.getTheta())
             
         # Clear seen objects
         measurements.clear()
