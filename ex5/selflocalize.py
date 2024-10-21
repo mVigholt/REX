@@ -57,7 +57,7 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 8]
+landmarkIDs = [1, 11]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
     8: (100.0, 0.0)  # Coordinates for landmark 2
