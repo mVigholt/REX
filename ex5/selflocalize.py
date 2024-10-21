@@ -211,8 +211,8 @@ try:
             local_coords = [] # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = [] # her konverterer vi (150, 0) til et eller andet lokalt koordinat
             map = m.landmark_map(low=(-2000, 0), high=(2000, 2000), landMarks=[[0, 0], [300, 0]])
-            rrt = rt.RRT(start=(est_pose.getX()*10, est_pose.getY()*10),
-                        goal=(1500, 0),
+            rrt = rt.RRT(start=[est_pose.getX()*10, est_pose.getY()*10],
+                        goal=[1500, 0],
                         robot_model=rob,
                         map=map,
                         expand_dis=expand_dis,
