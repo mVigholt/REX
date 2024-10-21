@@ -18,6 +18,7 @@ sys.path.insert(0, directory_path)
 import help as h
 import rrt_mod as rt
 import map as m
+import robot_models
 
 # Flags
 showGUI = True  # Whether or not to open GUI windows
@@ -205,6 +206,7 @@ try:
         if pvar < 10:
             path_res = 200
             expand_dis = 2000
+            robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             local_coords = [] # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = [] # her konverterer vi (150, 0) til et eller andet lokalt koordinat
