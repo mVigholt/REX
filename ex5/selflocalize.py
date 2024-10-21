@@ -204,7 +204,7 @@ try:
         # XXX: Make the robot drive
         
         print(pvar)
-        if pvar < 10:
+        if pvar < 30:
             path_res = 200
             expand_dis = 2000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
