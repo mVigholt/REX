@@ -8,7 +8,7 @@ cam = help.Cam()
 lap = help.Timed_lap()
 
 i = 0
-landMarks = [4]
+landMarks = [1, 11]
 searching = True
 dir = 1
 print(f"looking for {landMarks[i]} with index {i}")
