@@ -9,17 +9,20 @@ import time
 from timeit import default_timer as timer
 import sys
 import os
+import path
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
 sys.path.insert(0, directory_path)
 import help as h
+import rrt_mod as rt
+import map as m
+import robot_models
 
 # Flags
 showGUI = True  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
-
 
 def isRunningOnArlo():
     """Return True if we are running on Arlo, otherwise False.
@@ -57,13 +60,18 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 8]
+landmarkIDs = [1, 11]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    8: (300.0, 0.0)  # Coordinates for landmark 2
+    11: (100.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
+otto = h.Arlo()
+
+# Particles.
+particle_dist = []
+pvar = 10000
 lap = h.Timed_lap()
 measurements = dict()
 
@@ -128,7 +136,6 @@ def initialize_particles(num_particles):
 
     return particles
 
-
 # Main program #
 try:
     if showGUI:
@@ -167,12 +174,13 @@ try:
     else:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
         cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=False)
-
     
     while True:
         
-        # Clear seen objects
-        measurements.clear()
+        # varians of particles
+        pvar = np.var(particle_dist)
+        # print(pvar)
+        particle_dist.clear()
         
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
@@ -194,6 +202,30 @@ try:
         
         # Use motor controls to update particles
         # XXX: Make the robot drive
+        
+        if pvar < 10:
+            path_res = 200
+            expand_dis = 2000
+            rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
+            
+            local_coords = [] # her indsætter vi det globale koordinat system konverteret til lokalt
+            local_goal = [] # her konverterer vi (150, 0) til et eller andet lokalt koordinat
+            map = m.landmark_map(low=(-2000, 0), high=(2000, 2000), landMarks=[[0, 0], [300, 0]])
+            rrt = rt.RRT(start=[est_pose.getX()*10, est_pose.getY()*10],
+                        goal=[1500, 0],
+                        robot_model=rob,
+                        map=map,
+                        expand_dis=expand_dis,
+                        path_resolution=path_res,
+                        )
+            print(rrt.planning(animation=False))
+            
+            
+        # Clear seen objects
+        measurements.clear()
+        
+            
+        
         # XXX: You do this
         dt = lap.time()
         for p in particles:
@@ -212,15 +244,16 @@ try:
         if not isinstance(objectIDs, type(None)):
             # List detected objects
             for i in range(len(objectIDs)):
+                print("i: ", i, " angles: ", angles[i])
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                if objectIDs[i] not in measurements:
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]
-                elif objectIDs[i] in measurements and measurements[objectIDs[i]][1] > dists[i]:
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]       
+                if (objectIDs[i] in landmarks and 
+                    (objectIDs[i] not in measurements or 
+                    measurements[objectIDs[i]][1] > dists[i])):
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]     
                     
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 2 #grader
+                sigma = 0.1
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
@@ -250,24 +283,31 @@ try:
             # Compute particle weights
             # XXX: You do this
             weights = []
+            
             for p in particles:
                 p: particle.Particle
                 w = 1
+                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)
                 weights.append(w)
 
+            
             # Resampling
             # XXX: You do this
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
+            
+            
+            
             # Draw detected objects
             cam.draw_aruco_objects(colour)
         else:
             # No observation - reset weights to uniform distribution
             for p in particles:
+                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 p.setWeight(1.0/num_particles)
 
     

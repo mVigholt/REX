@@ -87,18 +87,18 @@ class Cam (object):
         #     #vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.matmul(k.T,np.matmul(k,v)) * (1 - math.cos(t))
         #     vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.dot(k,v) * k * (1 - math.cos(t))
         #     return vec
-        if flat_tvecs is not None:
-            flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
-            flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
-            for rvec, tvec in flat_rvecs, flat_tvecs: 
-                # v = localCoordinates(rvec, [145/2, 0, -115])
-                # print(f"tvecs: {tvecs}")
-                # print(f"rvecs: {rvecs}")
-                # print(v)
-                c = math.dist([0,0], [145/2, 115])
-                r = rvec[2]
-                tvec += [math.cos(r)*c, math.sin(r)*c]
-                #print(flat_tvecs)
+        # if flat_tvecs is not None:
+        #     flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
+        #     flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
+        #     for rvec, tvec in flat_rvecs, flat_tvecs: 
+        #         # v = localCoordinates(rvec, [145/2, 0, -115])
+        #         # print(f"tvecs: {tvecs}")
+        #         # print(f"rvecs: {rvecs}")
+        #         # print(v)
+        #         c = math.dist([0,0], [145/2, 115])
+        #         r = rvec[2]
+        #         tvec += [math.cos(r)*c, math.sin(r)*c]
+        #         #print(flat_tvecs)
         return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):

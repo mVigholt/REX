@@ -8,7 +8,7 @@ cam = help.Cam()
 lap = help.Timed_lap()
 
 i = 0
-landMarks = [4]
+landMarks = [1, 11]
 searching = True
 dir = 1
 print(f"looking for {landMarks[i]} with index {i}")
@@ -20,6 +20,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     ids, tvecs = cam.next_map()
+    print(tvecs)
     t.sleep(1)
 
     # if ids is not None:
