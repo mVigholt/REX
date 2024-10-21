@@ -15,6 +15,13 @@ landmarkRadius = 350
 robotRadius = 450/2
 robotBuffer = 50
 
+def RotationMatrix(angle): 
+    return np.array([[np.cos(angle), -np.sin(angle)],
+                     [np.sin(angle), np.cos(angle)]])
+def ToGlobal(localPoint,point,angle):
+    return np.dot(RotationMatrix(angle), localPoint) + point
+def ToLocal(globalPoint,point,angle):
+    return np.dot(RotationMatrix(-angle), (globalPoint - point))
 
 # initialize camera transformation matrix
 cam_matrix = np.array([ [f, 0, CH/2],
@@ -80,25 +87,11 @@ class Cam (object):
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
-        # def localCoordinates(rvec,v):
-        #     t = math.dist([0,0,0],rvec)
-        #     k = np.array(rvec/t)
-        #     v = np.array(v)
-        #     #vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.matmul(k.T,np.matmul(k,v)) * (1 - math.cos(t))
-        #     vec = v * math.cos(t) + np.cross(k, v) * math.sin(t) + np.dot(k,v) * k * (1 - math.cos(t))
-        #     return vec
-        # if flat_tvecs is not None:
-        #     flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
-        #     flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
-        #     for rvec, tvec in flat_rvecs, flat_tvecs: 
-        #         # v = localCoordinates(rvec, [145/2, 0, -115])
-        #         # print(f"tvecs: {tvecs}")
-        #         # print(f"rvecs: {rvecs}")
-        #         # print(v)
-        #         c = math.dist([0,0], [145/2, 115])
-        #         r = rvec[2]
-        #         tvec += [math.cos(r)*c, math.sin(r)*c]
-        #         #print(flat_tvecs)
+        if flat_tvecs is not None:
+            flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
+            flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
+            for rvec, tvec in flat_rvecs, flat_tvecs: 
+                tvec = ToGlobal(np.array([145/2, 115]), tvec, math.dist([0,0,0], rvec))
         return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):
