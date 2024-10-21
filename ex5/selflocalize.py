@@ -216,7 +216,7 @@ try:
                         expand_dis=expand_dis,
                         path_resolution=path_res,
                         )
-            print(rrt)
+            print(rrt.planning(animation=False))
             
             
         # Clear seen objects
