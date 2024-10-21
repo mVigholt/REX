@@ -209,11 +209,12 @@ try:
             expand_dis = 2000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
-            local_coords = [] # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = [] # her konverterer vi (150, 0) til et eller andet lokalt koordinat
-            map = m.landmark_map(low=(-2000, 0), high=(2000, 2000), landMarks=[[0, 0], [300, 0]])
-            rrt = rt.RRT(start=[est_pose.getX()*10, est_pose.getY()*10],
-                        goal=[1500, 0],
+            _, local_coords = h.Cam.next_map() # her indsætter vi det globale koordinat system konverteret til lokalt
+            local_goal = h.ToLocal(np.array([150, 0]), np.array[(est_pose.getX(), est_pose.getY())], est_pose.getTheta()) # her konverterer vi (150, 0) til et eller andet lokalt koordinat
+            print("local goal: ", local_goal)
+            map = m.landmark_map(low=(-2000, 0), high=(2000, 2000), landMarks=local_coords)
+            rrt = rt.RRT(start=[0, 0],
+                        goal=local_goal,
                         robot_model=rob,
                         map=map,
                         expand_dis=expand_dis,
