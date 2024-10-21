@@ -203,6 +203,7 @@ try:
         # Use motor controls to update particles
         # XXX: Make the robot drive
         
+        print(pvar)
         if pvar < 10:
             path_res = 200
             expand_dis = 2000
