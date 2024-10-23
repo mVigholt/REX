@@ -22,6 +22,7 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # ids, tvecs = cam.next_map()
     cam.next_frame()
     cam.stream()
+    cam.next_map()
     t.sleep(1)
 
     # if ids is not None:
