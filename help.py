@@ -76,7 +76,7 @@ class Cam (camera.Camera):
         return None if matLike is None else list(itertools.chain(*matLike))     
     
     def next_frame(self):
-        return self.get_next_frame()
+        self.frameReference = self.get_next_frame()
     
     def next_frame_with_detection(self, new_frame = False):
         if new_frame: self.next_frame()
