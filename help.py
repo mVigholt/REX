@@ -78,16 +78,12 @@ class Cam (camera.Camera):
     def next_frame(self):
         return self.get_next_frame()
     
-    def next_frame_with_detection(self, ret_frame = False, ret_corner = False, ret_id = False):
-        self.next_frame()
+    def get_frame_with_detection(self, new_frame = False):
+        if new_frame: self.next_frame()
         self.corners, self.ids, _ = cv2.aruco.detectMarkers(self.frameReference, self.aruco_dict)
-        if ret_frame or ret_corner or ret_id:
-            return (self.frameReference if ret_frame else None, 
-                    self.flatten(self.corners) if ret_corner else None, 
-                    self.flatten(self.ids) if ret_id else None)
     
-    def next_map(self):
-        self.next_frame_with_detection()
+    def get_map(self, new_frame = False):
+        self.next_frame_with_detection(new_frame)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
