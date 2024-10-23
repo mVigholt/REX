@@ -84,10 +84,10 @@ class Cam (camera.Camera):
     
     def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
-        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
+        self.rvecs, self.tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, self.intrinsic_matrix)
         #tvec = [with, height, debth] ???
-        flat_tvecs = self.flatten(tvecs)
-        flat_rvecs = self.flatten(rvecs)
+        flat_tvecs = self.flatten(self.tvecs)
+        flat_rvecs = self.flatten(self.rvecs)
         if flat_tvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
