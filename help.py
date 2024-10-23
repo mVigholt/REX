@@ -4,6 +4,16 @@ import numpy as np
 import time as t
 import robot
 import math
+import sys
+import os
+import path
+
+# Define the path to the directory where the desired module is located
+directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ex5'))
+
+sys.path.insert(0, directory_path)
+
+import camera
 
 CW = 1024
 CH = 720
@@ -29,37 +39,38 @@ cam_matrix = np.array([ [f, 0, CH/2],
                         [0, 0, 1]])
 distCoeffs = np.zeros((5, 1))
 
-class Cam (object):
+class Cam (camera.Camera):
     def __init__(self):
-        def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
-            """Utility function for setting parameters for the gstreamer camera pipeline"""
-            return (
-                "libcamerasrc !"
-                "videobox autocrop=true !"
-                "video/x-raw, width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
-                "videoconvert ! "
-                "appsink drop=true sync=false" #Fjerner måske buffer
-                % (
-                    capture_width,
-                    capture_height,
-                    framerate,
-                )
-            )
-        # Open a camera device for capturing
-        self.cam = cv2.VideoCapture(gstreamer_pipeline(), apiPreference=cv2.CAP_GSTREAMER)
-        if not self.cam.isOpened(): # Error
-            print("Could not open camera")
-            exit(-1)
-        print("OpenCV version = " + cv2.__version__)
-        self.cam.set(cv2.CAP_PROP_BUFFERSIZE, 1) #Fjerner måske buffer
+        super().__init__()
+        # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
+        #     """Utility function for setting parameters for the gstreamer camera pipeline"""
+        #     return (
+        #         "libcamerasrc !"
+        #         "videobox autocrop=true !"
+        #         "video/x-raw, width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
+        #         "videoconvert ! "
+        #         "appsink drop=true sync=false" #Fjerner måske buffer
+        #         % (
+        #             capture_width,
+        #             capture_height,
+        #             framerate,
+        #         )
+        #     )
+        # # Open a camera device for capturing
+        # self.cam = cv2.VideoCapture(gstreamer_pipeline(), apiPreference=cv2.CAP_GSTREAMER)
+        # if not self.cam.isOpened(): # Error
+        #     print("Could not open camera")
+        #     exit(-1)
+        # print("OpenCV version = " + cv2.__version__)
+        # self.cam.set(cv2.CAP_PROP_BUFFERSIZE, 1) #Fjerner måske buffer
         
-        #--------------------------------------------------------------------------------
-        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
-        self.WIN_RF = None
-        self.frameReference = None
-        self.corners = None 
-        self.ids = None
-        self.next_frame_with_detection()
+        # #--------------------------------------------------------------------------------
+        # self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+        # self.WIN_RF = None
+        # self.frameReference = None
+        # self.corners = None 
+        # self.ids = None
+        # self.next_frame_with_detection()
         #--------------------------------------------------------------------------------
     
     def flatten(self, matLike):
