@@ -6,6 +6,7 @@ import robot
 import math
 import sys
 import os
+from scipy.spatial.transform import Rotation as R
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ex5'))
@@ -92,7 +93,10 @@ class Cam (camera.Camera):
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
                 tvec = ToGlobal(tvec, rvec[1], np.array([145/2, 115]))
-                print(rvec)
+                rotation_matrix, _ = cv2.Rodrigues(rvec)
+                rotation = R.from_matrix(rotation_matrix)
+                euler_angles = rotation.as_euler('xyz', degrees=True)  # 'xyz' can be changed based on the desired convention
+                print(euler_angles)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
             print("flat_tvecs or flat_rvecs was None")
