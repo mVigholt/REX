@@ -69,8 +69,6 @@ landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
 otto = h.Arlo()
 
-camm = h.Cam()
-
 # Particles.
 particle_dist = []
 pvar = 10000
@@ -211,7 +209,7 @@ try:
             expand_dis = 2000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
-            _, local_coords = camm.next_map() # her indsætter vi det globale koordinat system konverteret til lokalt
+            _, local_coords = cam.next_map() # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = h.ToLocal(np.array([75, 0]), np.array[(est_pose.getX(), est_pose.getY())], est_pose.getTheta()) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print("local goal: ", local_goal)
             map = m.landmark_map(low=(-2000, 0), high=(2000, 2000), landMarks=local_coords)
