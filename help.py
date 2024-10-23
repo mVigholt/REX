@@ -111,7 +111,7 @@ class Cam (camera.Camera):
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
                 tvec = ToGlobal(tvec, euler_angles[1], np.array([145/2, 115]))
                 print("angle: ", euler_angles)
-            print(flat_tvecs, math.dist((0,0), flat_tvecs))
+            print(flat_tvecs, math.dist([0,0,0], flat_tvecs))
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
             print("flat_tvecs or flat_rvecs was None")
