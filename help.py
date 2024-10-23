@@ -92,7 +92,7 @@ class Cam (camera.Camera):
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             # flat_rvecs = np.delete(np.array(flat_rvecs), 1, 1)
             print(flat_tvecs)
-            for i in flat_rvecs: 
+            for i in range(len(flat_rvecs)): 
                 print("flat rvec: ", flat_rvecs)
                 print("flat tvec: ", flat_tvecs)
                 print("rvec: ", flat_rvecs[i])
