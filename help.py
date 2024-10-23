@@ -6,7 +6,6 @@ import robot
 import math
 import sys
 import os
-from scipy.spatial.transform import Rotation as R
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ex5'))
@@ -32,6 +31,22 @@ def ToGlobal(point,angle,localPoint):
     return np.dot(RotationMatrix(angle), localPoint) + point
 def ToLocal(point,angle,globalPoint):
     return np.dot(RotationMatrix(-angle), (globalPoint - point))
+
+def rotation_matrix_to_euler_angles(R):
+    sy = np.sqrt(R[0, 0] * R[0, 0] +  R[1, 0] * R[1, 0])
+
+    singular = sy < 1e-6
+
+    if not singular:
+        x = np.arctan2(R[2, 1], R[2, 2])
+        y = np.arctan2(-R[2, 0], sy)
+        z = np.arctan2(R[1, 0], R[0, 0])
+    else:
+        x = np.arctan2(-R[1, 2], R[1, 1])
+        y = np.arctan2(-R[2, 0], sy)
+        z = 0
+
+    return np.array([x, y, z])
 
 # initialize camera transformation matrix
 cam_matrix = np.array([ [f, 0, CH/2],
@@ -94,8 +109,8 @@ class Cam (camera.Camera):
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
                 tvec = ToGlobal(tvec, rvec[1], np.array([145/2, 115]))
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
-                rotation = R.from_matrix(rotation_matrix)
-                euler_angles = rotation.as_euler('xyz', degrees=True)  # 'xyz' can be changed based on the desired convention
+                euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
+                euler_angles_degrees = np.degrees(euler_angles)
                 print(euler_angles)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
