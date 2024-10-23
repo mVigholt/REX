@@ -20,9 +20,8 @@ while cv2.waitKey(4) == -1: # Wait for a key pressed event
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     # ids, tvecs = cam.next_map()
-    cam.next_frame()
-    cam.stream()
     cam.next_map()
+    cam.stream()
     t.sleep(1)
 
     # if ids is not None:
