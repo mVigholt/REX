@@ -12,7 +12,7 @@ landMarks = [1, 11]
 searching = True
 dir = 1
 print(f"looking for {landMarks[i]} with index {i}")
-# while cv2.waitKey(4) == -1: # Wait for a key pressed event
+while cv2.waitKey(4) == -1: # Wait for a key pressed event
     # print(f"lapTime() = {lap.time()}\n")
     # if searching:
     #     help.Stop()
@@ -20,8 +20,11 @@ print(f"looking for {landMarks[i]} with index {i}")
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     # ids, tvecs = cam.next_map()
-cam.next_frame()
-cv2.imwrite("OttosView.png", cam.frameReference)
+# cam.next_frame()
+    cam.next_map(True)
+    cam.stream()
+    t.sleep(1)
+# cv2.imwrite("OttosView.png", cam.frameReference)
     # t.sleep(5)
 
     # if ids is not None:
