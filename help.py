@@ -108,6 +108,7 @@ class Cam (camera.Camera):
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
+                print(tvec)
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
                 tvec = ToGlobal(tvec, euler_angles[1], np.array([145/2, 115]))
