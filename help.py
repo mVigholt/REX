@@ -39,8 +39,8 @@ cam_matrix = np.array([ [f, 0, CH/2],
 distCoeffs = np.zeros((5, 1))
 
 class Cam (camera.Camera):
-    def __init__(self):
-        super().__init__(self)
+    def __init__(self, camidx, robottype='arlo', useCaptureThread=False):
+        super().__init__(self, camidx, robottype=robottype, useCaptureThread=useCaptureThread)
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
         #     """Utility function for setting parameters for the gstreamer camera pipeline"""
         #     return (
