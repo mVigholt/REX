@@ -4,7 +4,7 @@ import time as t
 import cv2
 
 otto = help.Arlo()
-cam = help.Cam()
+cam = help.Cam(0)
 lap = help.Timed_lap()
 
 i = 0
