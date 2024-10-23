@@ -52,7 +52,7 @@ def gstreamer_pipeline(capture_width=1280, capture_height=720, framerate=30):
         "videobox autocrop=true !"
         "video/x-raw, width=(int)%d, height=(int)%d, framerate=(fraction)%d/1 ! "
         "videoconvert ! "
-        "appsink"
+        "appsink drop=true sync=false" #fjerner måske buffer
         % (
             capture_width,
             capture_height,

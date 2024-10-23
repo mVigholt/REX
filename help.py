@@ -64,12 +64,12 @@ class Cam (camera.Camera):
         # self.cam.set(cv2.CAP_PROP_BUFFERSIZE, 1) #Fjerner måske buffer
         
         # #--------------------------------------------------------------------------------
-        # self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
-        # self.WIN_RF = None
-        # self.frameReference = None
-        # self.corners = None 
-        # self.ids = None
-        # self.next_frame_with_detection()
+        self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
+        self.WIN_RF = None
+        self.frameReference = None
+        self.corners = None 
+        self.ids = None
+        self.next_frame_with_detection()
         #--------------------------------------------------------------------------------
     
     def flatten(self, matLike):
