@@ -14,7 +14,7 @@ dir = 1
 print(f"looking for {landMarks[i]} with index {i}")
 # while cv2.waitKey(4) == -1: # Wait for a key pressed event
 while 1 == 1:
-    cv2.waitKey(0)
+    print(input())
     # print(f"lapTime() = {lap.time()}\n")
     # if searching:
     #     help.Stop()
