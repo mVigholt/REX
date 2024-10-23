@@ -22,8 +22,8 @@ while 1 == 1:
     
     #_, corners, ids = cam.next_frame_with_detection(ret_corner=True, ret_id=True)
     # ids, tvecs = cam.next_map()
-    cam.next_frame()
-    # cam.next_map(True)
+    # cam.next_frame()
+    cam.next_map(True)
     cam.stream()
     # t.sleep(1)
     # cv2.imwrite("OttosView.png", cam.frameReference)
