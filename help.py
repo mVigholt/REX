@@ -61,6 +61,7 @@ distCoeffs = np.zeros((5, 1))
 class Cam (camera.Camera):
     def __init__(self, robottype='arlo', useCaptureThread=False):
         super().__init__(0, robottype=robottype, useCaptureThread=useCaptureThread)
+        self.intrinsic_matrix = cam_matrix
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
         #     """Utility function for setting parameters for the gstreamer camera pipeline"""
         #     return (
@@ -105,20 +106,21 @@ class Cam (camera.Camera):
     def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
+        print("natty: ", tvecs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
-                print(tvec)
-                print(math.dist([0,0], tvec))
+                print("local tvec:", tvec)
+                print("local distance: ", np.linalg.norm(tvec))
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
-                tvec = ToGlobal(tvec, euler_angles[1], np.array([-145/2, 115]))
+                tvec = ToGlobal(tvec, euler_angles[1], np.array([0, 115]))
                 print("angle: ", euler_angles)
-                print(tvec)
-                print(math.dist([0,0], tvec))
+                print("global tvec: ", tvec)
+                print("global distance: ", np.linalg.norm(tvec))
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
             print("flat_tvecs or flat_rvecs was None")
@@ -135,6 +137,7 @@ class Cam (camera.Camera):
             self.__setup_stream()
         # Draw markers on the frame if found
         hej = cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
+        # cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
         # rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
         # for i in range(len(self.landmarkIds)):
         #     cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 100, 2)
