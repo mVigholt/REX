@@ -30,7 +30,7 @@ def RotationMatrix(angle):
 def ToGlobal(point,angle,localPoint):
     return np.dot(RotationMatrix(angle), localPoint) + point
 def ToLocal(point,angle,globalPoint):
-    return np.dot(RotationMatrix(angle), (globalPoint - point))
+    return np.dot(RotationMatrix(-angle), (globalPoint - point))
 
 # initialize camera transformation matrix
 cam_matrix = np.array([ [f, 0, CH/2],
