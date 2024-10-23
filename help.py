@@ -105,6 +105,7 @@ class Cam (camera.Camera):
     def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
+        print("natty: ", tvecs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
@@ -134,14 +135,14 @@ class Cam (camera.Camera):
         if self.WIN_RF is None:
             self.__setup_stream()
         # Draw markers on the frame if found
-        # hej = cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
-        cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
-        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
-        for i in range(len(self.landmarkIds)):
-            cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 100, 2)
+        hej = cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
+        # cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
+        # rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
+        # for i in range(len(self.landmarkIds)):
+        #     cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 100, 2)
         # # Stream frames
         
-        cv2.imshow(self.WIN_RF, self.frameReference)
+        cv2.imshow(self.WIN_RF, hej)
         
   
 class Timed_lap (object):
