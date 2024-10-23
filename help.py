@@ -61,6 +61,7 @@ distCoeffs = np.zeros((5, 1))
 class Cam (camera.Camera):
     def __init__(self, robottype='arlo', useCaptureThread=False):
         super().__init__(0, robottype=robottype, useCaptureThread=useCaptureThread)
+        self.intrinsic_matrix = cam_matrix
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
         #     """Utility function for setting parameters for the gstreamer camera pipeline"""
         #     return (
