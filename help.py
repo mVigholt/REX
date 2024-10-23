@@ -53,8 +53,8 @@ def rotation_matrix_to_euler_angles(R):
     return np.array([x, y, z])
 
 # initialize camera transformation matrix
-cam_matrix = np.array([ [f, 0, CH/2],
-                        [0, f, CW/2],
+cam_matrix = np.array([ [f, 0, CW/2],
+                        [0, f, CH/2],
                         [0, 0, 1]])
 distCoeffs = np.zeros((5, 1))
 
