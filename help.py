@@ -67,8 +67,8 @@ class Cam (camera.Camera):
         self.aruco_dict = cv2.aruco.getPredefinedDictionary(cv2.aruco.DICT_6X6_250)
         self.WIN_RF = None
         self.frameReference = None
-        self.corners = None 
-        self.ids = None
+        self.landmarkCorners = None 
+        self.landmarkIds = None
         self.next_frame_with_detection(True)
         #--------------------------------------------------------------------------------
     
@@ -80,11 +80,11 @@ class Cam (camera.Camera):
     
     def next_frame_with_detection(self, new_frame = False):
         if new_frame: self.next_frame()
-        self.corners, self.ids, _ = cv2.aruco.detectMarkers(self.frameReference, self.aruco_dict)
+        self.landmarkCorners, self.landmarkIds, _ = cv2.aruco.detectMarkers(self.frameReference, self.aruco_dict)
     
     def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
-        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
+        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
@@ -102,7 +102,7 @@ class Cam (camera.Camera):
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
             print("flat_tvecs or flat_rvecs was None")
-        return self.flatten(self.ids), flat_tvecs
+        return self.flatten(self.landmarkIds), flat_tvecs
             
     def __setup_stream(self):
         # Open a window
@@ -114,9 +114,9 @@ class Cam (camera.Camera):
         if self.WIN_RF is None:
             self.__setup_stream()
         # Draw markers on the frame if found
-        cv2.aruco.drawDetectedMarkers(self.frameReference, self.corners, self.ids)
-        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
-        for i in range(len(self.ids)):
+        cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
+        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
+        for i in range(len(self.landmarkIds)):
             cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 100, 2)
         # Stream frames
         
