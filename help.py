@@ -90,13 +90,7 @@ class Cam (camera.Camera):
         flat_rvecs = self.flatten(rvecs)
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
-            # flat_rvecs = np.delete(np.array(flat_rvecs), 1, 1)
-            print(flat_tvecs)
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
-                print("flat rvec: ", flat_rvecs)
-                print("flat tvec: ", flat_tvecs)
-                print("rvec: ", rvec)
-                print("tvec: ", tvec)
                 tvec = ToGlobal(tvec, rvec[1], np.array([145/2, 115]))
                 print(rvec[1])
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
