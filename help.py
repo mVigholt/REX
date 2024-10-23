@@ -75,13 +75,8 @@ class Cam (camera.Camera):
     def flatten(self, matLike):
         return None if matLike is None else list(itertools.chain(*matLike))     
     
-    def next_frame(self, ret_frame = False):
-        retval, self.frameReference = self.cam.read()
-        if not retval: # Error
-            print(" < < <  Game over!  > > > ")
-            exit(-1)
-        if ret_frame:
-            return self.frameReference
+    def next_frame(self):
+        return self.get_next_frame()
     
     def next_frame_with_detection(self, ret_frame = False, ret_corner = False, ret_id = False):
         self.next_frame()
