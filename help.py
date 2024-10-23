@@ -109,7 +109,7 @@ class Cam (camera.Camera):
         print("natty: ", tvecs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
-        flat_rvecs = self.flatten(rvecs)
+        lat_rvecs = self.flatten(rvecs)
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
