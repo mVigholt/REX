@@ -88,12 +88,16 @@ class Cam (camera.Camera):
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
-        if flat_tvecs is not None:
+        if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
             for rvec, tvec in flat_rvecs, flat_tvecs: 
+                print("rvec: ", rvec[1])
+                print("tvec: ", tvec)
                 tvec = ToGlobal(tvec, rvec[1], np.array([145/2, 115]))
                 print(rvec[1])
+        else:
+            print("flat_tvecs or flat_rvecs was None")
         return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):
