@@ -18,10 +18,10 @@ robotBuffer = 50
 def RotationMatrix(angle): 
     return np.array([[np.cos(angle), -np.sin(angle)],
                      [np.sin(angle), np.cos(angle)]])
-def ToGlobal(localPoint,point,angle):
+def ToGlobal(point,angle,localPoint):
     return np.dot(RotationMatrix(angle), localPoint) + point
-def ToLocal(globalPoint,point,angle):
-    return np.dot(RotationMatrix(-angle), (globalPoint - point))
+def ToLocal(point,angle,globalPoint):
+    return np.dot(RotationMatrix(angle), (globalPoint - point))
 
 # initialize camera transformation matrix
 cam_matrix = np.array([ [f, 0, CH/2],
@@ -91,7 +91,7 @@ class Cam (object):
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
             for rvec, tvec in flat_rvecs, flat_tvecs: 
-                tvec = ToGlobal(np.array([145/2, 115]), tvec, math.dist([0,0,0], rvec))
+                tvec = ToGlobal(tvec, math.dist([0,0,0], rvec), np.array([145/2, 115]))
         return self.flatten(self.ids), flat_tvecs
             
     def __setup_stream(self):
