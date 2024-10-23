@@ -113,6 +113,7 @@ class Cam (camera.Camera):
     def stream(self):
         if self.WIN_RF is None:
             self.__setup_stream()
+        print(self.landmarkIds)
         # Draw markers on the frame if found
         cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
