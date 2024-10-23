@@ -14,12 +14,12 @@ sys.path.insert(0, directory_path)
 
 import camera
 
-CW = 1024
-CH = 720
+CW = 1640
+CH = 1232
 
 X = 145
 # old_f = 1138
-f = 1138
+f = 1687
 
 landmarkRadius = 350
 robotRadius = 450/2
