@@ -69,7 +69,7 @@ class Cam (camera.Camera):
         self.frameReference = None
         self.corners = None 
         self.ids = None
-        self.next_frame_with_detection()
+        self.get_frame_with_detection(True)
         #--------------------------------------------------------------------------------
     
     def flatten(self, matLike):
