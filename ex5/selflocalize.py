@@ -332,7 +332,7 @@ try:
             draw_world(est_pose, particles, world)
     
             # Show frame
-            cv2.imshow(WIN_RF1, colour)
+            # cv2.imshow(WIN_RF1, colour)
 
             # Show world
             cv2.imshow(WIN_World, world)
