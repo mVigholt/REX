@@ -6,7 +6,6 @@ import robot
 import math
 import sys
 import os
-import path
 
 # Define the path to the directory where the desired module is located
 directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ex5'))
