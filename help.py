@@ -91,8 +91,9 @@ class Cam (camera.Camera):
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             print(flat_tvecs)
-            for rvec, tvec in flat_rvecs, flat_tvecs: 
-                print(flat_tvecs)
+            for (rvec, tvec) in (flat_rvecs, flat_tvecs): 
+                print("flat rvec: ", flat_rvecs)
+                print("flat tvec: ", flat_tvecs)
                 print("tvec: ", tvec)
                 tvec = ToGlobal(tvec, rvec[1], np.array([145/2, 115]))
                 print(rvec[1])
