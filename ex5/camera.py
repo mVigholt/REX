@@ -10,23 +10,23 @@ from pkg_resources import parse_version
 gstreamerCameraFound = False
 piCameraFound = False
 piCamera2Found = False
-# try:
-#     import picamera
-#     from picamera.array import PiRGBArray
-#     piCameraFound = True
-#     print("Camera.py: Using picamera module")
-# except ImportError:
-#     print("Camera.py: picamera module not available")
+try:
+    import picamera
+    from picamera.array import PiRGBArray
+    piCameraFound = True
+    print("Camera.py: Using picamera module")
+except ImportError:
+    print("Camera.py: picamera module not available")
 
-# try:
-#     import picamera2
-#     piCamera2Found = True
-#     print("Camera.py: Using picamera2 module")
-# except ImportError:
-#     print("Camera.py: picamera2 module not available")
+try:
+    import picamera2
+    piCamera2Found = True
+    print("Camera.py: Using picamera2 module")
+except ImportError:
+    print("Camera.py: picamera2 module not available")
 
-# if not piCameraFound and not piCamera2Found:
-#     print("Camera.py: Using OpenCV interface instead")
+if not piCameraFound and not piCamera2Found:
+    print("Camera.py: Using OpenCV interface instead")
 
 
 def isRunningOnArlo():
@@ -45,8 +45,7 @@ def capPropId(prop):
     return getattr(cv2 if OPCV3 else cv2.cv, ("" if OPCV3 else "CV_") + "CAP_PROP_" + prop)
 
 
-# def gstreamer_pipeline(capture_width=1280, capture_height=720, framerate=30):
-def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=30):
+def gstreamer_pipeline(capture_width=1280, capture_height=720, framerate=30):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
     return (
         "libcamerasrc !"
