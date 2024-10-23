@@ -10,23 +10,23 @@ from pkg_resources import parse_version
 gstreamerCameraFound = False
 piCameraFound = False
 piCamera2Found = False
-try:
-    import picamera
-    from picamera.array import PiRGBArray
-    piCameraFound = True
-    print("Camera.py: Using picamera module")
-except ImportError:
-    print("Camera.py: picamera module not available")
+# try:
+#     import picamera
+#     from picamera.array import PiRGBArray
+#     piCameraFound = True
+#     print("Camera.py: Using picamera module")
+# except ImportError:
+#     print("Camera.py: picamera module not available")
 
-try:
-    import picamera2
-    piCamera2Found = True
-    print("Camera.py: Using picamera2 module")
-except ImportError:
-    print("Camera.py: picamera2 module not available")
+# try:
+#     import picamera2
+#     piCamera2Found = True
+#     print("Camera.py: Using picamera2 module")
+# except ImportError:
+#     print("Camera.py: picamera2 module not available")
 
-if not piCameraFound and not piCamera2Found:
-    print("Camera.py: Using OpenCV interface instead")
+# if not piCameraFound and not piCamera2Found:
+#     print("Camera.py: Using OpenCV interface instead")
 
 
 def isRunningOnArlo():
@@ -45,7 +45,8 @@ def capPropId(prop):
     return getattr(cv2 if OPCV3 else cv2.cv, ("" if OPCV3 else "CV_") + "CAP_PROP_" + prop)
 
 
-def gstreamer_pipeline(capture_width=1280, capture_height=720, framerate=30):
+# def gstreamer_pipeline(capture_width=1280, capture_height=720, framerate=30):
+def gstreamer_pipeline(capture_width=1024, capture_height=720, framerate=30):
     """Utility function for setting parameters for the gstreamer camera pipeline"""
     return (
         "libcamerasrc !"
@@ -145,7 +146,6 @@ class Camera(object):
             self.intrinsic_matrix = np.asarray([1687.0, 0., self.imageSize[0] / 2.0, 0.,
                    1687.0, self.imageSize[1] / 2.0, 0., 0., 1.], dtype = np.float64)
             self.intrinsic_matrix.shape = (3, 3)
-            print(self.intrinsic_matrix)
             #self.distortion_coeffs = np.asarray([ 1.1911006165076067e-01, -1.0003366233413549e+00,
             #       1.9287903277399834e-02, -2.3728201444308114e-03, -2.8137265581326476e-01 ], dtype = np.float64)
             self.distortion_coeffs = np.asarray([0., 0., 2.0546093607192093e-02, -3.5538453075048249e-03, 0.], dtype = np.float64)
