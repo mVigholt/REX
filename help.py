@@ -108,7 +108,6 @@ class Cam (object):
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         # for i in range(len(self.ids)):
         cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs, tvecs, 0.5)
-
         # Stream frames
         cv2.imshow(self.WIN_RF, self.frameReference)
         
