@@ -78,11 +78,11 @@ class Cam (camera.Camera):
     def next_frame(self):
         return self.get_next_frame()
     
-    def get_frame_with_detection(self, new_frame = False):
+    def next_frame_with_detection(self, new_frame = False):
         if new_frame: self.next_frame()
         self.corners, self.ids, _ = cv2.aruco.detectMarkers(self.frameReference, self.aruco_dict)
     
-    def get_map(self, new_frame = False):
+    def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         #tvec = [with, height, debth] ???
