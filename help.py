@@ -92,6 +92,7 @@ class Cam (camera.Camera):
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             print(flat_tvecs)
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
+            print(flat_tvecs)
             for rvec, tvec in flat_rvecs, flat_tvecs: 
                 print("rvec: ", rvec[1])
                 print("tvec: ", tvec)
