@@ -18,7 +18,8 @@ CW = 1024
 CH = 720
 
 X = 145
-f = 1138
+# old_f = 1138
+f = 1687
 
 landmarkRadius = 350
 robotRadius = 450/2
