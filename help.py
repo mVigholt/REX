@@ -111,17 +111,17 @@ class Cam (camera.Camera):
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
         if flat_tvecs and flat_rvecs is not None:
-            # flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
+            flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
                 print("local tvec:", tvec)
                 print("local distance: ", np.linalg.norm(tvec))
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
-                # tvec = ToGlobal(tvec, euler_angles[1], np.array([-145/2, 115]))
-            #     print("angle: ", euler_angles)
-            #     print("global tvec: ", tvec)
-            #     print("global distance: ", np.linalg.norm(tvec))
-            # flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
+                tvec = ToGlobal(tvec, euler_angles[1], np.array([0, 115]))
+                print("angle: ", euler_angles)
+                print("global tvec: ", tvec)
+                print("global distance: ", np.linalg.norm(tvec))
+            flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
             print("flat_tvecs or flat_rvecs was None")
         return self.flatten(self.landmarkIds), flat_tvecs
