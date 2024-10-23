@@ -104,13 +104,13 @@ class Cam (object):
         if self.WIN_RF is None:
             self.__setup_stream()
         # Draw markers on the frame if found
-        # frameDrawing = cv2.aruco.drawDetectedMarkers(self.frameReference, self.corners, self.ids)
+        cv2.aruco.drawDetectedMarkers(self.frameReference, self.corners, self.ids)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.corners, X, cam_matrix, distCoeffs)
         for i in range(len(self.ids)):
-            frameDrawing = cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 0.5)
+            cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 0.5)
 
         # Stream frames
-        cv2.imshow(self.WIN_RF, frameDrawing)
+        cv2.imshow(self.WIN_RF, self.frameReference)
         
   
 class Timed_lap (object):
