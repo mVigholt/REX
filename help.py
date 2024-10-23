@@ -24,7 +24,7 @@ X = 145
 # their original f = 1687
 f = 1318
 
-landmarkRadius = 350
+landmarkRadius = 200
 robotRadius = 450/2
 robotBuffer = 50
 
