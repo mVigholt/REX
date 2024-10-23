@@ -94,6 +94,7 @@ class Cam (camera.Camera):
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
             print(flat_tvecs)
             for rvec, tvec in flat_rvecs, flat_tvecs: 
+                print(flat_tvecs)
                 print("rvec: ", rvec[1])
                 print("tvec: ", tvec)
                 tvec = ToGlobal(tvec, rvec[1], np.array([145/2, 115]))
