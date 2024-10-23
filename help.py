@@ -16,10 +16,13 @@ import camera
 
 CW = 1640
 CH = 1232
+# old_CW = 1024
+# old_CH = 720
 
 X = 145
 # old_f = 1138
-f = 1687
+# their original f = 1687
+f = 1318
 
 landmarkRadius = 350
 robotRadius = 450/2
