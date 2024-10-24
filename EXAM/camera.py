@@ -383,6 +383,8 @@ class Camera(object):
         def flatten(matLike):
             return None if matLike is None else list(itertools.chain(*matLike))     
         
+        print(self.tvecs)
+        
         flat_tvecs = flatten(self.tvecs)
         flat_rvecs = flatten(self.rvecs)
         if flat_tvecs and flat_rvecs is not None:
@@ -397,10 +399,8 @@ class Camera(object):
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + 450/2
         
         for i, (tvec, flat_tvec) in enumerate(zip(self.tvecs, flat_tvecs)):
-            print("before: ", tvec)
             self.tvecs[i][0][0] = flat_tvec[0]
             self.tvecs[i][0][2] = flat_tvec[1]
-            print("after: ", tvec)
         ##############################################################################################
         # HOMEBREW, DELETE BY SITE
         ##############################################################################################
