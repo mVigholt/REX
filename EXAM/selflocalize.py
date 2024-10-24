@@ -203,7 +203,7 @@ try:
             expand_dis = 2000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
-            _, local_coords = cam.next_map() # her indsætter vi det globale koordinat system konverteret til lokalt
+            _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print("local landmark coordinates: ", local_coords)
             print("global landmark coordinates: ", (landmarks[1], landmarks[2]))
