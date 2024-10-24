@@ -203,6 +203,7 @@ try:
         
         print(pvar)
         if pvar < 30:
+            print("Starting path planning")
             path_res = 200
             expand_dis = 2000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
@@ -220,6 +221,7 @@ try:
                         )
             path = rrt.planning(animation=False)
             if path is not None:
+                print("Beginning drive sequence.")
                 cur = np.array([0,1])
                 for i in range(len(path)-1,0,-1):
                     next = path[i-1] - path[i]
@@ -231,6 +233,7 @@ try:
                     otto.Turn(theta)
                     otto.Forward(dist)
                     cur = next
+            break
             
             
         # Clear seen objects
