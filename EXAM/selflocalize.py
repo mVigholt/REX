@@ -38,8 +38,6 @@ if isRunningOnArlo():
     onRobot = False
 
 
-
-
 # Some color constants in BGR format
 CRED = (0, 0, 255)
 CGREEN = (0, 255, 0)
@@ -62,12 +60,6 @@ landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 if onRobot:
     otto = h.Arlo()
 
-# Particles.
-particle_dist = []
-pvar = 10000
-lap = h.Timed_lap()
-measurements = dict()
-
 def jet(x):
     """Colour map for drawing particles. This function determines the colour of 
     a particle from its weight."""
@@ -82,8 +74,8 @@ def draw_world(est_pose, particles, world):
     This functions draws robots position in the world coordinate system."""
 
     # Fix the origin of the coordinate system
-    offsetX = 100
-    offsetY = 250
+    offsetX = 250
+    offsetY = 700
 
     # Constant needed for transforming from world coordinates to screen coordinates (flip the y-axis)
     ymax = world.shape[0]
@@ -118,8 +110,6 @@ def draw_world(est_pose, particles, world):
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
 
-
-
 def initialize_particles(num_particles):
     particles = []
     for i in range(num_particles):
@@ -148,7 +138,14 @@ try:
 
     est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
     
-    old_est_pose_pos = (10000, 10000)
+    #=====================================================
+    # Particles.
+    old_est_pose = est_pose
+    particle_dist = []
+    pvar = 10000
+    lap = h.Timed_lap()
+    measurements = dict()
+    #=====================================================
 
     # Driving parameters
     velocity = 0.0 # cm/sec
@@ -157,7 +154,7 @@ try:
     # Initialize the robot (XXX: You do this)
 
     # Allocate space for world map
-    world = np.zeros((500,500,3), dtype=np.uint8)
+    world = np.zeros((1000,1000,3), dtype=np.uint8)
 
     # Draw map
     draw_world(est_pose, particles, world)
@@ -170,13 +167,8 @@ try:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
         cam = h.Cam(onRobot)
     
+
     while True:
-        
-        # varians of particles
-        pvar = np.var(particle_dist)
-        # print(pvar)
-        particle_dist.clear()
-        
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
         if action == ord('q'): # Quit
@@ -196,54 +188,7 @@ try:
                 angular_velocity -= 0.2
         
         # Use motor controls to update particles
-        # XXX: Make the robot drive
-        
-        print(pvar)
-        if pvar < 10 and math.dist((est_pose.getX(), est_pose.getY()), old_est_pose_pos) < 1:
-            print("Starting path planning")
-            path_res = 200
-            expand_dis = 2000
-            rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
-            
-            _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
-            print("local landmark coordinates: ", local_coords)
-            print("global landmark coordinates: ", (landmarks[1], landmarks[2]))
-            print("global robot estimate pos: ", [est_pose.getX(), est_pose.getY()])
-            print("global robot estimate theta: ", est_pose.getTheta())
-            print("local robot pos: ", [0,0])
-            print("local goal: ", local_goal)
-            map = m.landmark_map(low=(-5000, 0), high=(5000, 5000), landMarks=local_coords)
-            rrt = rt.RRT(start=[0, 0],
-                        goal=local_goal,
-                        robot_model=rob,
-                        map=map,
-                        expand_dis=expand_dis,
-                        path_resolution=path_res,
-                        )
-            path = rrt.planning(animation=False)
-            if path is not None:
-                print("Beginning drive sequence.")
-                print(path)
-                # cur = np.array([0,1])
-                # for i in range(len(path)-1,0,-1):
-                #     next = path[i-1] - path[i]
-                #     theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
-                #     theta = theta * np.sign(np.cross(cur,next))
-                #     dist = math.dist([0,0],next)
-                #     print(f"turn: {theta}")
-                #     print(f"move: {dist}")
-                #     otto.Turn(theta)
-                #     otto.Forward(dist)
-                #     cur = next
-            break
-            
-            
-        # Clear seen objects
-        measurements.clear()
-        
-            
-        
+        # XXX: Make the robot drive     
         # XXX: You do this
         dt = lap.time()
         for p in particles:
@@ -262,7 +207,6 @@ try:
         if not isinstance(objectIDs, type(None)):
             # List detected objects
             for i in range(len(objectIDs)):
-                print("i: ", i, " angles: ", angles[i])
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
                 if (objectIDs[i] in landmarks and 
@@ -317,9 +261,7 @@ try:
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
-            
-            
-            
+
             # Draw detected objects
             cam.draw_aruco_objects(colour)
         else:
@@ -327,9 +269,6 @@ try:
             for p in particles:
                 particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 p.setWeight(1.0/num_particles)
-
-    
-        est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
 
         if showGUI:
             # Draw map
@@ -340,8 +279,55 @@ try:
 
             # Show world
             cv2.imshow(WIN_World, world)
+        
+        
+        #=======================================================================
+        # TRY TO DRIVE
+        #=======================================================================
+        est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
+        # varians of particles
+        pvar = np.var(particle_dist)
     
-  
+        if pvar < 10 and math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()]) < 1:
+            print("Starting path planning")
+            path_res = 200
+            expand_dis = 2000
+            rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
+            
+            _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            map = m.landmark_map(low=(-5000, 0), high=(5000, 5000), landMarks=local_coords)
+            rrt = rt.RRT(start=[0, 0],
+                        goal=local_goal,
+                        robot_model=rob,
+                        map=map,
+                        expand_dis=expand_dis,
+                        path_resolution=path_res,
+                        )
+            path = rrt.planning(animation=False)
+            if path is not None:
+                print("Beginning drive sequence.")
+                print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
+                print(f"local goal: {local_goal}")
+                print(f"path = {path}")
+                # cur = np.array([0,1])
+                # for i in range(len(path)-1,0,-1):
+                #     next = path[i-1] - path[i]
+                #     theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
+                #     theta = theta * np.sign(np.cross(cur,next))
+                #     dist = math.dist([0,0],next)
+                #     print(f"turn: {theta}")
+                #     print(f"move: {dist}")
+                #     otto.Turn(theta)
+                #     otto.Forward(dist)
+                #     cur = next
+            break
+            
+        # Clear seen objects
+        measurements.clear()
+        particle_dist.clear()
+        old_est_pose = est_pose
+
 finally: 
     # Make sure to clean up even if an exception occurred
     
