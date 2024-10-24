@@ -15,8 +15,8 @@ import map as m
 import robot_models
 
 # Flags
-showGUI = True  # Whether or not to open GUI windows
-onRobot = False  # Whether or not we are running on the Arlo robot
+showGUI = False  # Whether or not to open GUI windows
+onRobot = True  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
     """Return True if we are running on Arlo, otherwise False.
@@ -295,7 +295,7 @@ try:
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()+(math.pi/2), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             map = m.landmark_map(low=(-5000, 0), high=(5000, 5000), landMarks=local_coords)
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
@@ -310,17 +310,17 @@ try:
                 print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
                 print(f"local goal: {local_goal}")
                 print(f"path = {path}")
-                # cur = np.array([0,1])
-                # for i in range(len(path)-1,0,-1):
-                #     next = path[i-1] - path[i]
-                #     theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
-                #     theta = theta * np.sign(np.cross(cur,next))
-                #     dist = math.dist([0,0],next)
-                #     print(f"turn: {theta}")
-                #     print(f"move: {dist}")
-                #     otto.Turn(theta)
-                #     otto.Forward(dist)
-                #     cur = next
+                cur = np.array([0,1])
+                for i in range(len(path)-1,0,-1):
+                    next = path[i-1] - path[i]
+                    theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
+                    theta = theta * np.sign(np.cross(cur,next))
+                    dist = math.dist([0,0],next)
+                    print(f"turn: {theta}")
+                    print(f"move: {dist}")
+                    otto.Turn(theta)
+                    otto.Forward(dist)
+                    cur = next
             break
             
         # Clear seen objects
