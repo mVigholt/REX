@@ -287,8 +287,8 @@ try:
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
         # varians of particles
         pvar = np.var(particle_dist)
-    
-        if pvar < 10 and math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()]) < 1:
+        ddiff = math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()])
+        if pvar < 10 and  ddiff < 0.5:
             print("Starting path planning")
             path_res = 200
             expand_dis = 2000
