@@ -56,7 +56,7 @@ CBLACK = (0, 0, 0)
 landmarkIDs = [1, 2]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    2: (300.0, 0.0)  # Coordinates for landmark 2
+    2: (-300.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -207,7 +207,7 @@ try:
             local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print("local landmark coordinates: ", local_coords)
             print("global landmark coordinates: ", (landmarks[1], landmarks[2]))
-            print("global robot estimate pos: ", [est_pose.getX()*10, est_pose.getY()*10])
+            print("global robot estimate pos: ", [est_pose.getX(), est_pose.getY()])
             print("global robot estimate theta: ", est_pose.getTheta())
             print("local robot pos: ", [0,0])
             print("local goal: ", local_goal)
