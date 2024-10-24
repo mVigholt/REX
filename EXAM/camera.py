@@ -380,7 +380,7 @@ class Camera(object):
 
             return np.array([x, y, z])
         
-        def flatten(self, matLike):
+        def flatten(matLike):
             return None if matLike is None else list(itertools.chain(*matLike))     
         
         flat_tvecs = flatten(self.tvecs)
