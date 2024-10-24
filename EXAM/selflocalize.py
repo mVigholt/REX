@@ -16,7 +16,7 @@ import map as m
 import robot_models
 
 # Flags
-showGUI = True  # Whether or not to open GUI windows
+showGUI = False #True  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
@@ -37,8 +37,6 @@ try:
 except ImportError:
     print("selflocalize.py: robot module not present - forcing not running on Arlo!")
     onRobot = False
-
-
 
 
 # Some color constants in BGR format
@@ -216,6 +214,7 @@ try:
             path = rrt.planning(animation=False)
             if path is not None:
                 cur = np.array([0,1])
+                
                 for i in range(len(path)-1,0,-1):
                     next = path[i-1] - path[i]
                     theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
@@ -307,8 +306,6 @@ try:
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
             
-            
-            
             # Draw detected objects
             cam.draw_aruco_objects(colour)
         else:
@@ -325,7 +322,7 @@ try:
             draw_world(est_pose, particles, world)
     
             # Show frame
-            # cv2.imshow(WIN_RF1, colour)
+            cv2.imshow(WIN_RF1, colour)
 
             # Show world
             cv2.imshow(WIN_World, world)
