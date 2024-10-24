@@ -1,13 +1,6 @@
 import math as m
 import particle
 import numpy as np
-import sys
-import os
-
-# Define the path to the directory where the desired module is located
-directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
-
-sys.path.insert(0, directory_path)
 
 import robot_models
 import rrt_mod as rt
