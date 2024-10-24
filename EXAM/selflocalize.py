@@ -133,7 +133,7 @@ try:
 
 
     # Initialize particles
-    num_particles = 1000
+    num_particles = 100
     particles = initialize_particles(num_particles)
 
     est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
@@ -292,8 +292,8 @@ try:
         print("pvar: ", pvar)
         if pvar < 15 and  ddiff < 1:
             print("Starting path planning")
-            path_res = 50
-            expand_dis = 500
+            path_res = 150
+            expand_dis = path_res*10
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
