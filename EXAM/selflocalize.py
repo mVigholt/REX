@@ -166,7 +166,7 @@ try:
         cam = h.Cam()
     else:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
-        cam = h.Cam(robottype='macbookpro')
+        cam = h.Cam(onRobot)
     
     while True:
         

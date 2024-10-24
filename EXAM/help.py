@@ -57,7 +57,13 @@ class Cam (camera.Camera):
         else: 
             robottype='macbookpro'
         super().__init__(0, robottype=robottype, useCaptureThread=useCaptureThread)
-        self.intrinsic_matrix = cam_matrix
+        
+        if robottype=='macbookpro':
+            cam_matrix = self.intrinsic_matrix
+            distCoeffs = self.distortion_coeffs
+        else:
+            self.intrinsic_matrix = cam_matrix
+            self.distortion_coeffs = distCoeffs
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
         #     """Utility function for setting parameters for the gstreamer camera pipeline"""
         #     return (
