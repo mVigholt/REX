@@ -8,7 +8,6 @@ import numpy as np
 import time
 from timeit import default_timer as timer
 import sys
-import path
 
 import help as h
 import rrt_mod as rt
@@ -17,7 +16,7 @@ import robot_models
 
 # Flags
 showGUI = True  # Whether or not to open GUI windows
-onRobot = True  # Whether or not we are running on the Arlo robot
+onRobot = False  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
     """Return True if we are running on Arlo, otherwise False.
@@ -167,7 +166,7 @@ try:
         cam = h.Cam()
     else:
         #cam = camera.Camera(0, robottype='macbookpro', useCaptureThread=True)
-        cam = h.Cam()
+        cam = h.Cam(robottype='macbookpro')
     
     while True:
         
