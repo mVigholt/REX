@@ -390,7 +390,11 @@ class Camera(object):
             for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
+                print("---")
+                print(tvec)
                 tvec = ToGlobal(tvec, euler_angles[1], np.array([0, 115]))
+                print(tvec)
+                print("---")
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + 450/2
         
         for tvec, flat_tvec in zip(self.tvecs, flat_tvecs):
