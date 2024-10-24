@@ -4,14 +4,6 @@ import numpy as np
 import time as t
 import robot
 import math
-import sys
-import os
-
-# Define the path to the directory where the desired module is located
-directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ex5'))
-
-sys.path.insert(0, directory_path)
-
 import camera
 
 CW = 1640
@@ -59,7 +51,11 @@ cam_matrix = np.array([ [f, 0, CW/2],
 distCoeffs = np.zeros((5, 1))
 
 class Cam (camera.Camera):
-    def __init__(self, robottype='arlo', useCaptureThread=False):
+    def __init__(self, onRobot=True, useCaptureThread=False):
+        if onRobot: 
+            robottype='arlo' 
+        else: 
+            robottype='macbookpro'
         super().__init__(0, robottype=robottype, useCaptureThread=useCaptureThread)
         self.intrinsic_matrix = cam_matrix
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
