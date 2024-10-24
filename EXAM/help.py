@@ -108,6 +108,7 @@ class Cam (camera.Camera):
     def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
         rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, self.intrinsic_matrix, self.distortion_coeffs)
+        print(tvecs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
