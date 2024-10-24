@@ -60,7 +60,8 @@ landmarks = {
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
-otto = h.Arlo()
+if onRobot:
+    otto = h.Arlo()
 
 # Particles.
 particle_dist = []
