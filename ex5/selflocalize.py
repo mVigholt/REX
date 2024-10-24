@@ -29,8 +29,8 @@ def isRunningOnArlo():
       You can use this flag to switch the code from running on you laptop to Arlo - you need to do the programming here!
     """
     # UNCOMMENT HVIS PÅ ARLO
-    # return onRobot
-    return False
+    return onRobot
+    # return False
 
 
 if isRunningOnArlo():
@@ -332,7 +332,7 @@ try:
             draw_world(est_pose, particles, world)
     
             # Show frame
-            # cv2.imshow(WIN_RF1, colour)
+            cv2.imshow(WIN_RF1, colour)
 
             # Show world
             cv2.imshow(WIN_World, world)
