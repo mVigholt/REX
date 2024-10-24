@@ -147,6 +147,8 @@ try:
     particles = initialize_particles(num_particles)
 
     est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
+    
+    old_est_pose_pos = (10000, 10000)
 
     # Driving parameters
     velocity = 0.0 # cm/sec
@@ -197,7 +199,7 @@ try:
         # XXX: Make the robot drive
         
         print(pvar)
-        if pvar < 10:
+        if pvar < 10 and math.dist((est_pose.getX(), est_pose.getY()), old_est_pose_pos) < 1:
             print("Starting path planning")
             path_res = 200
             expand_dis = 2000
