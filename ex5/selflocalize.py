@@ -29,8 +29,8 @@ def isRunningOnArlo():
       You can use this flag to switch the code from running on you laptop to Arlo - you need to do the programming here!
     """
     # UNCOMMENT HVIS PÅ ARLO
-    # return onRobot
-    return False
+    return onRobot
+    # return False
 
 
 if isRunningOnArlo():
