@@ -30,7 +30,7 @@ def isRunningOnArlo():
     """
     # UNCOMMENT HVIS PÅ ARLO
     # return onRobot
-    return False
+    return onRobot
 
 
 if isRunningOnArlo():
