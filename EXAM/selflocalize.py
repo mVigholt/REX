@@ -292,8 +292,8 @@ try:
         print("pvar: ", pvar)
         if pvar < 15 and  ddiff < 1:
             print("Starting path planning")
-            path_res = 200
-            expand_dis = 2000
+            path_res = 50
+            expand_dis = 500
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
