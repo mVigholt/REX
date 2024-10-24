@@ -21,7 +21,7 @@ import map as m
 import robot_models
 
 # Flags
-showGUI = True  # Whether or not to open GUI windows
+showGUI = False  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
