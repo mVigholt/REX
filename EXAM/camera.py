@@ -394,14 +394,8 @@ class Camera(object):
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + 450/2
         
         for tvec, flat_tvec in zip(self.tvecs, flat_tvecs):
-            print("tvec: ", tvec)
-            print("flat_tvec: ", flat_tvec)
-            print(tvec[0][:, 0])
-            print(flat_tvec[:, 0])
-            print(tvec[0][:, 2])
-            print(flat_tvec[:, 1])
-            tvec[0][:, 0] = flat_tvec[:, 0]
-            tvec[0][:, 2] = flat_tvec[:, 1]
+            tvec[0][0] = flat_tvec[0]
+            tvec[0][2] = flat_tvec[1]
         ##############################################################################################
         # HOMEBREW, DELETE BY SITE
         ##############################################################################################
