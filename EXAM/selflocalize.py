@@ -16,7 +16,7 @@ import map as m
 import robot_models
 
 # Flags
-showGUI = False  # Whether or not to open GUI windows
+showGUI = True  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
@@ -223,17 +223,17 @@ try:
             if path is not None:
                 print("Beginning drive sequence.")
                 print(path)
-                cur = np.array([0,1])
-                for i in range(len(path)-1,0,-1):
-                    next = path[i-1] - path[i]
-                    theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
-                    theta = theta * np.sign(np.cross(cur,next))
-                    dist = math.dist([0,0],next)
-                    print(f"turn: {theta}")
-                    print(f"move: {dist}")
-                    otto.Turn(theta)
-                    otto.Forward(dist)
-                    cur = next
+                # cur = np.array([0,1])
+                # for i in range(len(path)-1,0,-1):
+                #     next = path[i-1] - path[i]
+                #     theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
+                #     theta = theta * np.sign(np.cross(cur,next))
+                #     dist = math.dist([0,0],next)
+                #     print(f"turn: {theta}")
+                #     print(f"move: {dist}")
+                #     otto.Turn(theta)
+                #     otto.Forward(dist)
+                #     cur = next
             break
             
             
