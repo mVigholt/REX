@@ -209,7 +209,12 @@ try:
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map() # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX(), est_pose.getY()]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            print("local landmark coordinates: ", local_coords)
+            print("global landmark coordinates: ", (landmarks[1], landmarks[2]))
+            print("global robot estimate pos: ", [est_pose.getX()*10, est_pose.getY()*10])
+            print("global robot estimate theta: ", est_pose.getTheta())
+            print("local robot pos: ", [0,0])
             print("local goal: ", local_goal)
             map = m.landmark_map(low=(-5000, 0), high=(5000, 5000), landMarks=local_coords)
             rrt = rt.RRT(start=[0, 0],
