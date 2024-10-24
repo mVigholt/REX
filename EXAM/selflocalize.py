@@ -30,10 +30,10 @@ if isRunningOnArlo():
     sys.path.append("../../../../Arlo/python")
 
 
-# try:
-#     import robot
-#     onRobot = True
-# except ImportError:
+try:
+    import robot
+    onRobot = True
+except ImportError:
     print("selflocalize.py: robot module not present - forcing not running on Arlo!")
     onRobot = False
 
