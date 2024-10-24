@@ -75,6 +75,8 @@ class RRT:
             
             if self.check_collision_free(new_node):
                 self.node_list.append(new_node)
+                
+            # try to steer towards goal NO MATTER THE EXPAND DIS
 
             #try to steer towards the goal if we are already close enough
             if self.node_list[-1].calc_distance_to(self.end) <= self.expand_dis:
