@@ -395,6 +395,8 @@ class Camera(object):
         
         for tvec, flat_tvec in zip(self.tvecs, flat_tvecs):
             print("before: ", tvec)
+            print("0: ", flat_tvec[0])
+            print("1: ", flat_tvec[1])
             tvec[0][0] = flat_tvec[0]
             tvec[0][2] = flat_tvec[1]
             print("after: ", tvec)
