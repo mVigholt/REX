@@ -56,7 +56,7 @@ CBLACK = (0, 0, 0)
 landmarkIDs = [1, 2]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    2: (-300.0, 0.0)  # Coordinates for landmark 2
+    2: (300.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -197,7 +197,7 @@ try:
         # XXX: Make the robot drive
         
         print(pvar)
-        if pvar < 30:
+        if pvar < 10:
             print("Starting path planning")
             path_res = 200
             expand_dis = 2000
