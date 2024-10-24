@@ -45,10 +45,10 @@ def rotation_matrix_to_euler_angles(R):
     return np.array([x, y, z])
 
 # initialize camera transformation matrix
-cam_matrix = np.array([ [f, 0, CW/2],
+default_cam_matrix = np.array([ [f, 0, CW/2],
                         [0, f, CH/2],
                         [0, 0, 1]])
-distCoeffs = np.zeros((5, 1))
+default_distCoeffs = np.zeros((5, 1))
 
 class Cam (camera.Camera):
     def __init__(self, onRobot=True, useCaptureThread=False):
@@ -62,8 +62,8 @@ class Cam (camera.Camera):
             self.intrinsic_matrix = self.intrinsic_matrix
             self.intrinsic_matrix = self.distortion_coeffs
         else:
-            self.intrinsic_matrix = cam_matrix
-            self.distortion_coeffs = distCoeffs
+            self.intrinsic_matrix = default_cam_matrix
+            self.distortion_coeffs = default_distCoeffs
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
         #     """Utility function for setting parameters for the gstreamer camera pipeline"""
         #     return (
