@@ -222,6 +222,7 @@ try:
             path = rrt.planning(animation=False)
             if path is not None:
                 print("Beginning drive sequence.")
+                print(path)
                 cur = np.array([0,1])
                 for i in range(len(path)-1,0,-1):
                     next = path[i-1] - path[i]
