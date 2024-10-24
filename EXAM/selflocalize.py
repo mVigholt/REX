@@ -8,15 +8,20 @@ import numpy as np
 import time
 from timeit import default_timer as timer
 import sys
-
+import os
 import path
+
+# Define the path to the directory where the desired module is located
+directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
+
+sys.path.insert(0, directory_path)
 import help as h
 import rrt_mod as rt
 import map as m
 import robot_models
 
 # Flags
-showGUI = False #True  # Whether or not to open GUI windows
+showGUI = False  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
@@ -39,6 +44,8 @@ except ImportError:
     onRobot = False
 
 
+
+
 # Some color constants in BGR format
 CRED = (0, 0, 255)
 CGREEN = (0, 255, 0)
@@ -51,10 +58,10 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 3]
+landmarkIDs = [1, 2]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    3: (150.0, 0.0)  # Coordinates for landmark 2
+    2: (300.0, 0.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -196,14 +203,15 @@ try:
         
         print(pvar)
         if pvar < 30:
+            print("Starting path planning")
             path_res = 200
             expand_dis = 2000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map() # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array[(est_pose.getX(), est_pose.getY())], est_pose.getTheta(), np.array([75, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX(), est_pose.getY()]), est_pose.getTheta(), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print("local goal: ", local_goal)
-            map = m.landmark_map(low=(-2000, 0), high=(2000, 2000), landMarks=local_coords)
+            map = m.landmark_map(low=(-5000, 0), high=(5000, 5000), landMarks=local_coords)
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
@@ -213,8 +221,9 @@ try:
                         )
             path = rrt.planning(animation=False)
             if path is not None:
+                print("Beginning drive sequence.")
+                print(path)
                 cur = np.array([0,1])
-                
                 for i in range(len(path)-1,0,-1):
                     next = path[i-1] - path[i]
                     theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
@@ -225,6 +234,7 @@ try:
                     otto.Turn(theta)
                     otto.Forward(dist)
                     cur = next
+            break
             
             
         # Clear seen objects
@@ -305,6 +315,8 @@ try:
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
+            
+            
             
             # Draw detected objects
             cam.draw_aruco_objects(colour)
