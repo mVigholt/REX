@@ -389,8 +389,6 @@ class Camera(object):
         flat_rvecs = flatten(self.rvecs)
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
-            print("---")
-            print(flat_tvecs)
             for i, (rvec, tvec) in enumerate(zip(flat_rvecs, flat_tvecs)): 
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)

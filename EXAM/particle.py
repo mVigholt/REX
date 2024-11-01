@@ -68,7 +68,15 @@ def move_particle(particle: Particle, delta_x, delta_y, delta_theta):
     particle.setTheta(particle.getTheta() + delta_theta)
     add_uncertainty_single(particle, 2, 0.1)
 
-
+def turn(particle: Particle, delta_theta):
+    particle.setTheta(particle.getTheta() + delta_theta)
+    add_uncertainty_single(particle, 0, 0.1)
+    
+def forward(particle: Particle, delta_x, delta_y):
+    particle.setX(particle.getX() + delta_x)
+    particle.setY(particle.getY() + delta_y)
+    add_uncertainty_single(particle, 2, 0)
+    
 def add_uncertainty_single(particle, sigma, sigma_theta):
     """Add some noise to each particle in the list. Sigma and sigma_theta is the noise
     variances for position and angle noise."""

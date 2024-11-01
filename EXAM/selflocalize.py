@@ -311,6 +311,7 @@ try:
                 print("Beginning drive sequence.")
                 print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
                 print(f"local goal: {local_goal}")
+                print(f"landMarks: {local_coords}")
                 print(f"path = {path}")
                 cur = np.array([0,1])
                 for i in range(len(path)-1,0,-1):
