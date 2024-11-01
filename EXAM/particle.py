@@ -79,7 +79,7 @@ def forward(particle: Particle, delta_x, delta_y):
 
 def noise(particles_list):
     # vi tilføjer kun lille smule noise
-    add_uncertainty(particles_list, 0.3, 0.1)
+    add_uncertainty(particles_list, 1, 0.1)
     
 def add_uncertainty_single(particle, sigma, sigma_theta):
     """Add some noise to each particle in the list. Sigma and sigma_theta is the noise
