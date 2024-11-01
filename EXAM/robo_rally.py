@@ -15,7 +15,7 @@ import map as m
 import robot_models
 
 # Flags
-showGUI = False  # Whether or not to open GUI windows
+showGUI = True  # Whether or not to open GUI windows
 onRobot = True  # Whether or not we are running on the Arlo robot
 
 def isRunningOnArlo():
@@ -133,7 +133,7 @@ try:
 
 
     # Initialize particles
-    num_particles = 100
+    num_particles = 1000
     particles = initialize_particles(num_particles)
 
     est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
