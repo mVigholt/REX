@@ -190,13 +190,13 @@ try:
         # Use motor controls to update particles
         # XXX: Make the robot drive     
         # XXX: You do this
-        # dt = lap.time()
-        # for p in particles:
-        #     theta = p.getTheta()
-        #     deltaX = math.cos(theta) * velocity * dt
-        #     deltaY = math.sin(theta) * velocity * dt
-        #     deltaTheta = angular_velocity * dt
-        #     particle.move_particle(p, deltaX, deltaY, deltaTheta) 
+        dt = lap.time()
+        for p in particles:
+            theta = p.getTheta()
+            deltaX = math.cos(theta) * velocity * dt
+            deltaY = math.sin(theta) * velocity * dt
+            deltaTheta = angular_velocity * dt
+            particle.move_particle(p, deltaX, deltaY, deltaTheta) 
 
 
         # Fetch next frame
