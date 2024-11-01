@@ -293,7 +293,7 @@ try:
         ddiff = math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()])
         print("diff: ", ddiff)
         print("pvar: ", pvar)
-        if pvar < 15 and  ddiff < 1:
+        if pvar < 15 and  ddiff < 3:
             print("Starting path planning")
             path_res = 150
             expand_dis = path_res*10
