@@ -90,4 +90,5 @@ if path is not None:
       print(f"move: {dist}")
       otto.Turn(theta)
       otto.Forward(dist)
+      #TODO Opdater particles med samme vinkel og dist!
       cur = next
