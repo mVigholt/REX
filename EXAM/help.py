@@ -15,7 +15,7 @@ X = 145
 # old_f = 1138
 # their original f = 1687
 # f = 1318
-f = 1230
+f = 1235
 
 landmarkRadius = 200
 robotRadius = 450/2
