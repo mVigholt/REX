@@ -254,8 +254,8 @@ try:
             
             for p in particles:
                 p: particle.Particle
-                # w = 1
-                w = p.getWeight()
+                w = 1
+                # w = p.getWeight()
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)
@@ -274,6 +274,7 @@ try:
             # No observation - reset weights to uniform distribution
             for p in particles:
                 p.setWeight(1.0/num_particles)
+                weights.clear()
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
