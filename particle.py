@@ -142,15 +142,17 @@ def accepltable_robot_pos_estimate(particles_list):
         pos_diff = abs(est_pos - est_pos_old)
         dir_diff = abs(est_dir - est_dir_old)
         
-        print(f"pos_var = {pos_var}")
-        print(f"pos_diff =  = {pos_diff}")
-        
         if (est_Count == est_Count_lim or 
             pos_diff[0] > pos_diff_lim and 
             pos_diff[1] > pos_diff_lim):
             est_Count = 0
         else:
             est_Count += 1
+        
+        print(f"pos_var = {pos_var}")
+        print(f"pos_diff =  = {pos_diff}")
+        print(f"dir_diff = {dir_diff_lim}")
+        print(f"dir_diff = {est_Count}")
         
         result = pos_var < pos_var_lim and dir_diff < dir_diff_lim and est_Count == est_Count_lim
         
