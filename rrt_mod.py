@@ -70,7 +70,7 @@ class RRT:
             #--------------------------------------------------------------------
             final_node = self.steer(self.node_list[-1], 
                                     self.end,
-                                    1000000000)
+                                    self.expand_dis)
             if self.check_collision_free(final_node):
                 return self.generate_final_course(len(self.node_list) - 1)
             #--------------------------------------------------------------------                  
