@@ -81,7 +81,7 @@ class RRT:
             # #try to steer towards the goal if we are already close enough
             # if self.node_list[-1].calc_distance_to(self.end) <= self.expand_dis:
             #     final_node = self.steer(self.node_list[-1], self.end,
-            #                             self.expand_dis)
+            #                             self.expand_dis) 
             #     if self.check_collision_free(final_node):
             #         return self.generate_final_course(len(self.node_list) - 1)
             # try to steer towards goal NO MATTER THE EXPAND DIS

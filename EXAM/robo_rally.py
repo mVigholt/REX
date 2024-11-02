@@ -57,7 +57,7 @@ landmarks = {
     3: (0.0, 400.0),  # Coordinates for landmark 1
     4: (-300.0, 400.0)  # Coordinates for landmark 2
 }
-landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
+landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the landmarks
 
 if onRobot:
     otto = h.Arlo()
@@ -144,9 +144,6 @@ try:
     
     #=====================================================
     # Particles.
-    old_est_pose = est_pose
-    particle_dist = []
-    pvar = 10000
     lap = h.Timed_lap()
     measurements = dict()
     #=====================================================
@@ -257,8 +254,7 @@ try:
             
             for p in particles:
                 p: particle.Particle
-                w = p.getWeight()
-                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
+                w = 1#p.getWeight()
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)
@@ -276,7 +272,6 @@ try:
         else:
             # No observation - reset weights to uniform distribution
             for p in particles:
-                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 p.setWeight(1.0/num_particles)
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
@@ -301,11 +296,7 @@ try:
         # TRY TO DRIVE
         #=======================================================================
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
-        # varians of particles
-        pvar = np.var(particle_dist)
-        ddiff = math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()])
-        print("diff: ", ddiff)
-        print("pvar: ", pvar)
+        
         if particle.accepltable_robot_pos_estimate(particles):
             print("Starting path planning")
             path_res = 150
@@ -344,8 +335,6 @@ try:
             
         # Clear seen objects
         measurements.clear()
-        particle_dist.clear()
-        old_est_pose = est_pose
 
 finally: 
     # Make sure to clean up even if an exception occurred
