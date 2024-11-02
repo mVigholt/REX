@@ -307,7 +307,7 @@ try:
             
             _, local_coords = cam.next_map(True) # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array([-1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
-            map = m.landmark_map(low=(-5000, 0), high=(5000, 5000), landMarks=local_coords)
+            map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
