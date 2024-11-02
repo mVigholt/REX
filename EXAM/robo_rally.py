@@ -220,7 +220,7 @@ try:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
         
         # If more than 1 object, converge
-        if len(measurements) > 0:
+        if len(measurements) == 2:
             def angle_propability(particle: particle.Particle, measurement):
                 sigma = 0.1
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
