@@ -3,10 +3,6 @@ import math
 import random
 import cv2
 import particle
-particle.est_pos = None
-particle.est_pos_old = None
-particle.est_dir = None
-particle.est_dir_old = None
 import camera
 import numpy as np
 import time
