@@ -314,33 +314,33 @@ try:
             # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array([-1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print(f"local_goal: {local_goal}")
-            time.sleep(10)
-            # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-            # rrt = rt.RRT(start=[0, 0],
-            #             goal=local_goal,
-            #             robot_model=rob,
-            #             map=map,
-            #             expand_dis=expand_dis,
-            #             path_resolution=path_res,
-            #             )
-            # path = rrt.planning(animation=False)
-            # if path is not None:
-            #     print("Beginning drive sequence.")
-            #     print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
-            #     print(f"local goal: {local_goal}")
-            #     print(f"path = {path}")
-            #     cur = np.array([0,1])
-            #     for i in range(len(path)-1,0,-1):
-            #         next = path[i-1] - path[i]
-            #         theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
-            #         theta = theta * np.sign(np.cross(cur,next))
-            #         dist = math.dist([0,0],next)
-            #         print(f"turn: {theta}")
-            #         print(f"move: {dist}")
-            #         otto.Turn(theta)
-            #         otto.Forward(dist)
-            #         cur = next
-            # break
+            
+            map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
+            rrt = rt.RRT(start=[0, 0],
+                        goal=local_goal,
+                        robot_model=rob,
+                        map=map,
+                        expand_dis=expand_dis,
+                        path_resolution=path_res,
+                        )
+            path = rrt.planning(animation=False)
+            if path is not None:
+                print("Beginning drive sequence.")
+                print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
+                print(f"local goal: {local_goal}")
+                print(f"path = {path}")
+                cur = np.array([0,1])
+                for i in range(len(path)-1,0,-1):
+                    next = path[i-1] - path[i]
+                    theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
+                    theta = theta * np.sign(np.cross(cur,next))
+                    dist = math.dist([0,0],next)
+                    print(f"turn: {theta}")
+                    print(f"move: {dist}")
+                    otto.Turn(theta)
+                    otto.Forward(dist)
+                    cur = next
+            break
             
         # Clear seen objects
         measurements.clear()
