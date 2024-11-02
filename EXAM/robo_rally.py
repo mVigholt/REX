@@ -257,8 +257,8 @@ try:
             
             for p in particles:
                 p: particle.Particle
-                # w = p.getWeight()
-                w = 1
+                w = p.getWeight()
+                # w = 1
                 # particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
