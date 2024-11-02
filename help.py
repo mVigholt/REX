@@ -4,14 +4,6 @@ import numpy as np
 import time as t
 import robot
 import math
-import sys
-import os
-
-# Define the path to the directory where the desired module is located
-directory_path = os.path.abspath(os.path.join(os.path.dirname(__file__), 'ex5'))
-
-sys.path.insert(0, directory_path)
-
 import camera
 
 CW = 1640
@@ -22,7 +14,8 @@ CH = 1232
 X = 145
 # old_f = 1138
 # their original f = 1687
-f = 1318
+# f = 1318
+f = 1240
 
 landmarkRadius = 200
 robotRadius = 450/2
@@ -53,15 +46,25 @@ def rotation_matrix_to_euler_angles(R):
     return np.array([x, y, z])
 
 # initialize camera transformation matrix
-cam_matrix = np.array([ [f, 0, CW/2],
+default_cam_matrix = np.array([ [f, 0, CW/2],
                         [0, f, CH/2],
                         [0, 0, 1]])
-distCoeffs = np.zeros((5, 1))
+default_distCoeffs = np.zeros((5, 1))
 
 class Cam (camera.Camera):
-    def __init__(self, robottype='arlo', useCaptureThread=False):
+    def __init__(self, onRobot=True, useCaptureThread=False):
+        if onRobot: 
+            robottype='arlo' 
+        else: 
+            robottype='macbookpro'
         super().__init__(0, robottype=robottype, useCaptureThread=useCaptureThread)
-        self.intrinsic_matrix = cam_matrix
+        
+        if robottype=='macbookpro':
+            self.intrinsic_matrix = self.intrinsic_matrix
+            self.intrinsic_matrix = self.distortion_coeffs
+        else:
+            self.intrinsic_matrix = default_cam_matrix
+            self.distortion_coeffs = default_distCoeffs
         # def gstreamer_pipeline(capture_width=CW, capture_height=CH, framerate=30):
         #     """Utility function for setting parameters for the gstreamer camera pipeline"""
         #     return (
@@ -105,22 +108,17 @@ class Cam (camera.Camera):
     
     def next_map(self, new_frame = False):
         self.next_frame_with_detection(new_frame)
-        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
-        print("natty: ", tvecs)
+        rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, self.intrinsic_matrix, self.distortion_coeffs)
+        print(tvecs)
         #tvec = [with, height, debth] ???
         flat_tvecs = self.flatten(tvecs)
         flat_rvecs = self.flatten(rvecs)
         if flat_tvecs and flat_rvecs is not None:
             flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
-            for rvec, tvec in zip(flat_rvecs, flat_tvecs): 
-                print("local tvec:", tvec)
-                print("local distance: ", np.linalg.norm(tvec))
+            for i, (rvec, tvec) in enumerate(zip(flat_rvecs, flat_tvecs)): 
                 rotation_matrix, _ = cv2.Rodrigues(rvec)
                 euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
-                tvec = ToGlobal(tvec, euler_angles[1], np.array([0, 115]))
-                print("angle: ", euler_angles)
-                print("global tvec: ", tvec)
-                print("global distance: ", np.linalg.norm(tvec))
+                flat_tvecs[i] = ToGlobal(tvec, euler_angles[1], np.array([0, 115]))
             flat_tvecs[:, 1] = flat_tvecs[:, 1] + robotRadius
         else:
             print("flat_tvecs or flat_rvecs was None")
@@ -136,14 +134,14 @@ class Cam (camera.Camera):
         if self.WIN_RF is None:
             self.__setup_stream()
         # Draw markers on the frame if found
-        hej = cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
+        frame = cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
         # cv2.aruco.drawDetectedMarkers(self.frameReference, self.landmarkCorners, self.landmarkIds)
-        # rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, cam_matrix, distCoeffs)
+        # rvecs, tvecs, _  = cv2.aruco.estimatePoseSingleMarkers(self.landmarkCorners, X, self.intrinsic_matrix, self.distortion_coeffs)
         # for i in range(len(self.landmarkIds)):
-        #     cv2.drawFrameAxes(self.frameReference, cam_matrix, distCoeffs, rvecs[i], tvecs[i], 100, 2)
+        #     cv2.drawFrameAxes(self.frameReference, self.intrinsic_matrix, self.distortion_coeffs, rvecs[i], tvecs[i], 100, 2)
         # # Stream frames
         
-        cv2.imshow(self.WIN_RF, hej)
+        cv2.imshow(self.WIN_RF, frame)
         
   
 class Timed_lap (object):
