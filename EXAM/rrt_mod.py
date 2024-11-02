@@ -69,11 +69,11 @@ class RRT:
         for i in range(self.max_iter):  
             # try to steer towards goal NO MATTER THE EXPAND DIS
             #--------------------------------------------------------------------
-            # final_node = self.steer(self.node_list[-1], 
-            #                         self.end,
-            #                         np.linalg.norm(np.array(self.node_list[-1].pos) - np.array(self.end.pos)) + self.expand_dis)
-            # if self.check_collision_free(final_node):
-            #     return self.generate_final_course(len(self.node_list) - 1)
+            final_node = self.steer(self.node_list[-1], 
+                                    self.end,
+                                    np.linalg.norm(np.array(self.node_list[-1].pos) - np.array(self.end.pos)) + self.expand_dis)
+            if self.check_collision_free(final_node):
+                return self.generate_final_course(len(self.node_list) - 1)
             #--------------------------------------------------------------------
                                 
             rnd_node = self.get_random_node()
@@ -85,14 +85,12 @@ class RRT:
             if self.check_collision_free(new_node):
                 self.node_list.append(new_node)
                 
-            # try to steer towards goal NO MATTER THE EXPAND DIS
-            # #try to steer towards the goal if we are already close enough
-            if self.node_list[-1].calc_distance_to(self.end) <= self.expand_dis:
-                final_node = self.steer(self.node_list[-1], self.end,
-                                        self.expand_dis) 
-                if self.check_collision_free(final_node):
-                    return self.generate_final_course(len(self.node_list) - 1)
-            
+            # # #try to steer towards the goal if we are already close enough
+            # if self.node_list[-1].calc_distance_to(self.end) <= self.expand_dis:
+            #     final_node = self.steer(self.node_list[-1], self.end,
+            #                             self.expand_dis) 
+            #     if self.check_collision_free(final_node):
+            #         return self.generate_final_course(len(self.node_list) - 1)
 
             if animation:
                 self.draw_graph(rnd_node)
