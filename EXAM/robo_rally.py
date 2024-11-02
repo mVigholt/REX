@@ -303,7 +303,7 @@ try:
         # TRY TO DRIVE
         #=======================================================================
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
-        print(f"est_pose: \n{est_pose*10}")
+        print(f"est_pose: \n{[est_pose.getX()*10, est_pose.getY()*10]}")
         if particle.accepltable_robot_pos_estimate(particles):
             print("Starting path planning")
             path_res = 15
