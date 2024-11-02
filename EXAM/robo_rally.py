@@ -138,6 +138,8 @@ try:
 
     est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
     
+    rotation_so_far = 0
+    
     #=====================================================
     # Particles.
     old_est_pose = est_pose
@@ -218,7 +220,7 @@ try:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
         
         # If more than 1 object, converge
-        if len(measurements) > 1:
+        if len(measurements) > 0:
             def angle_propability(particle: particle.Particle, measurement):
                 sigma = 0.1
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
@@ -253,7 +255,7 @@ try:
             
             for p in particles:
                 p: particle.Particle
-                w = 1
+                w = p.getWeight()
                 particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
@@ -266,18 +268,20 @@ try:
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
-
             # Draw detected objects
             cam.draw_aruco_objects(colour)
+            
         else:
+            # No observation - reset weights to uniform distribution
+            for p in particles:
+                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
+                p.setWeight(1.0/num_particles)
+
+        if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
             otto.Turn(math.pi/8)
-              
-            # No observation - reset weights to uniform distribution
-            # for p in particles:
-            #     particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
-            #     p.setWeight(1.0/num_particles)
-
+            rotation_so_far += math.pi/8
+            
         if showGUI:
             # Draw map
             draw_world(est_pose, particles, world)
