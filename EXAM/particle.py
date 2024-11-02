@@ -1,3 +1,4 @@
+import math
 import numpy as np
 import random_numbers as rn
 
@@ -118,7 +119,7 @@ est_dir = None
 est_dir_old = None
 def accepltable_robot_pos_estimate(particles_list):
     pose = estimate_pose(particles_list)
-    est_pos = [pose.getX(), pose.getY()]
+    est_pos = np.array([pose.getX(), pose.getY()])
     est_dir = pose.getTheta()
     
     if (est_pos_old is None) or (est_dir_old is None): 
@@ -128,9 +129,9 @@ def accepltable_robot_pos_estimate(particles_list):
     else:
         particle_dist = []
         for p in particles_list: 
-            particle_dist.append(np.linalg.norm([p.getX(), p.getY()], est_pos))
+            particle_dist.append(np.linalg.norm(np.array([p.getX(), p.getY()]), est_pos))
         pos_var = np.var(particle_dist)
-        pos_diff = np.linalg.norm(est_pos, est_pos_old)
+        pos_diff = math.dist(est_pos, est_pos_old)
         
         result = pos_var < 15 and  pos_diff < 3
         
