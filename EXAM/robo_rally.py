@@ -237,7 +237,7 @@ try:
                         )
                 
             def dist_propability(particle: particle.Particle, measurement):
-                sigma = 5 #cm
+                sigma = 2 #cm
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 
