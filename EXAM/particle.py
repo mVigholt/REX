@@ -143,7 +143,7 @@ def accepltable_robot_pos_estimate(particles_list):
             est_Count += 1
         else:
             est_Count = 0
-        result = pos_var < 1 and est_Count <= 10
+        result = pos_var < 1 and est_Count >= 10
         
         est_pos_old = est_pos
         est_dir_old = est_dir
