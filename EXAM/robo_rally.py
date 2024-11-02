@@ -254,7 +254,8 @@ try:
             
             for p in particles:
                 p: particle.Particle
-                w = 1#p.getWeight()
+                # w = 1
+                w = p.getWeight()
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)
