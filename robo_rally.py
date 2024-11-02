@@ -223,7 +223,7 @@ try:
         # If more than 1 object, converge
         if len(measurements) == 2:
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 0.050
+                sigma = 0.01 #rad
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
@@ -239,7 +239,7 @@ try:
                         )
                 
             def dist_propability(particle: particle.Particle, measurement):
-                sigma = 1 #cm
+                sigma = 3 #cm
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 
@@ -257,10 +257,9 @@ try:
             for p in particles:
                 p: particle.Particle
                 w = 1
-                # w = p.getWeight()
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
-                p.setWeight(w)
+                p.setWeight(w)#*p.getWeight())
                 weights.append(w)
 
             
