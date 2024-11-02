@@ -263,6 +263,11 @@ try:
                 weights.append(w)
 
             
+            weight_sum = sum(weights)
+            if weight_sum > 0:
+                for p in particles:
+                    p.setWeight(p.getWeight() / weight_sum)
+                    
             # Resampling
             # XXX: You do this
             weighted_choice = random.choices(particles, weights, k = num_particles)
