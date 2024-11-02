@@ -280,6 +280,8 @@ try:
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
             otto.Turn(math.pi/8)
+            for p in particles:
+              particle.turn(p, math.pi/8)
             rotation_so_far += math.pi/8
             
         if showGUI:
