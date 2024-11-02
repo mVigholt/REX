@@ -257,8 +257,9 @@ try:
             
             for p in particles:
                 p: particle.Particle
-                w = p.getWeight()
-                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
+                # w = p.getWeight()
+                w = 1
+                # particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)
@@ -302,10 +303,10 @@ try:
         #=======================================================================
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
         # varians of particles
-        pvar = np.var(particle_dist)
-        ddiff = math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()])
-        print("diff: ", ddiff)
-        print("pvar: ", pvar)
+        # pvar = np.var(particle_dist)
+        # ddiff = math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()])
+        # print("diff: ", ddiff)
+        # print("pvar: ", pvar)
         if particle.accepltable_robot_pos_estimate(particles):
             print("Starting path planning")
             path_res = 150

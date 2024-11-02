@@ -135,6 +135,9 @@ def accepltable_robot_pos_estimate(particles_list):
         pos_var = np.var(particle_dist)
         pos_diff = np.linalg.norm(est_pos - est_pos_old)
         
+        print("diff: ", pos_diff)
+        print("pvar: ", pos_var)
+
         result = pos_var < 15 and  pos_diff < 3
         
         est_pos_old = est_pos
