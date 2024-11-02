@@ -111,3 +111,29 @@ def add_uncertainty_von_mises(particles_list, sigma, theta_kappa):
         particle.x += rn.randn(0.0, sigma)
         particle.y += rn.randn(0.0, sigma)
         particle.theta = np.mod(rn.rand_von_mises(particle.theta, theta_kappa), 2.0 * np.pi) - np.pi
+        
+est_pos = None
+est_pos_old = None
+est_dir = None
+est_dir_old = None
+def accepltable_robot_pos_estimate(particles_list):
+    pose = estimate_pose(particles_list)
+    est_pos = [pose.getX(), pose.getY()]
+    est_dir = pose.getTheta()
+    
+    if est_pos_old or est_dir_old: 
+        est_pos_old = est_pos
+        est_dir_old = est_dir
+        return False
+    else:
+        particle_dist = []
+        for p in particles_list: 
+            particle_dist.append(np.linalg.norm([p.getX(), p.getY()], est_pos))
+        pos_var = np.var(particle_dist)
+        pos_diff = np.linalg.norm(est_pos, est_pos_old)
+        
+        result = pos_var < 15 and  pos_diff < 3
+        
+        est_pos_old = est_pos
+        est_dir_old = est_dir
+        return result
