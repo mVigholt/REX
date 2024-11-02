@@ -57,7 +57,7 @@ landmarks = {
     3: (0.0, 400.0),  # Coordinates for landmark 1
     4: (-300.0, 400.0)  # Coordinates for landmark 2
 }
-landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
+landmark_colors = [CRED, CGREEN, CBLUE, CMAGENTA] # Colors used when drawing the landmarks
 
 if onRobot:
     otto = h.Arlo()
