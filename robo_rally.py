@@ -268,7 +268,8 @@ try:
             if weight_sum > 0:
                 for p in particles:
                     p.setWeight(p.getWeight() / weight_sum)
-                    
+            print(f"len(weights) = {len(weights)}")
+            print(f"weight_sum = {weight_sum}")        
             # Resampling
             # XXX: You do this
             weighted_choice = random.choices(particles, weights, k = num_particles)
