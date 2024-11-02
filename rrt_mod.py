@@ -111,7 +111,7 @@ class RRT:
         if extend_length > d:
             extend_length = d
 
-        n_expand = self.path_resolution#int(extend_length // self.path_resolution)
+        n_expand = int(extend_length // self.path_resolution)
 
         if n_expand > 0:
             steer_path = self.robot.inverse_dyn(new_node.pos, to_node.pos, n_expand)
