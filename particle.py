@@ -118,6 +118,10 @@ est_dir = None
 est_dir_old = None
 est_Count = 0
 def accepltable_robot_pos_estimate(particles_list):
+    pos_diff_lim = 2
+    pos_var_lim = 1
+    dir_diff_lim = 0.03
+    est_Count_lim = 10
     global est_pos
     global est_pos_old
     global est_dir
@@ -136,14 +140,19 @@ def accepltable_robot_pos_estimate(particles_list):
             particle_dist.append(np.linalg.norm(np.array([p.getX(), p.getY()]) - est_pos))
         pos_var = np.var(particle_dist)
         pos_diff = abs(est_pos - est_pos_old)
+        dir_diff = abs(est_dir - est_dir_old)
         
         print(f"pos_var = {pos_var}")
         print(f"pos_diff =  = {pos_diff}")
-        if pos_diff[0] < 1 and pos_diff[1] < 1:
-            est_Count += 1
-        else:
+        
+        if (est_Count == est_Count_lim or 
+            pos_diff[0] > pos_diff_lim and 
+            pos_diff[1] > pos_diff_lim):
             est_Count = 0
-        result = pos_var < 1 and est_Count >= 10
+        else:
+            est_Count += 1
+        
+        result = pos_var < pos_var_lim and dir_diff < dir_diff_lim and est_Count == est_Count_lim
         
         est_pos_old = est_pos
         est_dir_old = est_dir
