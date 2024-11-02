@@ -77,9 +77,9 @@ def forward(particle: Particle, delta_x, delta_y):
     particle.setY(particle.getY() + delta_y)
     add_uncertainty_single(particle, 2, 0)
 
-def noise(particles_list, noise=1):
+def noise(particles_list, pos_noise=1, dir_noise=0.035):
     # vi tilføjer kun lille smule noise
-    add_uncertainty(particles_list, noise, 0.1)
+    add_uncertainty(particles_list, pos_noise, dir_noise)
     
 def add_uncertainty_single(particle, sigma, sigma_theta):
     """Add some noise to each particle in the list. Sigma and sigma_theta is the noise
@@ -137,7 +137,7 @@ def accepltable_robot_pos_estimate(particles_list):
         
         print(f"pos_var = {pos_var}")
         print(f"pos_diff =  = {pos_diff}")
-        result = pos_var < 15 and pos_diff[0] < 3 and pos_diff[1] < 3
+        result = pos_var < 1 and pos_diff[0] < 3 and pos_diff[1] < 3
         
         est_pos_old = est_pos
         est_dir_old = est_dir
