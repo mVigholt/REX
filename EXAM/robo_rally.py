@@ -8,7 +8,6 @@ import numpy as np
 import time
 from timeit import default_timer as timer
 import sys
-
 import help as h
 import rrt_mod as rt
 import map as m
@@ -217,8 +216,8 @@ try:
                     (objectIDs[i] not in measurements or 
                     measurements[objectIDs[i]][1] > dists[i])):
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
-        for m in measurements:
-          print(f"landMark {measurements[m][0]}: {measurements[m][1]}")
+        for me in measurements:
+          print(f"landMark {measurements[me][0]}: {measurements[me][1]}")
         
         # If more than 1 object, converge
         if len(measurements) == 2:
