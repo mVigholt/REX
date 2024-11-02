@@ -88,7 +88,7 @@ class RRT:
             # try to steer towards goal NO MATTER THE EXPAND DIS
             #--------------------------------------------------------------------
             final_node = self.steer(self.node_list[-1], self.end,
-                                    np.linalg.norm(np.array(self.node_list[-1]) - np.array(self.ends)))
+                                    np.linalg.norm(np.array(self.node_list[-1]) - np.array(self.end)))
             if self.check_collision_free(final_node):
                 return self.generate_final_course(len(self.node_list) - 1)
             #--------------------------------------------------------------------
