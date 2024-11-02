@@ -201,7 +201,6 @@ try:
         #     deltaTheta = angular_velocity * dt
         #     particle.move_particle(p, deltaX, deltaY, deltaTheta) 
 
-
         # Fetch next frame
         colour = cam.get_next_frame()
         
@@ -216,13 +215,15 @@ try:
                     (objectIDs[i] not in measurements or 
                     measurements[objectIDs[i]][1] > dists[i])):
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
+        
+        # print landmark positions
         for me in measurements:
           print(f"landMark {measurements[me][0]}: {measurements[me][1]}")
         
         # If more than 1 object, converge
         if len(measurements) == 2:
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 0.1
+                sigma = 0.03
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
@@ -238,7 +239,7 @@ try:
                         )
                 
             def dist_propability(particle: particle.Particle, measurement):
-                sigma = 2 #cm
+                sigma = 1 #cm
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 
