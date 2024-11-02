@@ -143,7 +143,7 @@ def accepltable_robot_pos_estimate(particles_list):
         dir_diff = abs(est_dir - est_dir_old)
         
         if est_Count == est_Count_lim: est_Count = 0 
-        if pos_diff[0] > pos_diff_lim and pos_diff[1] > pos_diff_lim:
+        if pos_diff[0] < pos_diff_lim and pos_diff[1] < pos_diff_lim:
             est_Count += 1
         else:
             est_Count = 0
