@@ -116,11 +116,13 @@ est_pos = None
 est_pos_old = None
 est_dir = None
 est_dir_old = None
+est_Count = 0
 def accepltable_robot_pos_estimate(particles_list):
     global est_pos
     global est_pos_old
     global est_dir
     global est_dir_old
+    global est_Count
     pose = estimate_pose(particles_list)
     est_pos = np.array([pose.getX(), pose.getY()])
     est_dir = pose.getTheta()
@@ -137,7 +139,11 @@ def accepltable_robot_pos_estimate(particles_list):
         
         print(f"pos_var = {pos_var}")
         print(f"pos_diff =  = {pos_diff}")
-        result = pos_var < 1 and pos_diff[0] < 3 and pos_diff[1] < 3
+        if pos_diff[0] < 3 and pos_diff[1] < 3:
+            est_Count += 1
+        else:
+            est_Count = 0
+        result = pos_var < 1 and est_Count <= 10
         
         est_pos_old = est_pos
         est_dir_old = est_dir
