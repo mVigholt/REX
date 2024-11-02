@@ -50,10 +50,12 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 2]
+landmarkIDs = [1, 2, 3, 4]
 landmarks = {
     1: (0.0, 0.0),  # Coordinates for landmark 1
-    2: (300.0, 0.0)  # Coordinates for landmark 2
+    2: (-300.0, 0.0),  # Coordinates for landmark 2
+    3: (0.0, 400.0),  # Coordinates for landmark 1
+    4: (-300.0, 400.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN] # Colors used when drawing the landmarks
 
@@ -304,7 +306,7 @@ try:
         ddiff = math.dist([est_pose.getX(), est_pose.getY()], [old_est_pose.getX(), old_est_pose.getY()])
         print("diff: ", ddiff)
         print("pvar: ", pvar)
-        if pvar < 15 and  ddiff < 3: #particle.accepltable_robot_pos_estimate(particles):
+        if particle.accepltable_robot_pos_estimate(particles):
             print("Starting path planning")
             path_res = 150
             expand_dis = path_res*10
