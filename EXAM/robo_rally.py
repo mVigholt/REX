@@ -215,8 +215,10 @@ try:
                 if (objectIDs[i] in landmarks and 
                     (objectIDs[i] not in measurements or 
                     measurements[objectIDs[i]][1] > dists[i])):
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]]     
-                    
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
+        
+        # If more than 1 object, converge
+        if len(measurements) > 1:
             def angle_propability(particle: particle.Particle, measurement):
                 sigma = 0.1
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
@@ -268,10 +270,13 @@ try:
             # Draw detected objects
             cam.draw_aruco_objects(colour)
         else:
+            # rotate
+            otto.Turn(math.pi/8)
+              
             # No observation - reset weights to uniform distribution
-            for p in particles:
-                particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
-                p.setWeight(1.0/num_particles)
+            # for p in particles:
+            #     particle_dist.append(math.dist([p.getX(), p.getY()], [est_pose.getX(), est_pose.getY()]))
+            #     p.setWeight(1.0/num_particles)
 
         if showGUI:
             # Draw map
