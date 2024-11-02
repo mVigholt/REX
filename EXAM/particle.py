@@ -117,6 +117,10 @@ est_pos_old = None
 est_dir = None
 est_dir_old = None
 def accepltable_robot_pos_estimate(particles_list):
+    global est_pos
+    global est_pos_old
+    global est_dir
+    global est_dir_old
     pose = estimate_pose(particles_list)
     est_pos = [pose.getX(), pose.getY()]
     est_dir = pose.getTheta()
