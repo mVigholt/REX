@@ -139,7 +139,7 @@ def accepltable_robot_pos_estimate(particles_list):
         
         print(f"pos_var = {pos_var}")
         print(f"pos_diff =  = {pos_diff}")
-        if pos_diff[0] < 3 and pos_diff[1] < 3:
+        if pos_diff[0] < 1 and pos_diff[1] < 1:
             est_Count += 1
         else:
             est_Count = 0
