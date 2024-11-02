@@ -217,6 +217,8 @@ try:
                     (objectIDs[i] not in measurements or 
                     measurements[objectIDs[i]][1] > dists[i])):
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
+        for m in measurements:
+          print(f"landMark {measurements[m][0]}: {measurements[m][1]}")
         
         # If more than 1 object, converge
         if len(measurements) == 2:
@@ -319,8 +321,6 @@ try:
                 print("Beginning drive sequence.")
                 print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
                 print(f"local goal: {local_goal}")
-                for m in measurements:
-                  print(f"landMark {measurements[m][0]}: {measurements[m][1]}")
                 print(f"path = {path}")
                 cur = np.array([0,1])
                 for i in range(len(path)-1,0,-1):
