@@ -133,11 +133,11 @@ def accepltable_robot_pos_estimate(particles_list):
         for p in particles_list: 
             particle_dist.append(np.linalg.norm(np.array([p.getX(), p.getY()]) - est_pos))
         pos_var = np.var(particle_dist)
-        pos_diff = np.linalg.norm(est_pos - est_pos_old)
+        pos_diff = abs(est_pos - est_pos_old)
         
         print(f"pos_var = {pos_var}")
         print(f"pos_diff =  = {pos_diff}")
-        result = pos_var < 15 and  pos_diff < 3
+        result = pos_var < 15 and pos_diff[0] < 3 and pos_diff[1] < 3
         
         est_pos_old = est_pos
         est_dir_old = est_dir
