@@ -126,7 +126,7 @@ def accepltable_robot_pos_estimate(particles_list):
     global est_pos_old
     global est_dir
     global est_dir_old
-    global est_Count
+    global est_Count 
     pose = estimate_pose(particles_list)
     est_pos = np.array([pose.getX(), pose.getY()])
     est_dir = pose.getTheta()
