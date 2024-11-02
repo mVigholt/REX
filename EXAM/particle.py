@@ -121,7 +121,7 @@ def accepltable_robot_pos_estimate(particles_list):
     est_pos = [pose.getX(), pose.getY()]
     est_dir = pose.getTheta()
     
-    if est_pos_old or est_dir_old: 
+    if (est_pos_old is None) or (est_dir_old is None): 
         est_pos_old = est_pos
         est_dir_old = est_dir
         return False
