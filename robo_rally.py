@@ -345,6 +345,7 @@ try:
                         )
             path = rrt.planning(animation=False)
             draw_world(est_pose, particles, world, path=path)
+            time.sleep(10000000)
             if path is not None:
                 print("Beginning drive sequence.")
                 print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
