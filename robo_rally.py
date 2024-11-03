@@ -345,6 +345,7 @@ try:
                         )
             path = rrt.planning(animation=False)
             draw_world(est_pose, particles, world, path=path)
+            cv2.imshow(WIN_World, world)
             time.sleep(10000000)
             if path is not None:
                 print("Beginning drive sequence.")
