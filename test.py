@@ -17,4 +17,4 @@ otto = h.Arlo()
 
 cam = h.Cam()
 
-otto.Forward(100)
+otto.Forward(1000)
