@@ -170,7 +170,7 @@ def distAndDir(corners):
 # Create a robot object and initialize
 rotateSpeed = 31
 speed = 60
-error = 2
+error = 1
 safetyStraightDistance = 500
 safetySideDistance = 400
 
