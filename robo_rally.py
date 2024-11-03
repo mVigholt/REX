@@ -267,15 +267,20 @@ try:
             # XXX: You do this
             weights = []
             
+            
+            lever = False
             for p in particles:
                 p: particle.Particle
                 w = 1
                 for key in measurements:
+                    w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
+                if lever == False:
                     print("angle_probability: ", angle_propability(p,measurements[key]))
                     print("dist_probability: ", dist_propability(p,measurements[key]))
-                    w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
+                    lever = True
                 p.setWeight(w)#*p.getWeight())
                 weights.append(w)
+            lever = False
 
             
             weight_sum = sum(weights)
