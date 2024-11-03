@@ -315,7 +315,7 @@ try:
             
             _, local_coords = cam.next_map(True) 
             # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]]*10)) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print(f"local_goal: {local_goal}")
             
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
