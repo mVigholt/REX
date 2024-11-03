@@ -357,48 +357,48 @@ class Camera(object):
         ##############################################################################################
         # HOMEBREW, DELETE BY SITE
         ##############################################################################################
-        # def RotationMatrix(angle): 
-        #     return np.array([[np.cos(angle), -np.sin(angle)],
-        #                     [np.sin(angle), np.cos(angle)]])
-        # def ToGlobal(point,angle,localPoint):
-        #     return np.dot(RotationMatrix(angle), localPoint) + point
-        # def ToLocal(point,angle,globalPoint):
-        #     return np.dot(RotationMatrix(-angle), (globalPoint - point))
-        # def rotation_matrix_to_euler_angles(R):
-        #     sy = np.sqrt(R[0, 0] * R[0, 0] +  R[1, 0] * R[1, 0])
+        def RotationMatrix(angle): 
+            return np.array([[np.cos(angle), -np.sin(angle)],
+                            [np.sin(angle), np.cos(angle)]])
+        def ToGlobal(point,angle,localPoint):
+            return np.dot(RotationMatrix(angle), localPoint) + point
+        def ToLocal(point,angle,globalPoint):
+            return np.dot(RotationMatrix(-angle), (globalPoint - point))
+        def rotation_matrix_to_euler_angles(R):
+            sy = np.sqrt(R[0, 0] * R[0, 0] +  R[1, 0] * R[1, 0])
 
-        #     singular = sy < 1e-6
+            singular = sy < 1e-6
 
-        #     if not singular:
-        #         x = np.arctan2(R[2, 1], R[2, 2])
-        #         y = np.arctan2(-R[2, 0], sy)
-        #         z = np.arctan2(R[1, 0], R[0, 0])
-        #     else:
-        #         x = np.arctan2(-R[1, 2], R[1, 1])
-        #         y = np.arctan2(-R[2, 0], sy)
-        #         z = 0
+            if not singular:
+                x = np.arctan2(R[2, 1], R[2, 2])
+                y = np.arctan2(-R[2, 0], sy)
+                z = np.arctan2(R[1, 0], R[0, 0])
+            else:
+                x = np.arctan2(-R[1, 2], R[1, 1])
+                y = np.arctan2(-R[2, 0], sy)
+                z = 0
 
-        #     return np.array([x, y, z])
+            return np.array([x, y, z])
         
-        # def flatten(matLike):
-        #     return None if matLike is None else list(itertools.chain(*matLike))     
+        def flatten(matLike):
+            return None if matLike is None else list(itertools.chain(*matLike))     
         
-        # print(self.tvecs)
+        print(self.tvecs)
         
-        # flat_tvecs = flatten(self.tvecs)
-        # flat_rvecs = flatten(self.rvecs)
-        # if flat_tvecs and flat_rvecs is not None:
-        #     flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
-        #     for i, (rvec, tvec) in enumerate(zip(flat_rvecs, flat_tvecs)): 
-        #         rotation_matrix, _ = cv2.Rodrigues(rvec)
-        #         euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
-        #         # Update tvec in flat_tvecs
-        #         flat_tvecs[i] = ToGlobal(tvec, euler_angles[1], np.array([0, 115/1000]))
-        #     flat_tvecs[:, 1] = flat_tvecs[:, 1] + 450/(2*1000)
+        flat_tvecs = flatten(self.tvecs)
+        flat_rvecs = flatten(self.rvecs)
+        if flat_tvecs and flat_rvecs is not None:
+            flat_tvecs = np.delete(np.array(flat_tvecs), 1, 1)
+            for i, (rvec, tvec) in enumerate(zip(flat_rvecs, flat_tvecs)): 
+                rotation_matrix, _ = cv2.Rodrigues(rvec)
+                euler_angles = rotation_matrix_to_euler_angles(rotation_matrix)
+                # Update tvec in flat_tvecs
+                flat_tvecs[i] = ToGlobal(tvec, euler_angles[1], np.array([0, 115/1000]))
+            flat_tvecs[:, 1] = flat_tvecs[:, 1] + 450/(2*1000)
         
-        # for i, (tvec, flat_tvec) in enumerate(zip(self.tvecs, flat_tvecs)):
-        #     self.tvecs[i][0][0] = flat_tvec[0]
-        #     self.tvecs[i][0][2] = flat_tvec[1]
+        for i, (tvec, flat_tvec) in enumerate(zip(self.tvecs, flat_tvecs)):
+            self.tvecs[i][0][0] = flat_tvec[0]
+            self.tvecs[i][0][2] = flat_tvec[1]
         ##############################################################################################
         # HOMEBREW, DELETE BY SITE
         ##############################################################################################
