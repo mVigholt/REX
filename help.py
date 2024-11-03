@@ -179,7 +179,7 @@ class Arlo (object):
         self.arlo = robot.Robot()
         
     def degreeFunction(self, radian):
-        return max(0, (41.90*(radian * 180 / math.pi) - 1.16))
+        return max(0, (0.0239*(radian * 180 / math.pi) + 0.0287))
     
     def distanceFunction(self, distance):
         # return max(0, (distance + 1.7)/355.3)
