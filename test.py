@@ -17,3 +17,4 @@ while True:
   otto.arlo.go_diff(speed-error, speed, 1, 1)
   print("i = ", i)
   time.sleep(i)
+  otto.arlo.stop()
