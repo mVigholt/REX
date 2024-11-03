@@ -62,7 +62,7 @@ landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the 
 # Allocate space for world map
 world = np.zeros((1000,1000,3), dtype=np.uint8)
 
-sequence = [6,2,3,4,6]
+sequence = [3]
 si = 0
 # Initialize particles
 num_particles = 100
