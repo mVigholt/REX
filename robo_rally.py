@@ -303,7 +303,7 @@ try:
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
             otto.Turn(math.pi/24)
-            particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
+            # particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
             rotation_so_far += math.pi/24
             for lm in measurements:
                 print("===========================")
