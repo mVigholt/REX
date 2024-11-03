@@ -9,11 +9,11 @@ cam = h.Cam()
 speed = 60
 error = 1
 rotateSpeed = 31
-i = 0
+i = 1.5
 
 while True:
   input()
-  i += 0.25
+  i += 0.5
   otto.arlo.go_diff(speed-error, speed, 1, 1)
   print("i = ", i)
   time.sleep(i)
