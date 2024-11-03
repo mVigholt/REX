@@ -329,7 +329,7 @@ try:
                 
                 # her indsætter vi det globale koordinat system konverteret til lokalt
                 local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
-                local_goal = local_goal - (local_goal * 400 / np.linalg.norm(local_goal))
+                local_goal -= (local_goal * 400 / np.linalg.norm(local_goal))
                 print(f"local_goal: {local_goal}")
                 
                 print(local_coords)
