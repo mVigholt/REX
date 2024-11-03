@@ -7,7 +7,7 @@ otto = h.Arlo()
 cam = h.Cam()
 
 speed = 60
-error = 2
+error = 1
 rotateSpeed = 31
 i = 1.5
 
