@@ -310,7 +310,7 @@ try:
         if accepltable:
             print("Starting path planning")
             path_res = 15
-            expand_dis = 1500
+            expand_dis = 550
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map(True) 
