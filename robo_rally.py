@@ -189,7 +189,7 @@ try:
 #=============================================================================================================        
         #particles = initialize_particles(num_particles, c=pc, r=pr)
         # add some noise??
-        particle.noise(particles, pd_noise=[10, 0.1])
+        particle.noise(particles, pd_noise=[5, 0.1])
 #=============================================================================================================
         
         # Use motor controls to update particles
