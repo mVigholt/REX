@@ -251,7 +251,7 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else sys.float_info.min
+                return retval if retval > 0 else 0.001
                 
             def dist_propability(particle: particle.Particle, measurement):
                 sigma = 3 #cm
@@ -264,7 +264,7 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else sys.float_info.min
+                return retval if retval > 0 else 0.001
 
             # Compute particle weights
             # XXX: You do this
@@ -308,7 +308,7 @@ try:
             for lm in measurements:
                 print("===========================")
                 print("radiant before: ", measurements[lm])
-                measurements[lm][2] += math.pi/24
+                measurements[lm][2] = np.mod(measurements[lm][2] + math.pi/24, 2*math.pi)
                 print("radiant after: ", measurements[lm])
                 print("===========================")
             
