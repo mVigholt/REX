@@ -130,8 +130,8 @@ def draw_world(est_pose, particles, world, path=None):
             path_point = int(path[i][0] + offsetX), int(path[i][1] + offsetY)
             cv2.circle(world, path_point, 2, CBLACK, 2)
         for i in range(len(landmarks)):
-            lmm = int(path[i][0] + offsetX), int(path[i][1] + offsetY)
-            cv2.circle(world, path_point, 15, CRED, 2)
+            lmm = int(landmarks[i][0] + offsetX), int(landmarks[i][1] + offsetY)
+            cv2.circle(world, lmm, 15, CRED, 2)
     
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
