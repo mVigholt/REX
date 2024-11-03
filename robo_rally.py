@@ -187,9 +187,9 @@ try:
         #         angular_velocity -= 0.2
 
 #=============================================================================================================        
-        # add some noise??
-        particle.noise(particles, pd_noise=[3, 0.1])
         particles = initialize_particles(num_particles, c=pc, r=pr)
+        # add some noise??
+        # particle.noise(particles, pd_noise=[3, 0.1])
 #=============================================================================================================
         
         # Use motor controls to update particles
