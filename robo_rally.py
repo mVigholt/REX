@@ -225,9 +225,11 @@ try:
             for i in range(len(objectIDs)):
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                if (objectIDs[i] in landmarks and 
-                    (objectIDs[i] not in measurements or 
-                    measurements[objectIDs[i]][1] > dists[i])):
+                # if (objectIDs[i] in landmarks and 
+                #     (objectIDs[i] not in measurements or 
+                #     measurements[objectIDs[i]][1] > dists[i])):
+                #     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
+                if (objectIDs[i] in landmarks):
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
         
         # print landmark positions
@@ -303,7 +305,7 @@ try:
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
             otto.Turn(math.pi/24)
-            # particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
+            particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
             rotation_so_far += math.pi/24
             for lm in measurements:
                 print("===========================")
