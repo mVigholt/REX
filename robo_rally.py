@@ -65,7 +65,7 @@ world = np.zeros((1000,1000,3), dtype=np.uint8)
 sequence = [6,2,3,4,6]
 si = 0
 # Initialize particles
-num_particles = 1000
+num_particles = 500
 pc = [0,0] #landmarks[sequence[si]]
 pr = 400
 
@@ -219,6 +219,7 @@ try:
         
         # Detect objects
         objectIDs, dists, angles = cam.detect_aruco_objects(colour)
+
         if not isinstance(objectIDs, type(None)):
             # List detected objects
             for i in range(len(objectIDs)):
@@ -305,11 +306,18 @@ try:
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
-            otto.Turn(math.pi/12)
-            particle.move_particles(particles, [0, 0, math.pi/12], [0,0])
+            otto.Turn(math.pi/24)
+            particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
             for p in particles:
-              particle.turn(p, math.pi/12)
-            rotation_so_far += math.pi/12
+              particle.turn(p, math.pi/24)
+            rotation_so_far += math.pi/24
+            for lm in measurements:
+                print("===========================")
+                print("radiant before: ", measurements[lm])
+                measurements[lm][2] += math.pi/24
+                print("radiant after: ", measurements[lm])
+                print("===========================")
+            
         
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
         print(f"est_pose: \n{[est_pose.getX()*10, est_pose.getY()*10]}")    
@@ -375,9 +383,10 @@ try:
                 
                 si += 1
                 if si >= len(sequence): break
+            rotation_so_far = 0
+            # Clear seen objects
+            measurements.clear()
             
-        # Clear seen objects
-        measurements.clear()
         pc = (est_pose.getX(), est_pose.getY())#, est_pose.getTheta())
         pr = pos_var + 10
 
