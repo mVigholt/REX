@@ -304,8 +304,6 @@ try:
             # rotate
             otto.Turn(math.pi/24)
             particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
-            for p in particles:
-              particle.turn(p, math.pi/24)
             rotation_so_far += math.pi/24
             for lm in measurements:
                 print("===========================")
