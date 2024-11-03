@@ -361,6 +361,8 @@ try:
                     print(f"move: {dist}")
                     otto.Turn(theta)
                     otto.Forward(dist)
+                    v = est_pose.getTheta() + theta
+                    particle.move_particles(particles, [math.cos(v) * dist, math.sin(v) * dist, v])
                     cur = next
                 
                 si += 1
