@@ -370,7 +370,7 @@ try:
                     otto.Turn(theta)
                     otto.Forward(dist)
                     v = est_pose.getTheta() + theta
-                    particle.move_particles(particles, [math.cos(v) * dist / 10, math.sin(v) * dist / 10, v])
+                    particle.move_particles(particles, [math.cos(v) * dist / 10, math.sin(v) * dist / 10, theta])
                     cur = next
                 
                 si += 1
