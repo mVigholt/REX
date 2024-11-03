@@ -128,8 +128,8 @@ est_dir = None
 est_dir_old = None
 est_Count = 0
 def accepltable_robot_pos_estimate(particles_list):
-    pos_diff_lim = 3
-    pos_var_lim = 10
+    pos_diff_lim = 4
+    pos_var_lim = 15
     dir_diff_lim = 0.1
     est_Count_lim = 10
     global est_pos

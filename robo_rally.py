@@ -131,8 +131,8 @@ def initialize_particles(num_particles, c=[150,200], r=600):
     particles = []
     for i in range(num_particles):
         # Random starting points. 
-        # p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
-        p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
+        p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
+        # p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
         particles.append(p)
 
     return particles
@@ -189,7 +189,7 @@ try:
 #=============================================================================================================        
         #particles = initialize_particles(num_particles, c=pc, r=pr)
         # add some noise??
-        particle.noise(particles, pd_noise=[10, 0.1])
+        particle.noise(particles, pd_noise=[5, 0.1])
 #=============================================================================================================
         
         # Use motor controls to update particles
@@ -225,7 +225,7 @@ try:
         # If more than 1 object, converge
         if len(measurements) == 2:
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 0.1 #rad
+                sigma = 0.05 #rad
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
@@ -309,20 +309,20 @@ try:
         accepltable, pos_var = particle.accepltable_robot_pos_estimate(particles)
         if accepltable:
             print("Starting path planning")
-            path_res = 2
-            expand_dis = 150
+            path_res = 15
+            expand_dis = 1500
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map(True) 
             
             # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[si]*10)) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print(f"local_goal: {local_goal}")
             
             local_low= (0 - 1000 - est_pose.getX() , 0 - 1000 - est_pose.getY())
             local_high= (3000 + 1000 - est_pose.getX(), 4000 + 1000 - est_pose.getY())
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-            map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
+            map = m.landmark_map(low=local_low, high=local_high, landMarks=[[0,2000],[750,2000]])
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,

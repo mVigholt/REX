@@ -170,7 +170,7 @@ def distAndDir(corners):
 # Create a robot object and initialize
 rotateSpeed = 31
 speed = 60
-error = 2
+error = 1
 safetyStraightDistance = 500
 safetySideDistance = 400
 
@@ -179,10 +179,10 @@ class Arlo (object):
         self.arlo = robot.Robot()
         
     def degreeFunction(self, radian):
-        return (radian * 180 / math.pi - 0.23)/44.15
+        return max(0, (radian * 180 / math.pi - 0.23)/44.15)
     
     def distanceFunction(self, distance):
-        return (distance + 1.7)/355.3
+        return max(0, (distance + 1.7)/355.3)
     
     def Forward(self, distance): 
         self.arlo.go_diff(speed-error, speed, 1, 1)
