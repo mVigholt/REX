@@ -308,7 +308,7 @@ try:
             for lm in measurements:
                 print("===========================")
                 print("radiant before: ", measurements[lm])
-                measurements[lm][2] = np.mod(measurements[lm][2] + math.pi/24, 2*math.pi)
+                measurements[lm][2] = measurements[lm][2] - math.pi/24
                 print("radiant after: ", measurements[lm])
                 print("===========================")
             
