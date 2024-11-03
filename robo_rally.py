@@ -245,43 +245,39 @@ try:
                                 landmarks[measurement[0]][1] - particle.getY()]) / di
                 ouov = np.array([- math.sin(particle.getTheta()), math.cos(particle.getTheta())])
                 uv = np.sign(np.dot(ulv, ouov)) * math.acos(np.dot(ulv, uov))
-                return  ((1 / (2*math.pi * (sigma**2))) * 
+                retval = ((1 / (2*math.pi * (sigma**2))) * 
                             math.exp(
                                 -   ((measurement[2]- uv)**2) /
                                     (2 * math.pi * (sigma**2))
                             )
                         )
+                return retval if retval > 0 else sys.float_info.min
                 
             def dist_propability(particle: particle.Particle, measurement):
                 sigma = 3 #cm
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 
-                return  ((1 / (2*math.pi * (sigma**2))) * 
+                retval = ((1 / (2*math.pi * (sigma**2))) * 
                             math.exp(
                                 -   ((measurement[1]- di)**2) /
                                     (2 * math.pi * (sigma**2))
                             )
                         )
+                return retval if retval > 0 else sys.float_info.min
 
             # Compute particle weights
             # XXX: You do this
             weights = []
             
             
-            lever = False
             for p in particles:
                 p: particle.Particle
                 w = 1
                 for key in measurements:
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
-                if lever == False:
-                    print("angle_probability: ", angle_propability(p,measurements[key]))
-                    print("dist_probability: ", dist_propability(p,measurements[key]))
-                    lever = True
                 p.setWeight(w)#*p.getWeight())
                 weights.append(w)
-            lever = False
 
             
             weight_sum = sum(weights)
