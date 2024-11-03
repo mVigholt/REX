@@ -358,7 +358,7 @@ try:
             local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
             local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-            map = m.landmark_map(low=local_low, high=local_high, landMarks=[local_coords])
+            map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
