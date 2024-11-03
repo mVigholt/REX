@@ -179,11 +179,12 @@ class Arlo (object):
         self.arlo = robot.Robot()
         
     def degreeFunction(self, radian):
-        return max(0, (0.0239*(radian * 180 / math.pi) + 0.0287))
+        return max(0, (radian * 180 / math.pi - 0.23)/44.15)
+        # return max(0, (0.0239*(radian * 180 / math.pi) + 0.0287))
     
     def distanceFunction(self, distance):
-        # return max(0, (distance + 1.7)/355.3)
-        return max(0, (0.00303*distance - 0.1119))
+        return max(0, (distance + 1.7)/355.3)
+        # return max(0, (0.00303*distance - 0.1119))
     
     def Forward(self, distance): 
         self.arlo.go_diff(speed-error, speed, 1, 1)
