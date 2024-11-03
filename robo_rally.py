@@ -150,7 +150,7 @@ try:
         cv2.moveWindow(WIN_World, 500, 50)
         
 #=============================================================================================================
-    # particles = initialize_particles(num_particles, c=pc, r=pr)
+    particles = initialize_particles(num_particles, c=pc, r=pr)
 #=============================================================================================================
 
     # Driving parameters
@@ -187,9 +187,9 @@ try:
         #         angular_velocity -= 0.2
 
 #=============================================================================================================        
-        particles = initialize_particles(num_particles, c=pc, r=pr)
+        #particles = initialize_particles(num_particles, c=pc, r=pr)
         # add some noise??
-        # particle.noise(particles, pd_noise=[3, 0.1])
+        particle.noise(particles, pd_noise=[10, 0.1])
 #=============================================================================================================
         
         # Use motor controls to update particles
