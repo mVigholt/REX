@@ -319,8 +319,8 @@ try:
             local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print(f"local_goal: {local_goal}")
             
-            local_low= (0 - 1000 - est_pose.getX() , 0 - 1000 - est_pose.getY())
-            local_high= (3000 + 1000 - est_pose.getX(), 4000 + 1000 - est_pose.getY())
+            local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
+            local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
             map = m.landmark_map(low=local_low, high=local_high, landMarks=[[750,2000]])
             rrt = rt.RRT(start=[0, 0],
