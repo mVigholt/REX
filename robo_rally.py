@@ -49,14 +49,30 @@ CBLACK = (0, 0, 0)
 
 # Landmarks.
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
-landmarkIDs = [1, 2, 3, 4]
+landmarkIDs = [6, 2, 3, 4]
 landmarks = {
-    1: (300, 0.0),  # Coordinates for landmark 1
-    2: (0.0, 0.0),  # Coordinates for landmark 2
-    3: (300, 400.0),  # Coordinates for landmark 1
-    4: (0, 400.0)  # Coordinates for landmark 2
+    6: [300, 0.0],  # Coordinates for landmark 1
+    2: [0.0, 0.0],  # Coordinates for landmark 2
+    3: [300, 400.0],  # Coordinates for landmark 1
+    4: [0, 400.0]  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the landmarks
+
+#============================================================================
+# Allocate space for world map
+world = np.zeros((1000,1000,3), dtype=np.uint8)
+
+sequence = [6,2,3,4,6]
+si = 0
+# Initialize particles
+num_particles = 100
+pc = landmarks[sequence[si]]
+pr = 400
+
+lap = h.Timed_lap()
+measurements = dict()
+rotation_so_far = 0
+#============================================================================
 
 if onRobot:
     otto = h.Arlo()
@@ -111,12 +127,12 @@ def draw_world(est_pose, particles, world):
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
 
-def initialize_particles(num_particles, c=[150,200], r=[600,650] ):
+def initialize_particles(num_particles, c=[150,200], r=600):
     particles = []
     for i in range(num_particles):
         # Random starting points. 
         # p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
-        p = particle.Particle(np.random.uniform(c[0]-r[0], c[0]+r[0]), np.random.uniform(c[1]-r[1], c[1]+r[1]), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
+        p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
         particles.append(p)
 
     return particles
@@ -132,34 +148,16 @@ try:
         WIN_World = "World view"
         cv2.namedWindow(WIN_World)
         cv2.moveWindow(WIN_World, 500, 50)
-
-
-    # Initialize particles
-    num_particles = 100
-    particles = initialize_particles(num_particles)
-
-    est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose
-    
-    rotation_so_far = 0
-    
-    #=====================================================
-    # Particles.
-    lap = h.Timed_lap()
-    measurements = dict()
-    #=====================================================
+        
+#=============================================================================================================
+    # particles = initialize_particles(num_particles, c=pc, r=pr)
+#=============================================================================================================
 
     # Driving parameters
     velocity = 0.0 # cm/sec
     angular_velocity = 0.0 # radians/sec
 
     # Initialize the robot (XXX: You do this)
-
-    # Allocate space for world map
-    world = np.zeros((1000,1000,3), dtype=np.uint8)
-
-    # Draw map
-    draw_world(est_pose, particles, world)
-
     print("Opening and initializing camera")
     if isRunningOnArlo():
         #cam = camera.Camera(0, robottype='arlo', useCaptureThread=True)
@@ -187,9 +185,12 @@ try:
         #         angular_velocity += 0.2
         #     elif action == ord('d'): # Right
         #         angular_velocity -= 0.2
-        
+
+#=============================================================================================================        
         # add some noise??
         particle.noise(particles, pd_noise=[3, 0.1])
+        particles = initialize_particles(num_particles, c=pc, r=pr)
+#=============================================================================================================
         
         # Use motor controls to update particles
         # XXX: Make the robot drive     
@@ -289,7 +290,9 @@ try:
             for p in particles:
               particle.turn(p, math.pi/8)
             rotation_so_far += math.pi/8
-            
+        
+        est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
+        print(f"est_pose: \n{[est_pose.getX()*10, est_pose.getY()*10]}")    
         if showGUI:
             # Draw map
             draw_world(est_pose, particles, world)
@@ -300,13 +303,11 @@ try:
             # Show world
             cv2.imshow(WIN_World, world)
         
-        
         #=======================================================================
         # TRY TO DRIVE
         #=======================================================================
-        est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
-        print(f"est_pose: \n{[est_pose.getX()*10, est_pose.getY()*10]}")
-        if particle.accepltable_robot_pos_estimate(particles):
+        accepltable, pos_var = particle.accepltable_robot_pos_estimate(particles)
+        if accepltable:
             print("Starting path planning")
             path_res = 2
             expand_dis = 150
@@ -314,7 +315,7 @@ try:
             
             _, local_coords = cam.next_map(True) 
             # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[si]*10)) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print(f"local_goal: {local_goal}")
             
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
@@ -343,10 +344,14 @@ try:
                     otto.Turn(theta)
                     otto.Forward(dist)
                     cur = next
-            break
+                
+                si += 1
+                if si >= len(sequence): break
             
         # Clear seen objects
         measurements.clear()
+        pc = (est_pose.getX(), est_pose.getY())#, est_pose.getTheta())
+        pr = pos_var + 100
 
 finally: 
     # Make sure to clean up even if an exception occurred

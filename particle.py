@@ -167,4 +167,4 @@ def accepltable_robot_pos_estimate(particles_list):
         
         est_pos_old = est_pos
         est_dir_old = est_dir
-        return result
+        return result, pos_var
