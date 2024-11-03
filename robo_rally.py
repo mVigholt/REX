@@ -309,7 +309,7 @@ try:
         accepltable, pos_var = particle.accepltable_robot_pos_estimate(particles)
         if accepltable:
             print("Starting path planning")
-            path_res = 2
+            path_res = 15
             expand_dis = 150
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
