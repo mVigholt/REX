@@ -341,7 +341,7 @@ try:
             
             for i in range(len(landmarkIDs)):
                 try:
-                    local_coords.pop(landmarkIDs[i])
+                    local_coords = np.delete(local_coords, landmarkIDs[i])
                 except IndexError:
                     print("Index out of bounds. No element removed.")
                     
