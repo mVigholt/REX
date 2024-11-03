@@ -165,6 +165,7 @@ class RRT:
             return False
         #print(node.path)
         for p in node.path:
+            print("Path: ", node.path)
             if self.map.in_collision(self.map.landMarks, np.array(p)):
                 return False
         return True
