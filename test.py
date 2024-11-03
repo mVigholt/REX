@@ -9,7 +9,7 @@ cam = h.Cam()
 speed = 60
 error = 2
 rotateSpeed = 31
-i = 2.0
+i = 4.0
 
 while True:
   input()
