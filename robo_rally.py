@@ -299,6 +299,7 @@ try:
             
         else:
             # No observation - reset weights to uniform distribution
+            print("Resetting Particle Weights....")
             for p in particles:
                 p.setWeight(1.0/num_particles)
 
