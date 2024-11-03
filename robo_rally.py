@@ -65,7 +65,7 @@ world = np.zeros((1000,1000,3), dtype=np.uint8)
 sequence = [3]
 si = 0
 # Initialize particles
-num_particles = 3000
+num_particles = 1000
 pc = [0,0] #landmarks[sequence[si]]
 pr = 400
 
