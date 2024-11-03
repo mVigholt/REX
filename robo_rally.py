@@ -337,7 +337,14 @@ try:
             expand_dis = 1000
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
-            _, local_coords = cam.next_map(True) 
+            lmids, local_coords = cam.next_map(True) 
+            
+            for i in range(len(landmarkIDs)):
+                try:
+                    local_coords.pop(landmarkIDs[i])
+                except IndexError:
+                    print("Index out of bounds. No element removed.")
+                    
             
             # her indsætter vi det globale koordinat system konverteret til lokalt
             local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
