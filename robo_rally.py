@@ -65,7 +65,7 @@ world = np.zeros((1000,1000,3), dtype=np.uint8)
 sequence = [3]
 si = 0
 # Initialize particles
-num_particles = 100
+num_particles = 1000
 pc = landmarks[sequence[si]]
 pr = 400
 
@@ -351,7 +351,7 @@ try:
         # Clear seen objects
         measurements.clear()
         pc = (est_pose.getX(), est_pose.getY())#, est_pose.getTheta())
-        pr = pos_var + 100
+        pr = pos_var + 10
 
 finally: 
     # Make sure to clean up even if an exception occurred
