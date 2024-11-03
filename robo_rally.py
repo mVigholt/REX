@@ -344,6 +344,8 @@ try:
                     local_coords = np.delete(local_coords, landmarkIDs[i])
                 except IndexError:
                     print("Index out of bounds. No element removed.")
+                
+                print(local_coords)
                     
             
             # her indsætter vi det globale koordinat system konverteret til lokalt
