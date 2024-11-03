@@ -1,6 +1,7 @@
 import numpy as np
 import time
 import help as h
+import math
 
 otto = h.Arlo()
 
@@ -12,4 +13,4 @@ rotateSpeed = 31
 i = 4.0
 
 while True:
-  otto.Turn(180)
+  otto.Turn(math.pi)
