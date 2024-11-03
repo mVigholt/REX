@@ -12,9 +12,4 @@ rotateSpeed = 31
 i = 4.0
 
 while True:
-  input()
-  i += 0.5
-  otto.arlo.go_diff(rotateSpeed-1, rotateSpeed, 0, 1)
-  print("i = ", i)
-  time.sleep(i)
-  otto.arlo.stop()
+  otto.Turn(180)
