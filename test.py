@@ -1,20 +1,19 @@
-import copy
-import math
-import random
-import cv2
-import particle
-import camera
 import numpy as np
 import time
-from timeit import default_timer as timer
-import sys
 import help as h
-import rrt_mod as rt
-import map as m
-import robot_models
 
 otto = h.Arlo()
 
 cam = h.Cam()
 
-otto.Forward(1000)
+speed = 60
+error = 1
+rotateSpeed = 31
+i = 0
+
+while True:
+  input()
+  i += 0.1
+  otto.arlo.go_diff(speed-error, speed, 1, 1)
+  print("i = ", i)
+  time.sleep(i)
