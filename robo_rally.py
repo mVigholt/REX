@@ -319,7 +319,7 @@ try:
             print(f"local_goal: {local_goal}")
             
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-            map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=[])
+            map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=[[1500, 1500], [1500, 2000], [1500, 3000]])
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
