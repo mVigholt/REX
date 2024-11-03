@@ -13,7 +13,7 @@ i = 0
 
 while True:
   input()
-  i += 0.1
+  i += 0.25
   otto.arlo.go_diff(speed-error, speed, 1, 1)
   print("i = ", i)
   time.sleep(i)
