@@ -125,7 +125,7 @@ def draw_world(est_pose, particles, world, path=None):
     b = (int(est_pose.getX() + 15.0*np.cos(est_pose.getTheta()))+offsetX, 
                                  ymax-(int(est_pose.getY() + 15.0*np.sin(est_pose.getTheta()))+offsetY))
     
-    if path is None:
+    if path is not None:
         for i in range(len(path)):
             path_point = int(path[i][0] + offsetX, path[i][1] + offsetY)
             cv2.circle(world, path_point, 2, CBLACK, 2)
