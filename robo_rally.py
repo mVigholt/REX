@@ -66,7 +66,7 @@ sequence = [3]
 si = 0
 # Initialize particles
 num_particles = 1000
-pc = landmarks[sequence[si]]
+pc = [0,0] #landmarks[sequence[si]]
 pr = 400
 
 lap = h.Timed_lap()

@@ -143,7 +143,7 @@ def accepltable_robot_pos_estimate(particles_list):
     if (est_pos_old is None) or (est_dir_old is None): 
         est_pos_old = est_pos
         est_dir_old = est_dir
-        return (False, 0)
+        return (False, 600)
     else:
         particle_dist = []
         for p in particles_list: 
