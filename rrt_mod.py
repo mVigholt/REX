@@ -142,12 +142,29 @@ class RRT:
 
         return path
 
+    # def get_random_node(self):
+    #     if np.random.randint(0, 100) > self.goal_sample_rate:
+    #         rnd = self.Node(
+    #             np.random.uniform(self.map.map_area[0], self.map.map_area[1])
+    #             )
+    #     else:  # goal point sampling
+    #         rnd = self.Node(self.end.pos)
+    #     return rnd
+    
     def get_random_node(self):
         if np.random.randint(0, 100) > self.goal_sample_rate:
-            rnd = self.Node(
-                np.random.uniform(self.map.map_area[0], self.map.map_area[1])
-                )
-        else:  # goal point sampling
+            # Increase the probability of sampling towards the goal
+            # Generate a point closer to the goal with some noise
+            goal_direction = np.array(self.end.pos) - np.array(self.start.pos)
+            bias_ratio = np.random.uniform(0, 1)  # Scale factor for biasing towards the goal
+            biased_position = np.array(self.start.pos) + bias_ratio * goal_direction
+
+            # Add some Gaussian noise around the biased position
+            noise_std_dev = 0.1 * np.linalg.norm(goal_direction)  # Adjust this as needed
+            rnd_pos = biased_position + np.random.normal(0, noise_std_dev, size=goal_direction.shape)
+
+            rnd = self.Node(rnd_pos)
+        else:  # Goal point sampling
             rnd = self.Node(self.end.pos)
         return rnd
 
