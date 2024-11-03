@@ -53,8 +53,8 @@ landmarkIDs = [6, 2, 3, 4]
 landmarks = {
     6: [300, 0.0],  # Coordinates for landmark 1
     2: [0.0, 0.0],  # Coordinates for landmark 2
-    3: [300, 400.0],  # Coordinates for landmark 1
-    4: [0, 400.0]  # Coordinates for landmark 2
+    3: [300, 400.0],  # Coordinates for landmark 3
+    4: [0, 400.0]  # Coordinates for landmark 4
 }
 landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the landmarks
 
@@ -86,7 +86,7 @@ def jet(x):
 
     return (255.0*r, 255.0*g, 255.0*b)
 
-def draw_world(est_pose, particles, world):
+def draw_world(est_pose, particles, world, path=None):
     """Visualization.
     This functions draws robots position in the world coordinate system."""
 
@@ -124,8 +124,15 @@ def draw_world(est_pose, particles, world):
     a = (int(est_pose.getX())+offsetX, ymax-(int(est_pose.getY())+offsetY))
     b = (int(est_pose.getX() + 15.0*np.cos(est_pose.getTheta()))+offsetX, 
                                  ymax-(int(est_pose.getY() + 15.0*np.sin(est_pose.getTheta()))+offsetY))
+    
+    if path is None:
+        for i in range(len(path)):
+            path_point = int(path[i][0] + offsetX, path[i][1] + offsetY)
+            cv2.circle(world, path_point, 2, CBLACK, 2)
+    
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
+    
 
 def initialize_particles(num_particles, c=[150,200], r=600):
     particles = []
@@ -328,6 +335,7 @@ try:
                         path_resolution=path_res,
                         )
             path = rrt.planning(animation=False)
+            draw_world(est_pose, particles, world, path=path)
             if path is not None:
                 print("Beginning drive sequence.")
                 print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
