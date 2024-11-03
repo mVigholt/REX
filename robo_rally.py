@@ -271,6 +271,8 @@ try:
                 p: particle.Particle
                 w = 1
                 for key in measurements:
+                    print("angle_probability: ", angle_propability(p,measurements[key]))
+                    print("dist_probability: ", dist_propability(p,measurements[key]))
                     w *= angle_propability(p,measurements[key]) * dist_propability(p,measurements[key])
                 p.setWeight(w)#*p.getWeight())
                 weights.append(w)
