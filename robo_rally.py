@@ -62,7 +62,7 @@ landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the 
 # Allocate space for world map
 world = np.zeros((1000,1000,3), dtype=np.uint8)
 
-sequence = [3]
+sequence = [6,2,3,4,6]
 si = 0
 # Initialize particles
 num_particles = 1000
@@ -335,7 +335,7 @@ try:
             local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
             local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-            map = m.landmark_map(low=local_low, high=local_high, landMarks=[[750,2000]])
+            map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
@@ -344,9 +344,6 @@ try:
                         path_resolution=path_res,
                         )
             path = rrt.planning(animation=False)
-            draw_world(est_pose, particles, world, path=path)
-            cv2.imshow(WIN_World, world)
-            time.sleep(10000000)
             if path is not None:
                 print("Beginning drive sequence.")
                 print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
