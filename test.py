@@ -14,7 +14,7 @@ i = 5
 while True:
   input()
   i += 0.5
-  otto.arlo.go_diff(speed-error, speed, 1, 1)
+  otto.Forward(1000)
   print("i = ", i)
   time.sleep(i)
   otto.arlo.stop()
