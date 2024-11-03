@@ -77,9 +77,19 @@ def forward(particle: Particle, delta_x, delta_y):
     particle.setY(particle.getY() + delta_y)
     add_uncertainty_single(particle, 2, 0)
 
-def noise(particles_list, pos_noise=1, dir_noise=0.035):
+def move_particles(particles_list: list[Particle], move_delta, pd_noise=[3 , 0.1]):
+    for particle in particles_list:
+        particle.setX(particle.getX() + move_delta[0])
+        particle.setY(particle.getY() + move_delta[1])
+        particle.setTheta(particle.getTheta() + move_delta[2])
+        particle.x += rn.randn(0.0, pd_noise[0])
+        particle.y += rn.randn(0.0, pd_noise[0])
+        particle.theta = np.mod(particle.theta + rn.randn(0.0, pd_noise[1]), 2.0 * np.pi) 
+    
+    
+def noise(particles_list, pd_noise=[3 , 0.1]):#pd_noise=[1 , 0.035]
     # vi tilføjer kun lille smule noise
-    add_uncertainty(particles_list, pos_noise, dir_noise)
+    add_uncertainty(particles_list, pd_noise[0], pd_noise[1])
     
 def add_uncertainty_single(particle, sigma, sigma_theta):
     """Add some noise to each particle in the list. Sigma and sigma_theta is the noise

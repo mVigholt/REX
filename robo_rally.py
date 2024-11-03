@@ -51,10 +51,10 @@ CBLACK = (0, 0, 0)
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
 landmarkIDs = [1, 2, 3, 4]
 landmarks = {
-    1: (0.0, 0.0),  # Coordinates for landmark 1
-    2: (-300.0, 0.0),  # Coordinates for landmark 2
-    3: (0.0, 400.0),  # Coordinates for landmark 1
-    4: (-300.0, 400.0)  # Coordinates for landmark 2
+    1: (300, 0.0),  # Coordinates for landmark 1
+    2: (0.0, 0.0),  # Coordinates for landmark 2
+    3: (300, 400.0),  # Coordinates for landmark 1
+    4: (0, 400.0)  # Coordinates for landmark 2
 }
 landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the landmarks
 
@@ -111,12 +111,12 @@ def draw_world(est_pose, particles, world):
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
 
-def initialize_particles(num_particles):
+def initialize_particles(num_particles, c=[150,200], r=[600,650] ):
     particles = []
     for i in range(num_particles):
         # Random starting points. 
         # p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
-        p = particle.Particle(np.random.uniform(-200, 500), np.random.uniform(-200, 700), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
+        p = particle.Particle(np.random.uniform(c[0]-r[0], c[0]+r[0]), np.random.uniform(c[1]-r[1], c[1]+r[1]), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
         particles.append(p)
 
     return particles
@@ -189,7 +189,7 @@ try:
         #         angular_velocity -= 0.2
         
         # add some noise??
-        particle.noise(particles, pos_noise=3, dir_noise=0.03)
+        particle.noise(particles, pd_noise=[3, 0.1])
         
         # Use motor controls to update particles
         # XXX: Make the robot drive     
@@ -308,13 +308,13 @@ try:
         print(f"est_pose: \n{[est_pose.getX()*10, est_pose.getY()*10]}")
         if particle.accepltable_robot_pos_estimate(particles):
             print("Starting path planning")
-            path_res = 15
-            expand_dis = path_res*10*10
+            path_res = 2
+            expand_dis = 150
             rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
             _, local_coords = cam.next_map(True) 
             # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array([-1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array([1500, 0])) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
             print(f"local_goal: {local_goal}")
             
             # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
