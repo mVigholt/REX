@@ -297,10 +297,11 @@ try:
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
-            otto.Turn(math.pi/8)
+            otto.Turn(math.pi/12)
+            particle.move_particles(particles, [0, 0, math.pi/12], [0,0])
             for p in particles:
-              particle.turn(p, math.pi/8)
-            rotation_so_far += math.pi/8
+              particle.turn(p, math.pi/12)
+            rotation_so_far += math.pi/12
         
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
         print(f"est_pose: \n{[est_pose.getX()*10, est_pose.getY()*10]}")    
@@ -319,52 +320,52 @@ try:
         #=======================================================================
         accepltable, pos_var = particle.accepltable_robot_pos_estimate(particles)
         if accepltable:
-            while True:
-                print("Starting path planning")
-                path_res = 15
-                expand_dis = 1000
-                rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
+            print("Starting path planning")
+            path_res = 15
+            expand_dis = 1000
+            rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
+            
+            _, local_coords = cam.next_map(True) 
+            
+            # her indsætter vi det globale koordinat system konverteret til lokalt
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal -= (local_goal * 250 / np.linalg.norm(local_goal))
+            print(f"local_goal: {local_goal}")
+            
+            print(local_coords)
+            
+            local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
+            local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
+            # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
+            map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
+            rrt = rt.RRT(start=[0, 0],
+                        goal=local_goal,
+                        robot_model=rob,
+                        map=map,
+                        expand_dis=expand_dis,
+                        path_resolution=path_res,
+                        )
+            path = rrt.planning(animation=False)
+            if path is not None:
+                print("Beginning drive sequence.")
+                print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
+                print(f"local goal: {local_goal}")
+                print(f"path = {path}")
+                cur = np.array([0,1])
+                for i in range(len(path)-1,0,-1):
+                    next = path[i-1] - path[i]
+                    theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
+                    theta = theta * np.sign(np.cross(cur,next))
+                    dist = math.dist([0,0],next)
+                    print(f"turn: {theta}")
+                    print(f"move: {dist}")
+                    otto.Turn(theta)
+                    otto.Forward(dist)
+                    particle.move_particles(particles, [dist[0], dist[1], theta], [0,0])
+                    cur = next
                 
-                _, local_coords = cam.next_map(True) 
-                
-                # her indsætter vi det globale koordinat system konverteret til lokalt
-                local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
-                local_goal -= (local_goal * 400 / np.linalg.norm(local_goal))
-                print(f"local_goal: {local_goal}")
-                
-                print(local_coords)
-                
-                local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
-                local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
-                # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-                map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
-                rrt = rt.RRT(start=[0, 0],
-                            goal=local_goal,
-                            robot_model=rob,
-                            map=map,
-                            expand_dis=expand_dis,
-                            path_resolution=path_res,
-                            )
-                path = rrt.planning(animation=False)
-                if path is not None:
-                    print("Beginning drive sequence.")
-                    print("global robot pos: ", [est_pose.getX(), est_pose.getY(), est_pose.getTheta()])
-                    print(f"local goal: {local_goal}")
-                    print(f"path = {path}")
-                    cur = np.array([0,1])
-                    for i in range(len(path)-1,0,-1):
-                        next = path[i-1] - path[i]
-                        theta = math.acos(np.dot(cur,next)/(math.dist([0,0],cur)* math.dist([0,0],next)))
-                        theta = theta * np.sign(np.cross(cur,next))
-                        dist = math.dist([0,0],next)
-                        print(f"turn: {theta}")
-                        print(f"move: {dist}")
-                        otto.Turn(theta)
-                        otto.Forward(dist)
-                        cur = next
-                    
-                    si += 1
-                    if si >= len(sequence): break
+                si += 1
+                if si >= len(sequence): break
             
         # Clear seen objects
         measurements.clear()
