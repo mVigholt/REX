@@ -365,7 +365,7 @@ try:
             
             #----------------------------------------------------------------------------
             global_goal = landmarkIDs[i]
-            global_dist = np.linalg.norm(np.array(global_goal) - np.arra([est_pose.getX(), est_pose.getY()])) * 10
+            global_dist = np.linalg.norm(np.array(global_goal) - np.array([est_pose.getX(), est_pose.getY()])) * 10
             local_goal = np.array(0, global_dist - 400)
             turn_to_global_goal(particles, est_pose, global_goal)
             
