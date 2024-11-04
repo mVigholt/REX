@@ -66,7 +66,7 @@ sequence = [1,2,3,4,1]
 si = 0
 # Initialize particles
 num_particles = 500
-pc = [0,0] #landmarks[sequence[si]]
+pc = [0,0]
 pr = 400
 
 lap = h.Timed_lap()
@@ -153,11 +153,11 @@ def initialize_particles(num_particles, c=[150,200], r=600):
     return particles
 
 def turn_to_global_goal(particles_list, est_pose:particle.Particle, global_goal):
-    theta = est_pose.getTheta()
+    theta = np.mod(est_pose.getTheta(), 2*math.pi)
     X = est_pose.getX()
     Y = est_pose.getY()
     local_goal = np.array(global_goal) - np.array([X,Y])
-    v = np.arctan2(local_goal[1]/local_goal[0])
+    v = np.mod(np.arctan2(local_goal[1]/local_goal[0]), 2*math.pi)
     otto.Turn(v - theta)
     particle.move_particles(particles_list, [0, 0, v - theta], [0,0])
 
@@ -414,8 +414,8 @@ try:
             # Clear seen objects
             measurements.clear()
             
-        pc = (est_pose.getX(), est_pose.getY())
-        pr = pos_var + 10
+            pc = (est_pose.getX(), est_pose.getY())
+            pr = pos_var + 10
 
 finally: 
     # Make sure to clean up even if an exception occurred
