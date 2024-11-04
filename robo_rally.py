@@ -142,12 +142,12 @@ def draw_world(est_pose, particles, world, path=None):
     cv2.line(world, a, b, CMAGENTA, 2)
     
 
-def initialize_particles(num_particles, c=[150,200], r=600):
+def initialize_particles(num_particles, c=[150,300], r=600):
     particles = []
     for i in range(num_particles):
         # Random starting points. 
-        p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
-        # p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
+        # p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
+        p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
         particles.append(p)
 
     return particles
