@@ -342,7 +342,7 @@ try:
         #=======================================================================
         # TRY TO DRIVE
         #=======================================================================
-        acceptable, pos_var = particle.accepltable_robot_pos_estimate(particles)
+        acceptable, pos_var = particle.acceptable_robot_pos_estimate(particles)
         if acceptable:             
             # print("Starting path planning")
             # lmids, local_coords = cam.next_map(True) 
