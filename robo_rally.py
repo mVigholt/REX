@@ -323,14 +323,14 @@ try:
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
-            otto.Turn(math.pi/12)
-            # particle.move_particles(particles, [0, 0, math.pi/12], [0,0])
-            rotation_so_far += math.pi/12
+            otto.Turn(math.pi/24)
+            # particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
+            rotation_so_far += math.pi/24
             for lm in measurements:
                 print("===========================")
                 print("radiant before: ", measurements[lm])
-                # measurements[lm][2] = measurements[lm][2] + math.pi/12
-                measurements[lm][2] = measurements[lm][2] - math.pi/12
+                # measurements[lm][2] = measurements[lm][2] + math.pi/24
+                measurements[lm][2] = np.mod(measurements[lm][2], 2*math.pi) - np.mod(math.pi/24, 2*math.pi)
                 print("radiant after: ", measurements[lm])
                 print("===========================")
             
