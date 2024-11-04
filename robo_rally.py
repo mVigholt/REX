@@ -51,9 +51,9 @@ CBLACK = (0, 0, 0)
 # The robot knows the position of 2 landmarks. Their coordinates are in the unit centimeters [cm].
 landmarkIDs = [1, 2, 3, 4]
 landmarks = {
-    1: [300.0, 0.0],  # Coordinates for landmark 1
+    1: [300, 0.0],  # Coordinates for landmark 1
     2: [0.0, 0.0],  # Coordinates for landmark 2
-    3: [300.0, 400.0],  # Coordinates for landmark 3
+    3: [300, 400.0],  # Coordinates for landmark 3
     4: [0, 400.0]  # Coordinates for landmark 4
 }
 landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the landmarks
@@ -66,16 +66,12 @@ sequence = [1,2,3,4,1]
 si = 0
 # Initialize particles
 num_particles = 500
-pc = [150,300]
-pr = 800
+pc = [0,0] #landmarks[sequence[si]]
+pr = 400
 
 lap = h.Timed_lap()
 measurements = dict()
 rotation_so_far = 0
-
-path_res = 15
-expand_dis = 1000   
-rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
 #============================================================================
 
 if onRobot:
@@ -129,37 +125,28 @@ def draw_world(est_pose, particles, world, path=None):
     b = (int(est_pose.getX() + 15.0*np.cos(est_pose.getTheta()))+offsetX, 
                                  ymax-(int(est_pose.getY() + 15.0*np.sin(est_pose.getTheta()))+offsetY))
     
-    # if path is not None:
-    #     for i in range(len(path)):
-    #         path_point = (int(path[i][0] + offsetX), int(path[i][1] + offsetY))
-    #         cv2.circle(world, path_point, 2, CBLACK, 2)
-    #     for i in range(len(landmarks)):
-    #         id = landmarkIDs[i]
-    #         lmm = (int(landmarks[id][0] + offsetX), int(landmarks[id][1] + offsetY))
-    #         cv2.circle(world, lmm, 15, CRED, 2)
+    if path is not None:
+        for i in range(len(path)):
+            path_point = (int(path[i][0] + offsetX), int(path[i][1] + offsetY))
+            cv2.circle(world, path_point, 2, CBLACK, 2)
+        for i in range(len(landmarks)):
+            id = landmarkIDs[i]
+            lmm = (int(landmarks[id][0] + offsetX), int(landmarks[id][1] + offsetY))
+            cv2.circle(world, lmm, 15, CRED, 2)
     
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
     
 
-def initialize_particles(num_particles, c=[150,300], r=600):
+def initialize_particles(num_particles, c=[150,200], r=600):
     particles = []
     for i in range(num_particles):
         # Random starting points. 
-        # p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
-        p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
+        p = particle.Particle(600.0*np.random.ranf() - 100.0, 600.0*np.random.ranf() - 250.0, np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)
+        # p = particle.Particle(np.random.uniform(c[0]-r, c[0]+r), np.random.uniform(c[1]-r, c[1]+r), np.mod(2.0*np.pi*np.random.ranf(), 2.0*np.pi), 1.0/num_particles)    
         particles.append(p)
 
     return particles
-
-def turn_to_global_goal(particles_list, est_pose:particle.Particle, global_goal):
-    theta = np.mod(est_pose.getTheta(), 2*math.pi)
-    X = est_pose.getX()
-    Y = est_pose.getY()
-    local_goal = np.array(global_goal) - np.array([X,Y])
-    v = np.mod(np.arctan2(local_goal[1]/local_goal[0]), 2*math.pi)
-    otto.Turn(v - theta)
-    particle.move_particles(particles_list, [0, 0, v - theta], [0,0])
 
 # Main program #
 try:
@@ -192,7 +179,6 @@ try:
     
 
     while True:
-        print("\n New Loop:")
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
         if action == ord('q'): # Quit
@@ -247,14 +233,11 @@ try:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
         
         # print landmark positions
-        print("===Detected Landmarks===")
         for me in measurements:
-          print(f"{measurements[me][0]}: {measurements[me][1]}, {measurements[me][2]}")
-          print("\n")
+          print(f"landMark {measurements[me][0]}: {measurements[me][1]}")
         
         # If more than 1 object, converge
         if len(measurements) == 2:
-            print("Length of Measurements is 2. Trying to converge.")
             def angle_propability(particle: particle.Particle, measurement):
                 sigma = 0.1 #rad
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
@@ -270,11 +253,10 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                    
-                return retval if retval > 0 else 1/num_particles
+                return retval if retval > 0 else 0.001
                 
             def dist_propability(particle: particle.Particle, measurement):
-                sigma = 3 #cm
+                sigma = 5 #cm
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 
@@ -284,14 +266,13 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                    
-                return retval if retval > 0 else 1/num_particles
+                return retval if retval > 0 else 0.001
 
             # Compute particle weights
             # XXX: You do this
             weights = []
             
-            print("Applying Weights to particles")
+            
             for p in particles:
                 p: particle.Particle
                 w = 1
@@ -300,15 +281,15 @@ try:
                 p.setWeight(w)#*p.getWeight())
                 weights.append(w)
 
-            print("Summing Particles")
+            
             weight_sum = sum(weights)
             if weight_sum > 0:
                 for p in particles:
-                    p.setWeight(p.getWeight() / weight_sum)  
-                        
+                    p.setWeight(p.getWeight() / weight_sum)
+            print(f"len(weights) = {len(weights)}")
+            print(f"weight_sum = {weight_sum}")        
             # Resampling
             # XXX: You do this
-            print("Resampling\n")
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
@@ -322,20 +303,16 @@ try:
                 p.setWeight(1.0/num_particles)
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
-            print("Measurements less than 2: ", len(measurements) < 2)
-            print("Rotation so far less than 2pi: ", rotation_so_far != 2*3.14)
-            print("Initializing Turn")
             # rotate
             otto.Turn(math.pi/24)
             # particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
             rotation_so_far += math.pi/24
             for lm in measurements:
-                # print("===========================")
-                # print("radiant before: ", measurements[lm])
-                # measurements[lm][2] = measurements[lm][2] + math.pi/24
+                print("===========================")
+                print("radiant before: ", measurements[lm])
                 measurements[lm][2] = measurements[lm][2] - math.pi/24
-                # print("radiant after: ", measurements[lm])
-                # print("===========================")
+                print("radiant after: ", measurements[lm])
+                print("===========================")
             
         
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
@@ -354,42 +331,25 @@ try:
         # TRY TO DRIVE
         #=======================================================================
         acceptable, pos_var = particle.acceptable_robot_pos_estimate(particles)
-        if acceptable:             
+        if acceptable:
             print("Starting path planning")
-            # lmids, local_coords = cam.next_map(True) 
+            path_res = 15
+            expand_dis = 1000
+            rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
             
-            # for i in range(len(landmarkIDs)):
-            #     try:
-            #         local_coords = np.delete(local_coords, landmarkIDs[i])
-            #     except IndexError:
-            #         print("Index out of bounds. No element removed.")
-                
-            #     print(local_coords)
-                    
+            _, local_coords = cam.next_map(True) 
             
-            # # her indsætter vi det globale koordinat system konverteret til lokalt
-            # local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
-            # local_goal -= (local_goal * 350 / np.linalg.norm(local_goal))
-            # print(f"local_goal: {local_goal}")
+            # her indsætter vi det globale koordinat system konverteret til lokalt
+            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            local_goal -= (local_goal * 350 / np.linalg.norm(local_goal))
+            print(f"local_goal: {local_goal}")
             
-            # print(local_coords)
+            print(local_coords)
             
-            #----------------------------------------------------------------------------
-            global_goal = landmarkIDs[si]
-            global_dist = np.linalg.norm(np.array(global_goal) - np.array([est_pose.getX(), est_pose.getY()])) * 10
-            local_goal = np.array(0, global_dist - 400)
-            turn_to_global_goal(particles, est_pose, global_goal)
-            
-            l_id, local_obsticals = cam.next_map(True)
-            obsticlas = []
-            if l_id is not None:
-                for i in range(len(l_id)):
-                    if (l_id[i] not in landmarks): 
-                        obsticlas.append(local_obsticals[i])
-            #----------------------------------------------------------------------------
             local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
             local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
-            map = m.landmark_map(low=local_low, high=local_high, landMarks=obsticlas)
+            # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
+            map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
@@ -421,11 +381,10 @@ try:
                 if si >= len(sequence): break
             rotation_so_far = 0
             # Clear seen objects
-            print("Clearing Measurements")
             measurements.clear()
             
-            pc = (est_pose.getX(), est_pose.getY())
-            pr = pos_var + 10
+        pc = (est_pose.getX(), est_pose.getY())#, est_pose.getTheta())
+        pr = pos_var + 10
 
 finally: 
     # Make sure to clean up even if an exception occurred
