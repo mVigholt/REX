@@ -266,7 +266,10 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else 0.001 and print("retval was 0 -.-")
+                if retval == 0:
+                    print("retval was 0 -.-")
+                    
+                return retval if retval > 0 else 0.001
                 
             def dist_propability(particle: particle.Particle, measurement):
                 sigma = 3 #cm
@@ -279,7 +282,10 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else 0.001 and print("retval was 0 -.-")
+                if retval == 0:
+                    print("retval was 0 -.-")
+                    
+                return retval if retval > 0 else 0.001
 
             # Compute particle weights
             # XXX: You do this
