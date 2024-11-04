@@ -266,7 +266,7 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else 0.001
+                return retval if retval > 0 else 0.001 and print("retval was 0 -.-")
                 
             def dist_propability(particle: particle.Particle, measurement):
                 sigma = 3 #cm
@@ -279,7 +279,7 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else 0.001
+                return retval if retval > 0 else 0.001 and print("retval was 0 -.-")
 
             # Compute particle weights
             # XXX: You do this
@@ -346,7 +346,7 @@ try:
         #=======================================================================
         acceptable, pos_var = particle.acceptable_robot_pos_estimate(particles)
         if acceptable:             
-            # print("Starting path planning")
+            print("Starting path planning")
             # lmids, local_coords = cam.next_map(True) 
             
             # for i in range(len(landmarkIDs)):
