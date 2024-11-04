@@ -127,7 +127,7 @@ est_pos_old = None
 est_dir = None
 est_dir_old = None
 est_Count = 0
-def accepltable_robot_pos_estimate(particles_list):
+def acceptable_robot_pos_estimate(particles_list):
     pos_diff_lim = 4
     pos_var_lim = 50
     dir_diff_lim = 0.1
