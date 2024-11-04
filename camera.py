@@ -383,8 +383,6 @@ class Camera(object):
         def flatten(matLike):
             return None if matLike is None else list(itertools.chain(*matLike))     
         
-        print(self.tvecs)
-        
         flat_tvecs = flatten(self.tvecs)
         flat_rvecs = flatten(self.rvecs)
         if flat_tvecs and flat_rvecs is not None:
@@ -595,10 +593,6 @@ if (__name__=='__main__'):
         #cam.draw_object(colour)
 
         IDs, dists, angles = cam.detect_aruco_objects(colour)
-        if not isinstance(IDs, type(None)):
-            for i in range(len(IDs)):
-                print("Object ID = ", IDs[i], ", Distance = ", dists[i], ", angles = ", angles[i])
-
         # Draw detected objects
         cam.draw_aruco_objects(colour)
 

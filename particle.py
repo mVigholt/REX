@@ -158,11 +158,6 @@ def acceptable_robot_pos_estimate(particles_list):
         else:
             est_Count = 0
         
-        print(f"pos_var = {pos_var}")
-        print(f"pos_diff =  = {pos_diff}")
-        print(f"dir_diff = {dir_diff}")
-        print(f"est_Count= {est_Count}")
-        
         result = pos_var < pos_var_lim and dir_diff < dir_diff_lim and est_Count == est_Count_lim
         
         est_pos_old = est_pos
