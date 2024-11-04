@@ -152,12 +152,14 @@ def initialize_particles(num_particles, c=[150,200], r=600):
 
     return particles
 
-def turn_to_global_goal(particles_list, est_pos:particle.Particle, global_goal):
-    X = np.mod(est_pos.getX()) 
-    Y = np.mod(est_pos.getY())
+def turn_to_global_goal(particles_list, est_pose:particle.Particle, global_goal):
+    theta = est_pose.getTheta()
+    X = est_pose.getX()
+    Y = est_pose.getY()
     local_goal = np.array(global_goal) - np.array([X,Y])
-    v = np.mod(np.atan(local_goal[1]/local_goal[0]))
-    particle.move_particles(particles_list, [0, 0, v], [0,0])
+    v = np.atan(local_goal[1]/local_goal[0])
+    otto.Turn(v - theta)
+    particle.move_particles(particles_list, [0, 0, v - theta], [0,0])
     return v
 
 # Main program #
@@ -364,14 +366,14 @@ try:
             # print(local_coords)
             
             #----------------------------------------------------------------------------
-            global_goal = landmarkIDs[i]
+            global_goal = landmarkIDs[si]
             global_dist = np.linalg.norm(np.array(global_goal) - np.array([est_pose.getX(), est_pose.getY()])) * 10
             local_goal = np.array(0, global_dist - 400)
             turn_to_global_goal(particles, est_pose, global_goal)
             
             l_id, local_obsticals = cam.next_map(True)
             obsticlas = []
-            for i in range(l_id): #!!!!!!!!!!!!
+            for i in range(l_id):
                 if (l_id[i] not in landmarks): 
                     obsticlas.append(local_obsticals[i])
             #----------------------------------------------------------------------------
