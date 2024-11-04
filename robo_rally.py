@@ -192,6 +192,7 @@ try:
     
 
     while True:
+        print("\n New Loop:")
         # Move the robot according to user input (only for testing)
         action = cv2.waitKey(10)
         if action == ord('q'): # Quit
@@ -247,10 +248,13 @@ try:
         
         # print landmark positions
         for me in measurements:
-          print(f"landMark {measurements[me][0]}: {measurements[me][1]}, {measurements[me][2]}")
+          print("===Detected Landmarks===")
+          print(f"{measurements[me][0]}: {measurements[me][1]}, {measurements[me][2]}")
+          print("\n")
         
         # If more than 1 object, converge
         if len(measurements) == 2:
+            print("Length of Measurements is 2. Trying to converge.")
             def angle_propability(particle: particle.Particle, measurement):
                 sigma = 0.05 #rad
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
@@ -287,7 +291,7 @@ try:
             # XXX: You do this
             weights = []
             
-            
+            print("Applying Weights to particles")
             for p in particles:
                 p: particle.Particle
                 w = 1
@@ -296,15 +300,14 @@ try:
                 p.setWeight(w)#*p.getWeight())
                 weights.append(w)
 
-            
+            print("Summing Particles")
             weight_sum = sum(weights)
             if weight_sum > 0:
                 for p in particles:
-                    p.setWeight(p.getWeight() / weight_sum)
-            print(f"len(weights) = {len(weights)}")
-            print(f"weight_sum = {weight_sum}")        
+                    p.setWeight(p.getWeight() / weight_sum)      
             # Resampling
             # XXX: You do this
+            print("Resampling\n")
             weighted_choice = random.choices(particles, weights, k = num_particles)
             particles = [copy.deepcopy(p) for p in weighted_choice]
 
@@ -318,17 +321,20 @@ try:
                 p.setWeight(1.0/num_particles)
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
+            print("Measurements less than 2: ", len(measurements) < 2)
+            print("Rotation so far less than 2pi: ", rotation_so_far != 2*3.14)
+            print("Initializing Turn")
             # rotate
             otto.Turn(math.pi/24)
             # particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
             rotation_so_far += math.pi/24
             for lm in measurements:
-                print("===========================")
-                print("radiant before: ", measurements[lm])
+                # print("===========================")
+                # print("radiant before: ", measurements[lm])
                 # measurements[lm][2] = measurements[lm][2] + math.pi/24
                 measurements[lm][2] = measurements[lm][2] - math.pi/24
-                print("radiant after: ", measurements[lm])
-                print("===========================")
+                # print("radiant after: ", measurements[lm])
+                # print("===========================")
             
         
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
@@ -414,6 +420,7 @@ try:
                 if si >= len(sequence): break
             rotation_so_far = 0
             # Clear seen objects
+            print("Clearing Measurements")
             measurements.clear()
             
             pc = (est_pose.getX(), est_pose.getY())
