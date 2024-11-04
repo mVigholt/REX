@@ -157,7 +157,7 @@ def turn_to_global_goal(particles_list, est_pose:particle.Particle, global_goal)
     X = est_pose.getX()
     Y = est_pose.getY()
     local_goal = np.array(global_goal) - np.array([X,Y])
-    v = np.arctan(local_goal[1]/local_goal[0])
+    v = np.arctan2(local_goal[1]/local_goal[0])
     otto.Turn(v - theta)
     particle.move_particles(particles_list, [0, 0, v], [0,0])
     return v
