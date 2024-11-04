@@ -376,6 +376,8 @@ try:
                     dist = math.dist([0,0],next)
                     print(f"turn: {theta}")
                     print(f"move: {dist}")
+                    if (dist < 500):
+                        break
                     otto.Turn(theta)
                     otto.Forward(dist)
                     v = est_pose.getTheta() + theta
