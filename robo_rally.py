@@ -266,8 +266,6 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                if retval == 0:
-                    print("retval was 0 -.-")
                     
                 return retval if retval > 0 else 0.001
                 
@@ -282,8 +280,6 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                if retval == 0:
-                    print("retval was 0 -.-")
                     
                 return retval if retval > 0 else 0.001
 
