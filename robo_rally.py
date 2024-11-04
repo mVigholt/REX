@@ -329,8 +329,8 @@ try:
             for lm in measurements:
                 print("===========================")
                 print("radiant before: ", measurements[lm])
-                # measurements[lm][2] = measurements[lm][2] + math.pi/24
-                measurements[lm][2] = measurements[lm][2] - math.pi/24
+                measurements[lm][2] = measurements[lm][2] + math.pi/24
+                # measurements[lm][2] = measurements[lm][2] - math.pi/24
                 print("radiant after: ", measurements[lm])
                 print("===========================")
             
