@@ -159,7 +159,7 @@ def turn_to_global_goal(particles_list, est_pose:particle.Particle, global_goal)
     local_goal = np.array(global_goal) - np.array([X,Y])
     v = np.arctan(local_goal[1]/local_goal[0])
     otto.Turn(v - theta)
-    particle.move_particles(particles_list, [0, 0, v - theta], [0,0])
+    particle.move_particles(particles_list, [0, 0, v], [0,0])
     return v
 
 # Main program #
@@ -324,6 +324,7 @@ try:
             for lm in measurements:
                 print("===========================")
                 print("radiant before: ", measurements[lm])
+                # measurements[lm][2] = measurements[lm][2] + math.pi/24
                 measurements[lm][2] = measurements[lm][2] - math.pi/24
                 print("radiant after: ", measurements[lm])
                 print("===========================")
@@ -373,7 +374,7 @@ try:
             
             l_id, local_obsticals = cam.next_map(True)
             obsticlas = []
-            for i in range(l_id):
+            for i in range(len(l_id)):
                 if (l_id[i] not in landmarks): 
                     obsticlas.append(local_obsticals[i])
             #----------------------------------------------------------------------------
