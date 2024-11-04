@@ -304,7 +304,8 @@ try:
             weight_sum = sum(weights)
             if weight_sum > 0:
                 for p in particles:
-                    p.setWeight(p.getWeight() / weight_sum)      
+                    p.setWeight(p.getWeight() / weight_sum)  
+                        
             # Resampling
             # XXX: You do this
             print("Resampling\n")
