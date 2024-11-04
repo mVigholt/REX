@@ -267,7 +267,7 @@ try:
                             )
                         )
                     
-                return retval if retval > 0 else 0.001
+                return retval if retval > 0 else 1/num_particles
                 
             def dist_propability(particle: particle.Particle, measurement):
                 sigma = 3 #cm
@@ -281,7 +281,7 @@ try:
                             )
                         )
                     
-                return retval if retval > 0 else 0.001
+                return retval if retval > 0 else 1/num_particles
 
             # Compute particle weights
             # XXX: You do this
