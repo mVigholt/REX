@@ -127,7 +127,7 @@ est_pos_old = None
 est_dir = None
 est_dir_old = None
 est_Count = 0
-def acceptable_robot_pos_estimate(particles_list):
+def accepltable_robot_pos_estimate(particles_list):
     pos_diff_lim = 4
     pos_var_lim = 50
     dir_diff_lim = 0.1
@@ -136,7 +136,7 @@ def acceptable_robot_pos_estimate(particles_list):
     global est_pos_old
     global est_dir
     global est_dir_old
-    global est_Count
+    global est_Count 
     pose = estimate_pose(particles_list)
     est_pos = np.array([pose.getX(), pose.getY()])
     est_dir = pose.getTheta()
@@ -157,6 +157,11 @@ def acceptable_robot_pos_estimate(particles_list):
             est_Count += 1
         else:
             est_Count = 0
+        
+        print(f"pos_var = {pos_var}")
+        print(f"pos_diff =  = {pos_diff}")
+        print(f"dir_diff = {dir_diff}")
+        print(f"est_Count= {est_Count}")
         
         result = pos_var < pos_var_lim and dir_diff < dir_diff_lim and est_Count == est_Count_lim
         
