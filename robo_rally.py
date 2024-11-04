@@ -315,7 +315,7 @@ try:
                 print("===========================")
         if rotation_so_far >= 2*3.14:
             otto.Turn(np.random.uniform(-1, 1) * math.pi)
-            otto.Forward(np.random(0.01, 1) * 1000)
+            otto.Forward(np.random.uniform(0.33, 1) * 1500)
             rotation_so_far = 0
             
         
