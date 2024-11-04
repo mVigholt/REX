@@ -256,7 +256,7 @@ try:
         if len(measurements) == 2:
             print("Length of Measurements is 2. Trying to converge.")
             def angle_propability(particle: particle.Particle, measurement):
-                sigma = 0.05 #rad
+                sigma = 0.1 #rad
                 di = math.sqrt(((landmarks[measurement[0]][0] - particle.getX())**2) + 
                                ((landmarks[measurement[0]][1] - particle.getY())**2))
                 uov = np.array([math.cos(particle.getTheta()), math.sin(particle.getTheta())])
