@@ -247,8 +247,8 @@ try:
                     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
         
         # print landmark positions
+        print("===Detected Landmarks===")
         for me in measurements:
-          print("===Detected Landmarks===")
           print(f"{measurements[me][0]}: {measurements[me][1]}, {measurements[me][2]}")
           print("\n")
         
