@@ -129,14 +129,14 @@ def draw_world(est_pose, particles, world, path=None):
     b = (int(est_pose.getX() + 15.0*np.cos(est_pose.getTheta()))+offsetX, 
                                  ymax-(int(est_pose.getY() + 15.0*np.sin(est_pose.getTheta()))+offsetY))
     
-    if path is not None:
-        for i in range(len(path)):
-            path_point = (int(path[i][0] + offsetX), int(path[i][1] + offsetY))
-            cv2.circle(world, path_point, 2, CBLACK, 2)
-        for i in range(len(landmarks)):
-            id = landmarkIDs[i]
-            lmm = (int(landmarks[id][0] + offsetX), int(landmarks[id][1] + offsetY))
-            cv2.circle(world, lmm, 15, CRED, 2)
+    # if path is not None:
+    #     for i in range(len(path)):
+    #         path_point = (int(path[i][0] + offsetX), int(path[i][1] + offsetY))
+    #         cv2.circle(world, path_point, 2, CBLACK, 2)
+    #     for i in range(len(landmarks)):
+    #         id = landmarkIDs[i]
+    #         lmm = (int(landmarks[id][0] + offsetX), int(landmarks[id][1] + offsetY))
+    #         cv2.circle(world, lmm, 15, CRED, 2)
     
     cv2.circle(world, a, 5, CMAGENTA, 2)
     cv2.line(world, a, b, CMAGENTA, 2)
