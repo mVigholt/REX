@@ -62,7 +62,7 @@ landmark_colors = [CRED, CGREEN, CBLUE, CYELLOW] # Colors used when drawing the 
 # Allocate space for world map
 world = np.zeros((1000,1000,3), dtype=np.uint8)
 
-sequence = [1,2,3,4,1]
+sequence = [1,2,3,4,1,1,2,3,4,1]
 si = 0
 # Initialize particles
 num_particles = 500
@@ -313,6 +313,10 @@ try:
                 measurements[lm][2] = measurements[lm][2] - math.pi/24
                 print("radiant after: ", measurements[lm])
                 print("===========================")
+        if rotation_so_far >= 2*3.14:
+            otto.Turn(np.random.uniform(-1, 1) * math.pi)
+            otto.Forward(np.random(0.01, 1) * 1000)
+            rotation_so_far = 0
             
         
         est_pose = particle.estimate_pose(particles) # The estimate of the robots current pose    
