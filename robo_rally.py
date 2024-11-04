@@ -238,12 +238,12 @@ try:
             for i in range(len(objectIDs)):
                 # print("Object ID = ", objectIDs[i], ", Distance = ", dists[i], ", angle = ", angles[i])
                 # XXX: Do something for each detected object - remember, the same ID may appear several times
-                if (objectIDs[i] in landmarks and 
-                    (objectIDs[i] not in measurements or 
-                    measurements[objectIDs[i]][1] > dists[i])):
-                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
-                # if (objectIDs[i] in landmarks): 
+                # if (objectIDs[i] in landmarks and 
+                #     (objectIDs[i] not in measurements or 
+                #     measurements[objectIDs[i]][1] > dists[i])):
                 #     measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
+                if (objectIDs[i] in landmarks): 
+                    measurements[objectIDs[i]] = [objectIDs[i], dists[i], angles[i]] 
         
         # print landmark positions
         for me in measurements:
