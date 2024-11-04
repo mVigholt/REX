@@ -66,8 +66,8 @@ sequence = [1,2,3,4,1]
 si = 0
 # Initialize particles
 num_particles = 500
-pc = [0,0]
-pr = 400
+pc = [150,300]
+pr = 800
 
 lap = h.Timed_lap()
 measurements = dict()
