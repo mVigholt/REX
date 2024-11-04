@@ -72,6 +72,10 @@ pr = 400
 lap = h.Timed_lap()
 measurements = dict()
 rotation_so_far = 0
+
+path_res = 15
+expand_dis = 1000   
+rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
 #============================================================================
 
 if onRobot:
@@ -147,6 +151,14 @@ def initialize_particles(num_particles, c=[150,200], r=600):
         particles.append(p)
 
     return particles
+
+def turn_to_global_goal(particles_list, est_pos:particle.Particle, global_goal):
+    X = np.mod(est_pos.getX()) 
+    Y = np.mod(est_pos.getY())
+    local_goal = np.array(global_goal) - np.array([X,Y])
+    v = np.mod(np.atan(local_goal[1]/local_goal[0]))
+    particle.move_particles(particles_list, [0, 0, v], [0,0])
+    return v
 
 # Main program #
 try:
@@ -330,35 +342,42 @@ try:
         #=======================================================================
         # TRY TO DRIVE
         #=======================================================================
-        accepltable, pos_var = particle.accepltable_robot_pos_estimate(particles)
-        if accepltable:
-            print("Starting path planning")
-            path_res = 15
-            expand_dis = 1000
-            rob = robot_models.PointMassModel(ctrl_range=[-path_res, path_res])
+        acceptable, pos_var = particle.accepltable_robot_pos_estimate(particles)
+        if acceptable:             
+            # print("Starting path planning")
+            # lmids, local_coords = cam.next_map(True) 
             
-            lmids, local_coords = cam.next_map(True) 
-            
-            for i in range(len(landmarkIDs)):
-                try:
-                    local_coords = np.delete(local_coords, landmarkIDs[i])
-                except IndexError:
-                    print("Index out of bounds. No element removed.")
+            # for i in range(len(landmarkIDs)):
+            #     try:
+            #         local_coords = np.delete(local_coords, landmarkIDs[i])
+            #     except IndexError:
+            #         print("Index out of bounds. No element removed.")
                 
-                print(local_coords)
+            #     print(local_coords)
                     
             
-            # her indsætter vi det globale koordinat system konverteret til lokalt
-            local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
-            local_goal -= (local_goal * 350 / np.linalg.norm(local_goal))
-            print(f"local_goal: {local_goal}")
+            # # her indsætter vi det globale koordinat system konverteret til lokalt
+            # local_goal = h.ToLocal(np.array([est_pose.getX()*10, est_pose.getY()*10]), est_pose.getTheta()-(math.pi/2), np.array(landmarks[sequence[si]])*10) # her konverterer vi (75, 0) til et eller andet lokalt koordinat
+            # local_goal -= (local_goal * 350 / np.linalg.norm(local_goal))
+            # print(f"local_goal: {local_goal}")
             
-            print(local_coords)
+            # print(local_coords)
             
+            #----------------------------------------------------------------------------
+            global_goal = landmarkIDs[i]
+            global_dist = np.linalg.norm(np.array(global_goal) - np.arra([est_pose.getX(), est_pose.getY()])) * 10
+            local_goal = np.array(0, global_dist - 400)
+            turn_to_global_goal(particles, est_pose, global_goal)
+            
+            l_id, local_obsticals = cam.next_map(True)
+            obsticlas = []
+            for i in range(l_id): #!!!!!!!!!!!!
+                if (l_id[i] not in landmarks): 
+                    obsticlas.append(local_obsticals[i])
+            #----------------------------------------------------------------------------
             local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
             local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
-            # map = m.landmark_map(low=(-4000, 0), high=(4000, 4000), landMarks=local_coords)
-            map = m.landmark_map(low=local_low, high=local_high, landMarks=[])
+            map = m.landmark_map(low=local_low, high=local_high, landMarks=obsticlas)
             rrt = rt.RRT(start=[0, 0],
                         goal=local_goal,
                         robot_model=rob,
@@ -392,7 +411,7 @@ try:
             # Clear seen objects
             measurements.clear()
             
-        pc = (est_pose.getX(), est_pose.getY())#, est_pose.getTheta())
+        pc = (est_pose.getX(), est_pose.getY())
         pr = pos_var + 10
 
 finally: 
