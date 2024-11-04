@@ -128,7 +128,6 @@ est_dir = None
 est_dir_old = None
 est_Count = 0
 def acceptable_robot_pos_estimate(particles_list):
-    print("before: ", estimate_pose(particles_list).getX())
     pos_diff_lim = 4
     pos_var_lim = 50
     dir_diff_lim = 0.1
@@ -159,7 +158,6 @@ def acceptable_robot_pos_estimate(particles_list):
         else:
             est_Count = 0
         
-        print("after: ", estimate_pose(particles_list).getX())
         result = pos_var < pos_var_lim and dir_diff < dir_diff_lim and est_Count == est_Count_lim
         
         est_pos_old = est_pos
