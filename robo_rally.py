@@ -159,8 +159,7 @@ def turn_to_global_goal(particles_list, est_pose:particle.Particle, global_goal)
     local_goal = np.array(global_goal) - np.array([X,Y])
     v = np.arctan2(local_goal[1]/local_goal[0])
     otto.Turn(v - theta)
-    particle.move_particles(particles_list, [0, 0, v], [0,0])
-    return v
+    particle.move_particles(particles_list, [0, 0, v - theta], [0,0])
 
 # Main program #
 try:
@@ -374,9 +373,10 @@ try:
             
             l_id, local_obsticals = cam.next_map(True)
             obsticlas = []
-            for i in range(len(l_id)):
-                if (l_id[i] not in landmarks): 
-                    obsticlas.append(local_obsticals[i])
+            if l_id is not None:
+                for i in range(len(l_id)):
+                    if (l_id[i] not in landmarks): 
+                        obsticlas.append(local_obsticals[i])
             #----------------------------------------------------------------------------
             local_low= (0 - 0*1000 - est_pose.getX() , 0 - 0*1000 - est_pose.getY())
             local_high= (3000 + 0*1000 - est_pose.getX(), 4000 + 0*1000 - est_pose.getY())
