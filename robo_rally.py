@@ -266,7 +266,10 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else 0.001 and print("retval was 0 -.-")
+                if retval == 0:
+                    print("retval was 0 -.-")
+                    
+                return retval if retval > 0 else 0.001
                 
             def dist_propability(particle: particle.Particle, measurement):
                 sigma = 3 #cm
@@ -279,7 +282,10 @@ try:
                                     (2 * math.pi * (sigma**2))
                             )
                         )
-                return retval if retval > 0 else 0.001 and print("retval was 0 -.-")
+                if retval == 0:
+                    print("retval was 0 -.-")
+                    
+                return retval if retval > 0 else 0.001
 
             # Compute particle weights
             # XXX: You do this
@@ -317,14 +323,14 @@ try:
 
         if len(measurements) < 2 and rotation_so_far != 2*3.14:
             # rotate
-            otto.Turn(math.pi/24)
-            # particle.move_particles(particles, [0, 0, math.pi/24], [0,0])
-            rotation_so_far += math.pi/24
+            otto.Turn(math.pi/12)
+            # particle.move_particles(particles, [0, 0, math.pi/12], [0,0])
+            rotation_so_far += math.pi/12
             for lm in measurements:
                 print("===========================")
                 print("radiant before: ", measurements[lm])
-                # measurements[lm][2] = measurements[lm][2] + math.pi/24
-                measurements[lm][2] = measurements[lm][2] - math.pi/24
+                # measurements[lm][2] = measurements[lm][2] + math.pi/12
+                measurements[lm][2] = measurements[lm][2] - math.pi/12
                 print("radiant after: ", measurements[lm])
                 print("===========================")
             
