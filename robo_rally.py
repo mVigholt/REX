@@ -247,7 +247,7 @@ try:
         
         # print landmark positions
         for me in measurements:
-          print(f"landMark {measurements[me][0]}: {measurements[me][1]}")
+          print(f"landMark {measurements[me][0]}: {measurements[me][1]}, {measurements[me][2]}")
         
         # If more than 1 object, converge
         if len(measurements) == 2:
